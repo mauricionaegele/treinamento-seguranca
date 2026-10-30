@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { NextResponse, type NextRequest } from "next/server";
+import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { lerSessao } from "@/lib/sessao";
 import { moduloPorArquivo } from "@/lib/modulos";
@@ -24,10 +25,11 @@ export async function GET(req: NextRequest, ctx: RouteContext<"/curso/[...caminh
   const relativo = caminho.join("/");
 
   // links "index.html" dos módulos voltam para a página inicial do curso
-  if (relativo === "index.html") return NextResponse.redirect(new URL("/", req.url));
+  // (redirect() gera endereço relativo; req.url dentro do container é 0.0.0.0:3000)
+  if (relativo === "index.html") redirect("/");
 
   const sessao = await lerSessao();
-  if (!sessao?.colaborador) return NextResponse.redirect(new URL("/entrar", req.url));
+  if (!sessao?.colaborador) redirect("/entrar");
 
   const arquivo = path.normalize(path.join(PASTA, relativo));
   const ext = path.extname(arquivo);
