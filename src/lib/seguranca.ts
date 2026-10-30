@@ -2,14 +2,12 @@ import "server-only";
 import { createHash, randomBytes, randomInt, timingSafeEqual } from "node:crypto";
 import { headers } from "next/headers";
 
-const SEGREDO = process.env.AUTH_SECRET ?? "";
-if (!SEGREDO && process.env.NODE_ENV === "production") {
-  throw new Error("AUTH_SECRET não configurado");
-}
-
 /** Hash com "sal" do servidor: o banco nunca guarda códigos ou tokens em texto. */
 export function hash(valor: string) {
-  return createHash("sha256").update(`${SEGREDO}:${valor}`).digest("hex");
+  const segredo = process.env.AUTH_SECRET ?? "";
+  // checado no uso (e não ao carregar), porque o build roda sem as variáveis de produção
+  if (!segredo && process.env.NODE_ENV === "production") throw new Error("AUTH_SECRET não configurado");
+  return createHash("sha256").update(`${segredo}:${valor}`).digest("hex");
 }
 
 export function iguais(a: string, b: string) {
