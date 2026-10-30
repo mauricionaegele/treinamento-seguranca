@@ -9,7 +9,7 @@ const BASE = process.env.BASE ?? "http://localhost:3500";
 const LOG = process.env.LOG;
 const EDGE = "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe";
 const COLAB = process.env.COLAB ?? "ana@demo.broadcastti.com.br";
-const ADMIN = "admin@demo.broadcastti.com.br";
+const ADMIN = process.env.ADMIN ?? "admin@demo.broadcastti.com.br";
 let falhas = 0;
 const ok = (cond, msg) => { console.log(`${cond ? "✓" : "✗"} ${msg}`); if (!cond) falhas++; };
 const espera = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -18,7 +18,9 @@ const espera = (ms) => new Promise((r) => setTimeout(r, ms));
 const gabarito = JSON.parse(execSync("npx tsx scripts/gabarito.ts", { encoding: "utf8" }));
 
 function ultimoCodigo(email) {
-  const linhas = readFileSync(LOG, "utf8").split("\n").filter((l) => l.includes(`[EMAIL-TESTE] para=${email}`) && l.includes("código"));
+  // LOG_CMD: comando que imprime o log (ex.: ssh ... docker logs) para testar em produção
+  const texto = process.env.LOG_CMD ? execSync(process.env.LOG_CMD, { encoding: "utf8" }) : readFileSync(LOG, "utf8");
+  const linhas = texto.split("\n").filter((l) => l.includes(`[EMAIL-TESTE] para=${email}`) && l.includes("código"));
   const m = linhas.at(-1)?.match(/é (\d{6})/);
   return m?.[1];
 }
@@ -111,14 +113,14 @@ try {
   ok(link.startsWith("/certificado/"), "aprovação gera certificado");
   await page.goto(`${BASE}${link}`, { waitUntil: "networkidle0" });
   const cert = await page.content();
-  ok(cert.includes("Ana Souza") && cert.includes("Certificado autêntico") && cert.includes("Válido até"), "certificado mostra nome, autenticidade e validade");
+  ok(cert.includes(process.env.NOME ?? "Ana Souza") && cert.includes("Certificado autêntico") && cert.includes("Válido até"), "certificado mostra nome, autenticidade e validade");
   await page.screenshot({ path: process.env.PRINTS ? `${process.env.PRINTS}/e2e-certificado.png` : "e2e-certificado.png" });
 
   // certificado é público (outra sessão, sem login)
   const anon = await browser.createBrowserContext();
   const p2 = await anon.newPage();
   await p2.goto(`${BASE}${link}`, { waitUntil: "networkidle0" });
-  ok((await p2.content()).includes("Ana Souza"), "certificado pode ser verificado sem login");
+  ok((await p2.content()).includes(process.env.NOME ?? "Ana Souza"), "certificado pode ser verificado sem login");
   await p2.goto(`${BASE}/admin`, { waitUntil: "networkidle0" });
   ok(p2.url().endsWith("/entrar"), "área administrativa exige login");
   await anon.close();
