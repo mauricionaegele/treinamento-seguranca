@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Celular, notebook e trabalho remoto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="curso.css">
+<style>
+/* Lista de Wi-Fi */
+.wifi-cena{display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:start;margin-top:16px}
+@media (max-width:760px){.wifi-cena{grid-template-columns:1fr}}
+.wifi-lista{background:#fff;border-radius:16px;overflow:hidden}
+.wifi-lista .tit{padding:12px 16px;font-weight:700;font-size:13px;color:var(--muted);border-bottom:1px solid var(--line)}
+.rede{display:flex;width:100%;align-items:center;gap:12px;background:none;border:0;border-bottom:1px solid var(--line);padding:13px 16px;text-align:left;font-size:14px}
+.rede:hover:not([disabled]){background:#f5f7fb}
+.rede .nome{flex:1;font-weight:600;color:var(--ink)}
+.rede small{display:block;color:var(--muted);font-weight:400}
+.rede.certa{background:var(--green-soft)}
+.rede.errada{background:var(--coral-soft)}
+/* Configurações do celular */
+.config{background:#f2f2f7;border-radius:22px;height:auto;padding:8px 0}
+.ajuste{display:flex;align-items:center;gap:12px;background:#fff;padding:12px 14px;border-bottom:1px solid #e5e5ea;width:100%;border-left:0;border-right:0;border-top:0;text-align:left;font-size:14px}
+.ajuste .ic{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-size:16px;flex:none}
+.ajuste .tx{flex:1}
+.ajuste .tx small{display:block;color:var(--muted);font-size:12px}
+.toggle{width:46px;height:28px;border-radius:99px;background:#e5e5ea;position:relative;flex:none;transition:background .25s}
+.toggle::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .25s}
+.ajuste.on .toggle{background:#34c759}
+.ajuste.on .toggle::after{left:21px}
+.explica-config{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;min-height:120px}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo" href="index.html">
+      <svg width="28" height="28" viewBox="0 0 28 28"><path d="M14 2 4 6v7c0 6.2 4.2 11.3 10 13 5.8-1.7 10-6.8 10-13V6L14 2z" fill="#13a89e"/><path d="m9.5 14 3.2 3.2 6-6.4" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Segurança em Dia
+    </a>
+    <button class="btn-menu" id="btnMenu">☰ Conteúdo</button>
+    <div class="mod-title">Módulo 6 · Celular, notebook e trabalho remoto</div>
+    <div class="counter" id="contador"></div>
+  </div>
+  <div class="progress"><div id="barra"></div></div>
+</header>
+
+<div class="layout">
+<aside class="sumario" id="sumario">
+  <div class="sumario-top">
+    <b>Celular, notebook e remoto</b>
+    <small id="sumPct">0% concluído</small>
+    <div class="sum-barra"><div id="sumBarra"></div></div>
+  </div>
+  <div id="sumLista"></div>
+</aside>
+<div class="veu" id="veu"></div>
+<main>
+
+<!-- 1. CAPA -->
+<section class="step" data-titulo="Capa">
+  <div class="capa grid2">
+    <div>
+      <span class="eyebrow">Módulo 6 de 7</span>
+      <h1>Celular, notebook<br>e trabalho remoto</h1>
+      <p>A empresa vai com você para casa, para o café e para o aeroporto. Aprenda a proteger seus equipamentos e a trabalhar fora do escritório sem abrir portas para criminosos.</p>
+      <div class="meta"><span>⏱ 8 minutos</span><span>🎯 3 atividades práticas</span><span>📝 Quiz no final</span></div>
+      <button class="btn btn-pri" onclick="ir(1)">Começar módulo →</button>
+    </div>
+    <svg viewBox="0 0 400 320" aria-hidden="true">
+      <!-- notebook -->
+      <rect x="60" y="110" width="200" height="130" rx="10" fill="#fff"/><rect x="72" y="122" width="176" height="106" rx="4" fill="#1b3160"/>
+      <rect x="40" y="238" width="240" height="14" rx="7" fill="#cfd8ea"/>
+      <g transform="translate(160 175)"><rect x="-18" y="-6" width="36" height="28" rx="5" fill="#13a89e"/><path d="M-10 -6 v-8 a10 10 0 0 1 20 0 v8" stroke="#13a89e" stroke-width="5" fill="none"/></g>
+      <!-- celular -->
+      <g transform="translate(290 120)"><g class="flutua"><rect width="70" height="130" rx="12" fill="#fff"/><rect x="6" y="14" width="58" height="100" rx="6" fill="#1b3160"/><circle cx="35" cy="64" r="14" fill="none" stroke="#7ff0dd" stroke-width="3"/><path d="M29 64 l4 4 l8 -8" stroke="#7ff0dd" stroke-width="3" fill="none"/></g></g>
+      <!-- wifi -->
+      <g transform="translate(160 70)" fill="none" stroke="#7ff0dd" stroke-linecap="round" stroke-width="6">
+        <path d="M-40 -6 a60 60 0 0 1 80 0" opacity=".4" class="pisca"/><path d="M-24 8 a36 36 0 0 1 48 0" opacity=".7"/><circle cy="22" r="4" fill="#7ff0dd" stroke="none"/>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- 2. SEU EQUIPAMENTO -->
+<section class="step" data-titulo="Seu equipamento">
+  <div class="card">
+    <span class="eyebrow">A porta que você carrega</span>
+    <h2>Seu notebook e seu celular são portas da empresa</h2>
+    <p>No celular estão seu e-mail, o WhatsApp com clientes, o aplicativo de verificação em duas etapas. No notebook, arquivos e acesso aos sistemas. Quem pega um equipamento desprotegido entra na empresa sem precisar de nenhuma senha.</p>
+    <div class="cards3" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+      <div class="mini"><div class="ico" style="background:var(--teal-soft)">🔒</div><h3>Bloqueio automático</h3><p class="muted">Tela bloqueia sozinha em poucos minutos e pede PIN, senha ou biometria.</p></div>
+      <div class="mini"><div class="ico" style="background:var(--amber-soft)">🔄</div><h3>Sempre atualizado</h3><p class="muted">Atualizações fecham falhas que os criminosos já conhecem.</p></div>
+      <div class="mini"><div class="ico" style="background:#ede9fe">🏪</div><h3>Só apps oficiais</h3><p class="muted">Aplicativos só da loja oficial (Play Store, App Store) e, no notebook, só pela TI.</p></div>
+      <div class="mini"><div class="ico" style="background:var(--coral-soft)">👀</div><h3>Nunca sozinho</h3><p class="muted">Notebook não fica no carro, nem aberto na mesa do café enquanto você vai ao balcão.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. VÍDEO -->
+<section class="step" data-titulo="Vídeo">
+  <div class="card">
+    <span class="eyebrow">Vídeo · 40 segundos</span>
+    <h2>O Wi-Fi grátis mais caro da história</h2>
+    <p class="muted">Uma manhã de trabalho remoto que deu errado.</p>
+    <div class="player">
+      <svg viewBox="0 0 640 330" id="filme">
+        <rect width="640" height="330" fill="#0b1730"/>
+        <!-- 1: cafeteria -->
+        <g class="cena">
+          <text x="40" y="56" fill="#7ff0dd" font-size="15" font-weight="700">SEG · 8h00</text>
+          <rect x="0" y="240" width="640" height="90" fill="#3b2a20"/>
+          <rect x="200" y="200" width="240" height="14" rx="4" fill="#a16207"/><rect x="310" y="214" width="20" height="40" fill="#a16207"/>
+          <rect x="250" y="150" width="90" height="52" rx="4" fill="#cfd8ea"/><rect x="240" y="198" width="110" height="6" rx="3" fill="#94a3b8"/>
+          <text x="390" y="196" font-size="30">☕</text>
+          <g transform="translate(200 160)"><circle cy="-40" r="22" fill="#f2c7a5"/><rect x="-26" y="-18" width="52" height="60" rx="20" fill="#13a89e"/></g>
+          <text x="520" y="110" font-size="40">🥐</text>
+        </g>
+        <!-- 2: escolhe a rede -->
+        <g class="cena">
+          <g transform="translate(320 165)"><rect x="-150" y="-110" width="300" height="220" rx="14" fill="#fff"/>
+            <text x="-130" y="-80" font-size="13" font-weight="700" fill="#5b6478">Redes disponíveis</text>
+            <rect x="-140" y="-66" width="280" height="44" rx="8" fill="#e2f6f4" stroke="#13a89e" stroke-width="2"/><text x="-124" y="-38" font-size="15" font-weight="700" fill="#1d2433">📶 Café Grátis</text><text x="90" y="-38" font-size="12" fill="#22a06b" font-weight="700">aberta</text>
+            <text x="-124" y="10" font-size="15" fill="#1d2433">📶 VIVO-8812 🔒</text>
+            <text x="-124" y="50" font-size="15" fill="#1d2433">📶 Cafe_Funcionarios 🔒</text>
+          </g>
+          <g data-anima="cursor-clica"><path d="M380 110 l0 26 l7 -7 l6 13 l5 -2 l-6 -13 l10 0z" fill="#0b1730" stroke="#fff" stroke-width="1.5"/></g>
+        </g>
+        <!-- 3: aparelho do golpista -->
+        <g class="cena">
+          <g transform="translate(180 170)"><circle cy="-40" r="22" fill="#f2c7a5"/><rect x="-26" y="-18" width="52" height="60" rx="20" fill="#13a89e"/><rect x="20" y="0" width="60" height="36" rx="3" fill="#cfd8ea"/></g>
+          <g transform="translate(470 170)"><circle cy="-40" r="22" fill="#2a1e3d"/><rect x="-26" y="-18" width="52" height="60" rx="20" fill="#1b3160"/><rect x="-14" y="-46" width="28" height="7" rx="3" fill="#ef5b4c"/>
+            <g transform="translate(-60 10)" data-anima="surge"><rect x="-16" y="-10" width="32" height="20" rx="4" fill="#111827"/><circle cx="10" r="3" fill="#22c55e" class="pisca"/></g></g>
+          <g fill="none" stroke="#ef5b4c" stroke-width="4" stroke-linecap="round" transform="translate(410 160)"><path d="M-20 -14 a30 30 0 0 1 40 0" class="pisca"/><path d="M-32 -26 a48 48 0 0 1 64 0" class="pisca"/></g>
+          <text x="410" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#fca5a5">"Café Grátis"</text>
+        </g>
+        <!-- 4: tudo passa pelo golpista -->
+        <g class="cena">
+          <g font-size="13" font-weight="700" text-anchor="middle" fill="#fff">
+            <g transform="translate(110 165)"><rect x="-60" y="-34" width="120" height="68" rx="10" fill="#13a89e"/><text y="5">💻 Rafael</text></g>
+            <g transform="translate(320 165)"><rect x="-70" y="-40" width="140" height="80" rx="10" fill="#7f1d1d"/><text y="-6">🕵️ Golpista</text><text y="18" font-size="11" fill="#fecaca">vê tudo que passa</text></g>
+            <g transform="translate(530 165)"><rect x="-60" y="-34" width="120" height="68" rx="10" fill="#1b3160"/><text y="5">🌐 Internet</text></g>
+          </g>
+          <g stroke="#facc15" stroke-width="3" stroke-dasharray="8 6"><line x1="170" y1="165" x2="250" y2="165"/><line x1="390" y1="165" x2="470" y2="165"/></g>
+          <g transform="translate(320 260)" data-anima="surge"><rect x="-140" y="-18" width="280" height="36" rx="8" fill="#0e1a12" stroke="#22a06b"/><text y="6" text-anchor="middle" font-family="Consolas,monospace" font-size="13" fill="#ffd166">login: rafael · senha: ********</text></g>
+        </g>
+        <!-- 5: notebook aberto -->
+        <g class="cena">
+          <rect x="0" y="240" width="640" height="90" fill="#3b2a20"/>
+          <rect x="200" y="200" width="240" height="14" rx="4" fill="#a16207"/>
+          <rect x="250" y="146" width="96" height="56" rx="4" fill="#cfd8ea"/><rect x="256" y="152" width="84" height="44" fill="#fff"/><g fill="#c9d3e6"><rect x="262" y="160" width="60" height="5"/><rect x="262" y="170" width="70" height="5"/><rect x="262" y="180" width="40" height="5"/></g>
+          <text x="298" y="135" text-anchor="middle" font-size="22">🔓</text>
+          <g transform="translate(540 160)"><circle cy="-40" r="22" fill="#f2c7a5"/><rect x="-26" y="-18" width="52" height="60" rx="20" fill="#13a89e"/></g>
+          <text x="560" y="96" font-size="20">☕</text>
+          <g transform="translate(420 170)" data-anima="surge"><circle cy="-40" r="20" fill="#2a1e3d"/><rect x="-24" y="-20" width="48" height="58" rx="18" fill="#1b3160"/><text x="0" y="-70" text-anchor="middle" font-size="22">👀</text></g>
+        </g>
+        <!-- 6: solução -->
+        <g class="cena">
+          <g font-size="13" font-weight="700" text-anchor="middle" fill="#fff">
+            <g transform="translate(150 150)"><circle r="62" fill="#1b3160"/><text y="0" font-size="36">📱</text><text y="34" fill="#7ff0dd">celular roteador</text></g>
+            <g transform="translate(320 150)"><circle r="62" fill="#1b3160"/><text y="0" font-size="36">🛡️</text><text y="34" fill="#7ff0dd">VPN ligada</text></g>
+            <g transform="translate(490 150)"><circle r="62" fill="#1b3160"/><text y="0" font-size="36">🔒</text><text y="34" fill="#7ff0dd">Windows + L</text></g>
+          </g>
+        </g>
+      </svg>
+      <button class="play-grande" id="playGrande" aria-label="Assistir"><span><svg width="34" height="34" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></span></button>
+      <div class="legenda" id="legenda"></div>
+      <div class="controles">
+        <button id="playBtn">▶ Assistir</button>
+        <div class="barra"><div id="filmeBarra"></div></div>
+        <button id="somBtn">🔊 Som ligado</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. WI-FI -->
+<section class="step" data-titulo="Qual Wi-Fi usar?" data-trava="wifi" data-tag="prática">
+  <div class="card">
+    <span class="eyebrow">Atividade 1 · Escolha a rede</span>
+    <h2>Você está no aeroporto e precisa mandar uma proposta urgente</h2>
+    <p class="muted">Qual é a opção mais segura para se conectar?</p>
+    <div class="wifi-cena">
+      <div class="cel" style="max-width:300px"><div class="wifi-lista">
+        <div class="tit">Wi-Fi · Redes disponíveis</div>
+        <div id="redes"></div>
+      </div></div>
+      <div>
+        <div class="feedback" id="fbWifi"></div>
+        <div class="alerta" id="wifiDica" style="display:none"><b>Se não tiver outra opção:</b> use uma rede com senha fornecida pelo local (hotel, cliente) e <b>ligue a VPN da empresa</b> antes de acessar qualquer sistema. A VPN cria um túnel protegido, e ninguém na rede consegue ver o que passa por ele.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. CONFIGURAÇÕES DO CELULAR -->
+<section class="step" data-titulo="Ajustes do celular" data-trava="config" data-tag="prática">
+  <div class="card">
+    <span class="eyebrow">Atividade 2 · Configure</span>
+    <h2>Ligue as 6 proteções essenciais do celular</h2>
+    <p class="muted">Toque em cada ajuste para ligar e entender para que serve. Depois, confira no seu celular de verdade!</p>
+    <div class="wifi-cena">
+      <div class="cel" style="max-width:320px"><div class="config" id="ajustes"></div></div>
+      <div class="explica-config" id="explica"><b>👈 Toque num ajuste</b><p class="muted" style="margin-top:6px">Cada proteção ligada fecha uma porta diferente.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. PENDRIVES E CARREGADORES -->
+<section class="step" data-titulo="Pendrives e carregadores">
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <span class="eyebrow">Cuidado com o USB</span>
+        <h2>Nem todo cabo é só um cabo</h2>
+        <p><b>Pendrive desconhecido:</b> pode instalar um malware no instante em que é conectado. Existem até "pendrives" que fingem ser teclados e digitam comandos sozinhos. Achou um? Entregue à TI.</p>
+        <p><b>Carregador USB público</b> (aeroporto, rodoviária, hotel): a porta USB transmite dados, não só energia. Prefira a tomada com seu próprio carregador ou um powerbank.</p>
+        <p><b>Cabos de origem duvidosa:</b> há cabos que parecem comuns mas têm um chip espião dentro. Use cabos próprios, de procedência conhecida.</p>
+      </div>
+      <svg viewBox="0 0 320 260" aria-hidden="true">
+        <rect x="20" y="20" width="280" height="220" rx="18" fill="#eef3fb"/>
+        <!-- tomada boa -->
+        <g transform="translate(90 120)"><rect x="-40" y="-50" width="80" height="100" rx="14" fill="#fff" stroke="#dfe5ef" stroke-width="2"/><circle cx="-12" cy="-6" r="7" fill="#64748b"/><circle cx="12" cy="-6" r="7" fill="#64748b"/><circle cy="20" r="6" fill="#64748b"/></g>
+        <text x="90" y="200" text-anchor="middle" font-size="26">✅</text>
+        <!-- usb público -->
+        <g transform="translate(230 120)"><rect x="-40" y="-50" width="80" height="100" rx="14" fill="#fff" stroke="#ef5b4c" stroke-width="2"/><rect x="-18" y="-24" width="36" height="14" rx="3" fill="#64748b"/><rect x="-18" y="6" width="36" height="14" rx="3" fill="#64748b"/><text y="42" text-anchor="middle" font-size="10" font-weight="700" fill="#ef5b4c">USB GRÁTIS</text></g>
+        <text x="230" y="200" text-anchor="middle" font-size="26">⚠️</text>
+        <g transform="translate(160 56)"><rect x="-20" y="-12" width="40" height="24" rx="5" fill="#1b3160"/><rect x="20" y="-6" width="12" height="12" fill="#94a3b8"/><text x="-2" y="5" text-anchor="middle" font-size="10" fill="#fff">?</text></g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- 7. SITUAÇÕES -->
+<section class="step" data-titulo="Situações reais" data-trava="situacoes" data-tag="prática">
+  <div class="card">
+    <span class="eyebrow">Atividade 3 · O que você faria?</span>
+    <h2>Quatro situações fora do escritório</h2>
+    <div id="situacoes"></div>
+  </div>
+</section>
+
+<!-- 8. HÁBITOS -->
+<section class="step" data-titulo="Regras de ouro" data-trava="habitos">
+  <div class="card">
+    <span class="eyebrow">Resumo</span>
+    <h2>6 regras para levar a empresa com você em segurança</h2>
+    <p class="muted">Marque cada regra como lida.</p>
+    <div class="habitos" id="habitos">
+      <button class="habito"><span class="box">✓</span><span><b>Windows + L ao levantar</b><br><span class="muted">No escritório, em casa ou no café.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Wi-Fi público? Celular roteador ou VPN</b><br><span class="muted">Nunca acesse sistemas da empresa numa rede aberta sem VPN.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Equipamento da empresa é só seu</b><br><span class="muted">Nem filho, nem cônjuge, nem amigo usam o notebook do trabalho.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Aceite as atualizações</b><br><span class="muted">Reinicie quando a TI pedir, sem adiar por semanas.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Perdeu ou roubaram? Avise na hora</b><br><span class="muted">A TI consegue bloquear e apagar remotamente, mas precisa saber rápido.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Cuidado com quem está olhando</b><br><span class="muted">Em lugares públicos, cuidado com a tela e com conversas sobre clientes.</span></span></button>
+    </div>
+  </div>
+</section>
+
+<!-- 9. QUIZ -->
+<section class="step" data-titulo="Quiz" data-trava="quiz" data-tag="quiz">
+  <div class="card" id="quiz"></div>
+</section>
+
+<!-- 10. FIM -->
+<section class="step" data-titulo="Conclusão">
+  <div class="fim" id="fim"></div>
+</section>
+
+</main>
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <button class="btn btn-sec" id="ant">← Voltar</button>
+    <span class="dica" id="dica"></span>
+    <button class="btn btn-pri" id="prox">Próximo →</button>
+  </div>
+</nav>
+
+<script src="curso.js"></script>
+<script>
+criaFilme([
+  'Segunda-feira, 8h. Rafael vai trabalhar de uma cafeteria antes de uma reunião com cliente.',
+  'Ele procura o Wi-Fi e encontra uma rede chamada "Café Grátis". Sem senha. Conecta.',
+  'Mas essa rede foi criada por alguém na mesa ao lado, com um aparelho do tamanho de um celular.',
+  'Tudo o que Rafael acessa passa primeiro pelo aparelho do golpista, inclusive o login de um sistema sem proteção.',
+  'Na pressa, ele vai ao balcão e deixa o notebook aberto e desbloqueado na mesa.',
+  'Usar o celular como roteador, com a VPN da empresa ligada, e bloquear a tela ao levantar teria evitado tudo.'
+], 'audio/remoto');
+
+/* ---------- Wi-Fi ---------- */
+const REDES=[
+  {n:'Aeroporto_WiFi_Gratis', s:'Aberta · sinal forte', c:0, e:'Rede aberta: qualquer um pode criar uma com esse nome, e quem estiver na rede pode bisbilhotar o tráfego.'},
+  {n:'Free_Public_WiFi', s:'Aberta', c:0, e:'Nome genérico e sem senha: exatamente o tipo de rede que golpistas criam para atrair vítimas.'},
+  {n:'Sala VIP Cia Aérea', s:'🔒 Senha no balcão', c:0, e:'Melhor que rede aberta, mas a senha é compartilhada com dezenas de desconhecidos. Só use com a VPN da empresa ligada.'},
+  {n:'iPhone de Rafael', s:'🔒 Roteador do seu celular', c:1, e:'<b>Melhor escolha!</b> A rede do seu próprio celular é só sua, protegida por senha, e usa a internet da operadora.'}
+];
+function desenhaRedes(sel){
+  const box=document.getElementById('redes'); box.innerHTML='';
+  REDES.forEach((r,i)=>{
+    const b=document.createElement('button'); b.className='rede'+(sel&&sel.has(i)?(r.c?' certa':' errada'):'');
+    b.innerHTML=`<span style="font-size:18px">📶</span><span class="nome">${r.n}<small>${r.s}</small></span>`;
+    b.onclick=()=>escolheRede(i); box.appendChild(b);
+  });
+}
+const redesTentadas=new Set();
+function escolheRede(i){
+  redesTentadas.add(i); desenhaRedes(redesTentadas);
+  const r=REDES[i], fb=document.getElementById('fbWifi');
+  fb.className='feedback show '+(r.c?'bom':'ruim'); fb.innerHTML=(r.c?'':'<b>Arriscado.</b> ')+r.e+(r.c?'':' Tente outra.');
+  if(r.c){ document.getElementById('wifiDica').style.display='block'; libera('wifi'); }
+}
+desenhaRedes();
+
+/* ---------- Ajustes do celular ---------- */
+const AJUSTES=[
+  {ic:'🔒', cor:'#e2f6f4', n:'Bloqueio de tela', s:'PIN de 6 dígitos ou biometria', e:'Sem bloqueio, quem pegar seu celular abre e-mail, WhatsApp e o app de verificação em duas etapas. Evite padrões simples como 123456 ou o "L" do desenho.'},
+  {ic:'🔄', cor:'#fff4dd', n:'Atualizações automáticas', s:'Sistema e aplicativos', e:'A maioria dos ataques usa falhas que já têm correção. Celular atualizado fecha essas portas.'},
+  {ic:'📍', cor:'#ede9fe', n:'Encontrar meu dispositivo', s:'Localizar, bloquear e apagar à distância', e:'Se perder o celular, dá para ver onde está, bloquear e até apagar tudo remotamente.'},
+  {ic:'🏪', cor:'#fde9e7', n:'Só apps da loja oficial', s:'Bloquear fontes desconhecidas', e:'Aplicativos baixados fora da Play Store ou App Store são o principal caminho de malware no celular.'},
+  {ic:'💬', cor:'#e3f5ec', n:'WhatsApp: verificação em duas etapas', s:'PIN para registrar o número', e:'Impede o golpe de clonagem do WhatsApp: mesmo que alguém consiga o código SMS, precisa do seu PIN.'},
+  {ic:'☁️', cor:'#e2f6f4', n:'Backup automático', s:'Fotos, contatos e conversas', e:'Se o celular for perdido, roubado ou quebrar, você não perde nada importante.'}
+];
+const ligados=new Set();
+function desenhaAjustes(){
+  const box=document.getElementById('ajustes'); box.innerHTML='';
+  AJUSTES.forEach((a,i)=>{
+    const b=document.createElement('button'); b.className='ajuste'+(ligados.has(i)?' on':'');
+    b.innerHTML=`<span class="ic" style="background:${a.cor}">${a.ic}</span><span class="tx">${a.n}<small>${a.s}</small></span><span class="toggle"></span>`;
+    b.onclick=()=>{ ligados.add(i); desenhaAjustes();
+      document.getElementById('explica').innerHTML=`<h3>${a.ic} ${a.n}</h3><p style="margin:0">${a.e}</p><p class="muted" style="margin-top:10px">${ligados.size} de 6 proteções ligadas</p>`;
+      if(ligados.size===6) libera('config'); };
+    box.appendChild(b);
+  });
+}
+desenhaAjustes();
+
+/* ---------- Situações ---------- */
+const SIT=[
+  {t:'🚗 Você vai passar no mercado depois do trabalho e precisa deixar o notebook da empresa no carro por meia hora.',
+   o:['Deixo no banco de trás, é rápido','Deixo no porta-malas, guardado antes de chegar ao estacionamento, ou levo comigo','Deixo embaixo do banco com uma blusa por cima'], c:1,
+   e:'O ideal é levar com você. Se não der, guarde no porta-malas <b>antes</b> de chegar: alguém pode estar observando quem esconde coisas no estacionamento.'},
+  {t:'👦 Seu filho pede o notebook da empresa emprestado para fazer um trabalho da escola e jogar um pouco.',
+   o:['Deixo, mas fico do lado','Não empresto: equipamento da empresa é de uso pessoal e profissional exclusivo','Crio outro usuário para ele no notebook'], c:1,
+   e:'Jogos e sites que crianças acessam são um caminho comum de malware, e o notebook tem acesso à rede e aos dados da empresa.'},
+  {t:'📱 Você percebe no táxi que perdeu o celular, onde está o e-mail da empresa e o app de verificação.',
+   o:['Espero até amanhã para ver se alguém devolve','Aviso a TI imediatamente e uso o "Encontrar meu dispositivo" para bloquear','Só troco a senha do e-mail na semana que vem'], c:1,
+   e:'Cada minuto conta. A TI pode bloquear o acesso corporativo e apagar os dados remotamente.'},
+  {t:'🔄 O notebook mostra pela décima vez "Reinicie para concluir as atualizações". Você está no meio de um relatório.',
+   o:['Adio de novo, faço isso mês que vem','Salvo o trabalho e reinicio no próximo intervalo, ainda hoje','Desativo as atualizações para parar o aviso'], c:1,
+   e:'Atualização adiada é porta aberta. Escolha um momento hoje: almoço ou fim do expediente.'}
+];
+const sitResp={};
+function desenhaSit(){
+  const box=document.getElementById('situacoes'); box.innerHTML='';
+  SIT.forEach((s,i)=>{
+    const r=sitResp[i], d=document.createElement('div'); d.className='sintoma';
+    d.innerHTML=`<div class="tela-sint">${s.t}</div><div class="opcoes">${s.o.map((t,k)=>{let cls=''; if(r!==undefined){ if(k===s.c) cls='certa'; else if(k===r) cls='errada'; } return `<button class="opcao" style="font-family:inherit" ${r!==undefined?'disabled':''} data-k="${k}">${t}</button>`;}).join('')}</div>
+      ${r!==undefined?`<div class="feedback show ${r===s.c?'bom':'ruim'}">${r===s.c?'<b>Isso!</b> ':'<b>Arriscado.</b> '}${s.e}</div>`:''}`;
+    d.querySelectorAll('.opcao').forEach(o=>o.onclick=()=>{ sitResp[i]=+o.dataset.k; desenhaSit(); });
+    box.appendChild(d);
+  });
+  if(Object.keys(sitResp).length===SIT.length) libera('situacoes');
+}
+desenhaSit();
+
+/* ---------- Hábitos ---------- */
+const habitos=[...document.querySelectorAll('.habito')];
+habitos.forEach(h=>h.onclick=()=>{ h.classList.add('on'); if (habitos.every(x=>x.classList.contains('on'))) libera('habitos'); });
+
+/* ---------- Quiz ---------- */
+criaQuiz({id:'dispositivos', proximo:{titulo:'Incidentes: reconhecer e avisar', url:'modulo-7-incidentes.html'}});
+
+iniciaCurso({
+  dicas:{
+    wifi:'Escolha a rede mais segura para continuar',
+    config:'Ligue as 6 proteções para continuar',
+    situacoes:'Responda as 4 situações para continuar',
+    habitos:'Marque as 6 regras para continuar',
+    quiz:'Responda o quiz para concluir'
+  },
+  aoEntrar:{'Conclusão':mostraFim}
+});
+</script>
+</body>
+</html>

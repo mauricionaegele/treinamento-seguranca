@@ -1,0 +1,189 @@
+// Treinamento de Segurança — modelo de dados
+//
+// - Cada cliente tem um "ciclo" (o ano do treinamento). Progresso, provas e
+//   certificados são gravados com o ciclo; iniciar um novo ciclo zera o
+//   andamento de todos sem apagar o histórico dos anos anteriores.
+// - Login sem senha: a pessoa recebe um código por e-mail. Só recebe quem
+//   está cadastrado (colaborador ativo ou usuário administrativo ativo).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Papel {
+  ADMIN   // equipe da Broadcast: vê e gerencia todos os clientes
+  GERENTE // gestor do cliente: só consulta o próprio cliente
+}
+
+model Cliente {
+  id             String   @id @default(cuid())
+  nome           String
+  contatoTi      String   @default("")   // aparece nos módulos ("como avisar a TI")
+  cicloAtual     Int                      // ex.: 2026
+  prazo          DateTime?
+  notaMinima     Int      @default(70)    // nota mínima da prova final
+  maxTentativas  Int      @default(3)     // tentativas da prova final por ciclo
+  validadeMeses  Int      @default(12)    // validade do certificado
+  exigeProvaFinal Boolean @default(true)  // false: certificado sai ao concluir os módulos (nota = média dos quizzes)
+  ativo          Boolean  @default(true)
+  criadoEm       DateTime @default(now())
+
+  colaboradores  Colaborador[]
+  gestores       UsuarioAdmin[]
+}
+
+model Colaborador {
+  id          String   @id @default(cuid())
+  clienteId   String
+  nome        String
+  email       String   @unique
+  setor       String   @default("")
+  gerente     String   @default("")
+  ativo       Boolean  @default(true)
+  criadoEm    DateTime @default(now())
+
+  cliente     Cliente  @relation(fields: [clienteId], references: [id])
+  progresso   ProgressoModulo[]
+  tentativas  TentativaProva[]
+  certificados Certificado[]
+  sessoes     Sessao[]
+  acessos     RegistroAcesso[]
+  lembretes   Lembrete[]
+  quizzes     QuizTentativa[]
+
+  @@index([clienteId])
+}
+
+model UsuarioAdmin {
+  id         String   @id @default(cuid())
+  nome       String
+  email      String   @unique
+  papel      Papel
+  clienteId  String?  // obrigatório para GERENTE
+  ativo      Boolean  @default(true)
+  criadoEm   DateTime @default(now())
+
+  cliente    Cliente? @relation(fields: [clienteId], references: [id])
+  sessoes    Sessao[]
+}
+
+model CodigoAcesso {
+  id          String    @id @default(cuid())
+  email       String
+  codigoHash  String
+  expiraEm    DateTime
+  tentativas  Int       @default(0)
+  usadoEm     DateTime?
+  ip          String    @default("")
+  criadoEm    DateTime  @default(now())
+
+  @@index([email, criadoEm])
+}
+
+model Sessao {
+  id             String        @id @default(cuid())
+  tokenHash      String        @unique
+  colaboradorId  String?
+  adminId        String?
+  expiraEm       DateTime
+  ip             String        @default("")
+  userAgent      String        @default("")
+  criadoEm       DateTime      @default(now())
+
+  colaborador    Colaborador?  @relation(fields: [colaboradorId], references: [id])
+  admin          UsuarioAdmin? @relation(fields: [adminId], references: [id])
+}
+
+model ProgressoModulo {
+  id             String    @id @default(cuid())
+  colaboradorId  String
+  ciclo          Int
+  modulo         String    // ameacas, phishing, senhas, ...
+  iniciadoEm     DateTime  @default(now())
+  concluidoEm    DateTime?
+  melhorNota     Int?
+  tentativas     Int       @default(0)
+
+  colaborador    Colaborador @relation(fields: [colaboradorId], references: [id])
+
+  @@unique([colaboradorId, ciclo, modulo])
+}
+
+model TentativaProva {
+  id             String    @id @default(cuid())
+  colaboradorId  String
+  ciclo          Int
+  questoes       Json      // [{ id, ordem: [índices originais das opções na ordem mostrada] }]
+  respostas      Json?     // { idQuestao: índice original escolhido }
+  nota           Int?
+  aprovado       Boolean?
+  iniciadaEm     DateTime  @default(now())
+  finalizadaEm   DateTime?
+  ip             String    @default("")
+
+  colaborador    Colaborador @relation(fields: [colaboradorId], references: [id])
+  certificado    Certificado?
+
+  @@index([colaboradorId, ciclo])
+}
+
+model Certificado {
+  id             String   @id @default(cuid())
+  codigo         String   @unique  // código de verificação público
+  colaboradorId  String
+  ciclo          Int
+  tentativaId    String?  @unique         // vazio quando emitido sem prova final
+  nota           Int
+  emitidoEm      DateTime @default(now())
+  validoAte      DateTime
+
+  colaborador    Colaborador    @relation(fields: [colaboradorId], references: [id])
+  tentativa      TentativaProva? @relation(fields: [tentativaId], references: [id])
+
+  @@unique([colaboradorId, ciclo])
+}
+
+// Evidência para auditoria: logins, módulos abertos, provas.
+model RegistroAcesso {
+  id             String   @id @default(cuid())
+  colaboradorId  String?
+  email          String   @default("")
+  evento         String   // login, modulo_aberto, modulo_concluido, prova_iniciada, prova_finalizada
+  detalhe        String   @default("")
+  ip             String   @default("")
+  userAgent      String   @default("")
+  criadoEm       DateTime @default(now())
+
+  colaborador    Colaborador? @relation(fields: [colaboradorId], references: [id])
+
+  @@index([colaboradorId, criadoEm])
+}
+
+model Lembrete {
+  id             String   @id @default(cuid())
+  colaboradorId  String
+  enviadoEm      DateTime @default(now())
+
+  colaborador    Colaborador @relation(fields: [colaboradorId], references: [id])
+}
+
+// Cada vez que a pessoa faz o quiz de um módulo. A primeira resposta de cada
+// pergunta é a que vale; a nota é calculada aqui no servidor.
+model QuizTentativa {
+  id             String    @id @default(cuid())
+  colaboradorId  String
+  ciclo          Int
+  modulo         String
+  respostas      Json      @default("{}")  // { índiceDaPergunta: opçãoEscolhida }
+  nota           Int?
+  criadaEm       DateTime  @default(now())
+  finalizadaEm   DateTime?
+
+  colaborador    Colaborador @relation(fields: [colaboradorId], references: [id])
+
+  @@index([colaboradorId, ciclo, modulo])
+}

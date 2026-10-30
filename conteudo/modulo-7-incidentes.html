@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Incidentes: reconhecer e avisar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="curso.css">
+<style>
+.classif{display:grid;gap:10px;margin-top:16px}
+.classif-item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px}
+@media (max-width:640px){.classif-item{grid-template-columns:1fr}}
+.classif-item .feedback{grid-column:1/-1;margin-top:0}
+.sn{display:flex;gap:8px;flex-wrap:wrap}
+.sn button{border:2px solid var(--line);background:#fff;border-radius:10px;padding:8px 14px;font-weight:700;font-size:14px}
+.sn button:hover:not([disabled]){border-color:var(--teal)}
+/* Ordenar passos */
+.ordem-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:16px}
+@media (max-width:760px){.ordem-grid{grid-template-columns:1fr}}
+.passo-op{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;font-size:15px;transition:all .2s}
+.passo-op:hover:not([disabled]){border-color:var(--teal)}
+.passo-op[disabled]{opacity:.35}
+.passo-op.erro{animation:treme .3s;border-color:var(--coral)}
+.sequencia{list-style:none;padding:0;margin:0;counter-reset:s}
+.sequencia li{display:flex;gap:12px;align-items:flex-start;background:var(--teal-soft);border-radius:12px;padding:12px 14px;margin-bottom:10px;animation:entra .4s}
+.sequencia li::before{counter-increment:s;content:counter(s);flex:none;width:28px;height:28px;border-radius:8px;background:var(--teal);color:#fff;font-weight:800;display:grid;place-items:center}
+.sequencia li.vazio{background:#f4f6fb;color:#a0a8b8;border:2px dashed var(--line)}
+.sequencia li.vazio::before{background:#dfe5ef}
+.relato{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;font-size:15px}
+.relato dt{font-weight:700;color:var(--navy);margin-top:10px}
+.relato dd{margin:2px 0 0;color:var(--muted)}
+.sem-culpa{background:linear-gradient(135deg,var(--teal),#0f7f78);color:#fff;border-radius:16px;padding:22px;margin-top:20px}
+.sem-culpa h3{color:#fff}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo" href="index.html">
+      <svg width="28" height="28" viewBox="0 0 28 28"><path d="M14 2 4 6v7c0 6.2 4.2 11.3 10 13 5.8-1.7 10-6.8 10-13V6L14 2z" fill="#13a89e"/><path d="m9.5 14 3.2 3.2 6-6.4" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Segurança em Dia
+    </a>
+    <button class="btn-menu" id="btnMenu">☰ Conteúdo</button>
+    <div class="mod-title">Módulo 7 · Incidentes: reconhecer e avisar</div>
+    <div class="counter" id="contador"></div>
+  </div>
+  <div class="progress"><div id="barra"></div></div>
+</header>
+
+<div class="layout">
+<aside class="sumario" id="sumario">
+  <div class="sumario-top">
+    <b>Incidentes</b>
+    <small id="sumPct">0% concluído</small>
+    <div class="sum-barra"><div id="sumBarra"></div></div>
+  </div>
+  <div id="sumLista"></div>
+</aside>
+<div class="veu" id="veu"></div>
+<main>
+
+<!-- 1. CAPA -->
+<section class="step" data-titulo="Capa">
+  <div class="capa grid2">
+    <div>
+      <span class="eyebrow">Módulo 7 de 7</span>
+      <h1>Incidentes:<br>reconhecer e avisar</h1>
+      <p>Mesmo com todo cuidado, algo pode dar errado. O que separa um susto de um desastre é a rapidez do aviso. Aprenda a perceber os sinais e o que fazer nos primeiros minutos.</p>
+      <div class="meta"><span>⏱ 6 minutos</span><span>🎯 3 atividades práticas</span><span>📝 Quiz no final</span></div>
+      <button class="btn btn-pri" onclick="ir(1)">Começar módulo →</button>
+    </div>
+    <svg viewBox="0 0 400 320" aria-hidden="true">
+      <!-- sirene -->
+      <g transform="translate(200 180)">
+        <rect x="-90" y="60" width="180" height="26" rx="8" fill="#cfd8ea"/>
+        <path d="M-70 60 v-50 a70 70 0 0 1 140 0 v50z" fill="#ef5b4c"/>
+        <path d="M-40 40 v-30 a40 40 0 0 1 40 -40" stroke="#fff" stroke-opacity=".5" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <g stroke="#f5a524" stroke-width="8" stroke-linecap="round" class="pisca">
+          <line x1="-120" y1="-30" x2="-96" y2="-20"/><line x1="120" y1="-30" x2="96" y2="-20"/>
+          <line x1="-90" y1="-90" x2="-72" y2="-70"/><line x1="90" y1="-90" x2="72" y2="-70"/><line x1="0" y1="-125" x2="0" y2="-98"/>
+        </g>
+      </g>
+      <g transform="translate(330 70)"><g class="flutua"><rect x="-30" y="-20" width="60" height="40" rx="10" fill="#fff"/><text y="7" text-anchor="middle" font-size="18" font-weight="800" fill="#13a89e">TI</text></g></g>
+    </svg>
+  </div>
+</section>
+
+<!-- 2. O QUE É -->
+<section class="step" data-titulo="O que é um incidente">
+  <div class="card">
+    <span class="eyebrow">O básico</span>
+    <h2>Incidente é qualquer coisa que coloque informações em risco</h2>
+    <p>Não precisa ser um ataque de filme. Um clique errado, um notebook esquecido ou um e-mail enviado para a pessoa errada também são incidentes, e todos precisam ser avisados.</p>
+    <div class="cards3" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+      <div class="mini"><div class="ico" style="background:var(--coral-soft)">🖱️</div><h3>Cliquei ou digitei</h3><p class="muted">Abriu anexo suspeito, clicou em link estranho, digitou a senha numa página duvidosa.</p></div>
+      <div class="mini"><div class="ico" style="background:var(--amber-soft)">💻</div><h3>Equipamento</h3><p class="muted">Notebook, celular, pendrive ou crachá perdido ou roubado.</p></div>
+      <div class="mini"><div class="ico" style="background:#ede9fe">📤</div><h3>Dados</h3><p class="muted">Arquivo enviado para a pessoa errada, documento esquecido, pasta compartilhada aberta.</p></div>
+      <div class="mini"><div class="ico" style="background:var(--teal-soft)">👤</div><h3>Pessoas e acessos</h3><p class="muted">Desconhecido circulando no escritório, alguém pedindo seu código, login que você não fez.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. VÍDEO -->
+<section class="step" data-titulo="Vídeo">
+  <div class="card">
+    <span class="eyebrow">Vídeo · 40 segundos</span>
+    <h2>"Não quero incomodar a TI"</h2>
+    <p class="muted">A frase que mais ajuda os criminosos.</p>
+    <div class="player">
+      <svg viewBox="0 0 640 330" id="filme">
+        <rect width="640" height="330" fill="#0b1730"/>
+        <!-- 1: computador estranho -->
+        <g class="cena">
+          <text x="40" y="56" fill="#7ff0dd" font-size="15" font-weight="700">QUA · 14h00</text>
+          <rect x="170" y="70" width="300" height="190" rx="10" fill="#1b3160"/><rect x="182" y="82" width="276" height="160" rx="4" fill="#f4f6fb"/>
+          <rect x="150" y="258" width="340" height="12" rx="6" fill="#26406f"/>
+          <circle cx="320" cy="150" r="22" fill="none" stroke="#5b6478" stroke-width="5" stroke-dasharray="30 110"><animateTransform attributeName="transform" type="rotate" from="0 320 150" to="360 320 150" dur="1.2s" repeatCount="indefinite"/></circle>
+          <g data-anima="cursor-clica"><path d="M390 190 l0 22 l6 -6 l5 11 l4 -2 l-5 -11 l8 0z" fill="#0b1730" stroke="#fff" stroke-width="1.5"/></g>
+        </g>
+        <!-- 2: dúvida -->
+        <g class="cena">
+          <g transform="translate(260 180)"><circle cy="-50" r="28" fill="#c68b5e"/><rect x="-34" y="-20" width="68" height="90" rx="26" fill="#475569"/></g>
+          <g transform="translate(420 100)"><ellipse rx="120" ry="50" fill="#fff"/><circle cx="-90" cy="56" r="10" fill="#fff"/><circle cx="-110" cy="74" r="6" fill="#fff"/>
+            <text y="-6" text-anchor="middle" font-size="14" font-weight="700" fill="#1d2433">"Deve ser bobagem…</text><text y="16" text-anchor="middle" font-size="14" font-weight="700" fill="#1d2433">não vou incomodar a TI"</text></g>
+        </g>
+        <!-- 3: invasor dentro -->
+        <g class="cena">
+          <rect x="60" y="80" width="220" height="150" rx="10" fill="#1b3160"/>
+          <g transform="translate(170 155)"><circle r="34" fill="#2a1e3d"/><rect x="-18" y="-10" width="36" height="8" rx="4" fill="#ef5b4c"/></g>
+          <g font-size="22"><text x="320" y="130" class="voa" style="--d:translate(220px,-40px)">📄</text><text x="320" y="160" class="voa" style="--d:translate(220px,0);animation-delay:.6s">📄</text><text x="320" y="190" class="voa" style="--d:translate(220px,40px);animation-delay:1.2s">📄</text></g>
+          <rect x="520" y="110" width="80" height="100" rx="8" fill="#7f1d1d"/><text x="560" y="230" text-anchor="middle" font-size="11" font-weight="700" fill="#fecaca">SERVIDORES</text>
+        </g>
+        <!-- 4: 3 dias depois -->
+        <g class="cena">
+          <text x="320" y="100" text-anchor="middle" font-size="18" font-weight="700" fill="#7ff0dd">3 DIAS DEPOIS</text>
+          <g font-size="13" font-weight="700" text-anchor="middle">
+            <g transform="translate(170 190)"><rect x="-80" y="-40" width="160" height="80" rx="10" fill="#7f1d1d"/><text y="-6" fill="#fecaca">💾 Dados copiados</text><text y="16" fill="#fff">40 GB</text></g>
+            <g transform="translate(320 190)"><rect x="-60" y="-40" width="120" height="80" rx="10" fill="#7f1d1d"/><text y="-6" fill="#fecaca">🖥️ Infectados</text><text y="16" fill="#fff">27 PCs</text></g>
+            <g transform="translate(470 190)"><rect x="-80" y="-40" width="160" height="80" rx="10" fill="#7f1d1d"/><text y="-6" fill="#fecaca">⏱️ Sistemas parados</text><text y="16" fill="#fff">2 dias</text></g>
+          </g>
+        </g>
+        <!-- 5: se tivesse avisado -->
+        <g class="cena">
+          <g transform="translate(200 165)"><circle cy="-40" r="26" fill="#c68b5e"/><rect x="-32" y="-12" width="64" height="80" rx="24" fill="#475569"/><text x="40" y="-60" font-size="26">📞</text></g>
+          <path d="M260 150 h100" stroke="#7ff0dd" stroke-width="4" stroke-dasharray="8 6"/>
+          <g transform="translate(450 160)" data-anima="surge"><rect x="-80" y="-50" width="160" height="100" rx="12" fill="#13a89e"/><text y="-12" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">TI isola o PC</text><text y="14" text-anchor="middle" font-size="22" font-weight="800" fill="#fff">⏱ 15 min</text></g>
+        </g>
+        <!-- 6: na dúvida avise -->
+        <g class="cena">
+          <g transform="translate(320 140)"><circle r="70" fill="#13a89e"/><text y="20" text-anchor="middle" font-size="56">🙋</text></g>
+          <text x="320" y="265" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">Na dúvida, avise.</text>
+        </g>
+      </svg>
+      <button class="play-grande" id="playGrande" aria-label="Assistir"><span><svg width="34" height="34" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></span></button>
+      <div class="legenda" id="legenda"></div>
+      <div class="controles">
+        <button id="playBtn">▶ Assistir</button>
+        <div class="barra"><div id="filmeBarra"></div></div>
+        <button id="somBtn">🔊 Som ligado</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. SINAIS -->
+<section class="step" data-titulo="Sinais de alerta" data-trava="sinais">
+  <div class="card">
+    <span class="eyebrow">Fique de olho</span>
+    <h2>6 sinais de que algo pode estar errado</h2>
+    <p class="muted" id="sinaisInfo">Toque em cada cartão (0 de 6)</p>
+    <div class="sinais" id="sinais">
+      <button class="sinal"><div class="sinal-in"><div class="face frente"><div class="ico">🐢</div><h3>Lento e estranho</h3><small>Toque para ver →</small></div><div class="face verso"><p>Computador <b>muito lento de repente</b>, ventoinha a toda sem motivo, mouse se mexendo sozinho.</p></div></div></button>
+      <button class="sinal"><div class="sinal-in"><div class="face frente"><div class="ico">📁</div><h3>Arquivos mudando</h3><small>Toque para ver →</small></div><div class="face verso"><p>Arquivos <b>sumindo</b>, com nomes ou extensões estranhas (.locked), ou que não abrem mais.</p></div></div></button>
+      <button class="sinal"><div class="sinal-in"><div class="face frente"><div class="ico">🪟</div><h3>Coisas novas</h3><small>Toque para ver →</small></div><div class="face verso"><p>Programas, ícones ou extensões do navegador que <b>você não instalou</b>. Janelas abrindo sozinhas.</p></div></div></button>
+      <button class="sinal"><div class="sinal-in"><div class="face frente"><div class="ico">📤</div><h3>Conta agindo sozinha</h3><small>Toque para ver →</small></div><div class="face verso"><p>E-mails na pasta de enviados que <b>você não mandou</b>, colegas recebendo mensagens estranhas "suas".</p></div></div></button>
+      <button class="sinal"><div class="sinal-in"><div class="face frente"><div class="ico">📲</div><h3>Pedidos que você não fez</h3><small>Toque para ver →</small></div><div class="face verso"><p>Pedido de aprovação de login, código de verificação ou aviso de <b>senha alterada</b> sem você ter feito nada.</p></div></div></button>
+      <button class="sinal"><div class="sinal-in"><div class="face frente"><div class="ico">🛡️</div><h3>Proteção desligada</h3><small>Toque para ver →</small></div><div class="face verso"><p>Antivírus <b>desativado sozinho</b>, avisos de segurança, firewall desligado.</p></div></div></button>
+    </div>
+  </div>
+</section>
+
+<!-- 5. É INCIDENTE? -->
+<section class="step" data-titulo="Avisar ou não?" data-trava="avisar" data-tag="prática">
+  <div class="card">
+    <span class="eyebrow">Atividade 1 · Decida</span>
+    <h2>Isso precisa ser avisado à TI?</h2>
+    <p class="muted">Para cada situação, decida se avisa a TI agora.</p>
+    <div class="classif" id="avisar"></div>
+  </div>
+</section>
+
+<!-- 6. PRIMEIROS MINUTOS -->
+<section class="step" data-titulo="Os primeiros minutos" data-trava="ordem" data-tag="prática">
+  <div class="card">
+    <span class="eyebrow">Atividade 2 · Plano de ação</span>
+    <h2>Você abriu um anexo e logo depois os arquivos começaram a mudar de nome</h2>
+    <p class="muted">Clique nas ações <b>na ordem certa</b>.</p>
+    <div class="ordem-grid">
+      <div id="ordemOps"></div>
+      <div><ol class="sequencia" id="ordemSeq"></ol><div class="feedback" id="fbOrdem"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. COMO AVISAR -->
+<section class="step" data-titulo="Como avisar">
+  <div class="card">
+    <div class="grid2" style="align-items:start">
+      <div>
+        <span class="eyebrow">Fale com a TI</span>
+        <h2>Como avisar (e o que contar)</h2>
+        <p>Use o canal mais rápido: <b>telefone ou chamado urgente</b>. Se o problema for na sua conta de e-mail, não avise só por e-mail: o invasor pode estar lendo.</p>
+        <div class="alerta">📞 <b>Contato da TI:</b> {{CONTATO_TI}}</div>
+        <div class="sem-culpa">
+          <h3>🤝 Aqui ninguém é punido por avisar</h3>
+          <p style="margin:0">Errar acontece com qualquer um, inclusive com quem trabalha com segurança. O problema nunca é o clique: é o silêncio. Quem avisa rápido está protegendo a empresa e os colegas.</p>
+        </div>
+      </div>
+      <div class="relato">
+        <h3>📝 O que contar para a TI</h3>
+        <dl>
+          <dt>O que aconteceu?</dt><dd>"Abri um anexo de boleto e depois apareceu uma tela preta."</dd>
+          <dt>Quando?</dt><dd>"Hoje, por volta das 14h10."</dd>
+          <dt>O que você fez?</dt><dd>Clicou, digitou senha, baixou, instalou, encaminhou para alguém?</dd>
+          <dt>Qual equipamento e conta?</dt><dd>Notebook, celular, e-mail, sistema.</dd>
+          <dt>Tem provas?</dt><dd>Não apague a mensagem. Se puder, tire foto da tela com o celular.</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. SITUAÇÕES -->
+<section class="step" data-titulo="Situações reais" data-trava="situacoes" data-tag="prática">
+  <div class="card">
+    <span class="eyebrow">Atividade 3 · O que você faria?</span>
+    <h2>Três situações para fechar o curso</h2>
+    <div id="situacoes"></div>
+  </div>
+</section>
+
+<!-- 9. QUIZ -->
+<section class="step" data-titulo="Quiz" data-trava="quiz" data-tag="quiz">
+  <div class="card" id="quiz"></div>
+</section>
+
+<!-- 10. FIM -->
+<section class="step" data-titulo="Conclusão">
+  <div class="fim" id="fim"></div>
+</section>
+
+</main>
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <button class="btn btn-sec" id="ant">← Voltar</button>
+    <span class="dica" id="dica"></span>
+    <button class="btn btn-pri" id="prox">Próximo →</button>
+  </div>
+</nav>
+
+<script src="curso.js"></script>
+<script>
+criaFilme([
+  'Quarta-feira, 14h. Marcos percebe que o computador está estranhamente lento, e o mouse se mexe sozinho por um instante.',
+  'Ele pensa: "Deve ser coisa da minha cabeça. Não quero incomodar a TI por bobagem."',
+  'Naquele exato momento, um invasor estava dentro do computador, copiando arquivos e procurando acesso aos servidores.',
+  'Três dias depois, o ataque é descoberto. O estrago já é enorme.',
+  'Se Marcos tivesse avisado na hora, a TI teria isolado o computador em minutos, e o ataque teria parado ali.',
+  'Na dúvida, avise. Você nunca vai incomodar a TI por isso. Um aviso rápido vale mais que qualquer antivírus.'
+], 'audio/incidente');
+
+/* ---------- Sinais ---------- */
+const cartoes=[...document.querySelectorAll('#sinais .sinal')];
+cartoes.forEach(c=>c.onclick=()=>{
+  c.classList.toggle('virado'); c.dataset.visto='1';
+  const n=cartoes.filter(x=>x.dataset.visto).length;
+  document.getElementById('sinaisInfo').textContent=`Toque em cada cartão (${n} de 6)`;
+  if(n===6) libera('sinais');
+});
+
+/* ---------- Avisar ou não ---------- */
+const AV=[
+  {t:'Cliquei num link de um e-mail e só depois percebi que o endereço era estranho. Não digitei nada.', av:true, e:'Avise. A página pode ter tentado instalar algo, e a TI pode bloquear o site para os colegas.'},
+  {t:'Recebi um e-mail de phishing, percebi o golpe e não cliquei em nada.', av:true, e:'Avise (ou use o botão "Reportar phishing", se houver). Provavelmente outros colegas receberam o mesmo e-mail.'},
+  {t:'Esqueci minha senha e preciso redefinir.', av:false, e:'Isso não é incidente: é um pedido comum de suporte. Abra um chamado normal.'},
+  {t:'Perdi o crachá da empresa no fim de semana.', av:true, e:'Avise. O crachá precisa ser bloqueado para ninguém entrar no prédio com ele.'},
+  {t:'Um colega me pediu para emprestar minha senha "só hoje" porque a dele travou.', av:true, e:'Não empreste e oriente o colega a falar com a TI. Senha é pessoal: tudo que for feito com ela fica no seu nome.'},
+  {t:'O Windows mostrou que há atualizações disponíveis.', av:false, e:'Não é incidente: é só instalar as atualizações (e reiniciar quando pedir).'}
+];
+const avResp={};
+function desenhaAv(){
+  const box=document.getElementById('avisar'); box.innerHTML='';
+  AV.forEach((a,i)=>{
+    const r=avResp[i], el=document.createElement('div'); el.className='classif-item';
+    el.innerHTML=`<span>${a.t}</span><div class="sn"><button data-v="1" ${r!==undefined?'disabled':''}>🚨 Avisar a TI</button><button data-v="0" ${r!==undefined?'disabled':''}>👌 Não é incidente</button></div>
+      ${r!==undefined?`<div class="feedback show ${r===a.av?'bom':'ruim'}"><b>${a.av?'Avise a TI.':'Não é incidente.'}</b> ${a.e}</div>`:''}`;
+    el.querySelectorAll('button').forEach(b=>b.onclick=()=>{ avResp[i]=b.dataset.v==='1'; desenhaAv(); });
+    box.appendChild(el);
+  });
+  if(Object.keys(avResp).length===AV.length) libera('avisar');
+}
+desenhaAv();
+
+/* ---------- Ordenar passos ---------- */
+const PASSOS=[
+  'Pare de usar o computador imediatamente',
+  'Desconecte da rede: tire o cabo e desligue o Wi-Fi',
+  'Não desligue nem reinicie o computador',
+  'Ligue para a TI e conte o que aconteceu',
+  'Anote o que fez e quando, e aguarde orientação'
+];
+const EMBARALHADO=[3,1,4,0,2];
+let proxPasso=0;
+function desenhaOrdem(){
+  const ops=document.getElementById('ordemOps'); ops.innerHTML='';
+  EMBARALHADO.forEach(i=>{
+    const b=document.createElement('button'); b.className='passo-op'; b.textContent=PASSOS[i]; b.disabled=i<proxPasso;
+    b.onclick=()=>{
+      const fb=document.getElementById('fbOrdem');
+      if(i===proxPasso){ proxPasso++; fb.className='feedback'; desenhaOrdem(); }
+      else { b.classList.remove('erro'); void b.offsetWidth; b.classList.add('erro'); fb.className='feedback show ruim'; fb.innerHTML='Ainda não. Pense: o que impede o problema de se espalhar primeiro?'; }
+    };
+    ops.appendChild(b);
+  });
+  document.getElementById('ordemSeq').innerHTML=PASSOS.map((p,k)=>k<proxPasso?`<li>${p}</li>`:'<li class="vazio">…</li>').join('');
+  if(proxPasso===PASSOS.length){
+    const fb=document.getElementById('fbOrdem'); fb.className='feedback show bom';
+    fb.innerHTML='<b>Perfeito!</b> Parar e desconectar impede que o ataque se espalhe pela rede. Não desligar preserva pistas que ajudam a TI a entender o que aconteceu. E avisar rápido é o que mais reduz o estrago.';
+    libera('ordem');
+  }
+}
+desenhaOrdem();
+
+/* ---------- Situações ---------- */
+const SIT=[
+  {t:'📧 Colegas começam a te perguntar sobre um e-mail estranho "seu", pedindo para eles clicarem num link. Você não mandou nada.',
+   o:['Mando um e-mail para todos pedindo desculpas','Ligo para a TI na hora: minha conta provavelmente foi invadida','Troco minha foto de perfil e sigo trabalhando'], c:1,
+   e:'Sua conta está sendo usada por outra pessoa. Ligue (não mande e-mail, o invasor pode estar lendo) e troque a senha com a orientação da TI.'},
+  {t:'😰 Você digitou sua senha numa página falsa ontem e só percebeu hoje. Tem vergonha de contar.',
+   o:['Troco a senha sozinho e não conto para ninguém','Aviso a TI agora, mesmo que tenha passado um dia','Espero para ver se algo acontece'], c:1,
+   e:'Nunca é tarde para avisar. A TI verifica se houve acesso indevido nas últimas horas, encerra sessões abertas e confere outras contas.'},
+  {t:'🖥️ Aparece na tela um aviso de resgate pedindo bitcoin. O computador ao lado começa a mostrar o mesmo aviso.',
+   o:['Pago o resgate para liberar rápido','Desconecto meu computador da rede, aviso a TI imediatamente e alerto o colega para fazer o mesmo','Reinicio o computador para ver se some'], c:1,
+   e:'É ransomware se espalhando. Desconectar da rede é o que mais ajuda a conter. Nunca pague resgate: isso é decisão da empresa, com especialistas.'}
+];
+const sitResp={};
+function desenhaSit(){
+  const box=document.getElementById('situacoes'); box.innerHTML='';
+  SIT.forEach((s,i)=>{
+    const r=sitResp[i], d=document.createElement('div'); d.className='sintoma';
+    d.innerHTML=`<div class="tela-sint">${s.t}</div><div class="opcoes">${s.o.map((t,k)=>{let cls=''; if(r!==undefined){ if(k===s.c) cls='certa'; else if(k===r) cls='errada'; } return `<button class="opcao" style="font-family:inherit" ${r!==undefined?'disabled':''} data-k="${k}">${t}</button>`;}).join('')}</div>
+      ${r!==undefined?`<div class="feedback show ${r===s.c?'bom':'ruim'}">${r===s.c?'<b>Isso!</b> ':'<b>Arriscado.</b> '}${s.e}</div>`:''}`;
+    d.querySelectorAll('.opcao').forEach(o=>o.onclick=()=>{ sitResp[i]=+o.dataset.k; desenhaSit(); });
+    box.appendChild(d);
+  });
+  if(Object.keys(sitResp).length===SIT.length) libera('situacoes');
+}
+desenhaSit();
+
+/* ---------- Quiz ---------- */
+
+criaQuiz({id:'incidentes', proximo:null});
+
+iniciaCurso({
+  dicas:{
+    sinais:'Abra os 6 cartões para continuar',
+    avisar:'Responda as 6 situações para continuar',
+    ordem:'Coloque as 5 ações na ordem certa',
+    situacoes:'Responda as 3 situações para continuar',
+    quiz:'Responda o quiz para concluir'
+  },
+  aoEntrar:{'Conclusão':mostraFim}
+});
+</script>
+</body>
+</html>

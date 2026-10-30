@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Phishing: não morda a isca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="curso.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo" href="index.html">
+      <svg width="28" height="28" viewBox="0 0 28 28"><path d="M14 2 4 6v7c0 6.2 4.2 11.3 10 13 5.8-1.7 10-6.8 10-13V6L14 2z" fill="#13a89e"/><path d="m9.5 14 3.2 3.2 6-6.4" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Segurança em Dia
+    </a>
+    <button class="btn-menu" id="btnMenu">☰ Conteúdo</button>
+    <div class="mod-title">Módulo 2 · Phishing</div>
+    <div class="counter" id="contador">1 / 11</div>
+  </div>
+  <div class="progress"><div id="barra"></div></div>
+</header>
+
+<div class="layout">
+<aside class="sumario" id="sumario">
+  <div class="sumario-top">
+    <b>Phishing: não morda a isca</b>
+    <small id="sumPct">0% concluído</small>
+    <div class="sum-barra"><div id="sumBarra"></div></div>
+  </div>
+  <div id="sumLista"></div>
+</aside>
+<div class="veu" id="veu"></div>
+<main>
+
+<!-- 1. CAPA -->
+<section class="step" data-titulo="Capa">
+  <div class="capa grid2">
+    <div>
+      <span class="eyebrow">Módulo 2 de 7</span>
+      <h1>Phishing:<br>não morda a isca</h1>
+      <p>Aprenda a reconhecer e-mails e mensagens falsas antes que eles roubem sua senha, seus dados ou o dinheiro da empresa.</p>
+      <div class="meta">
+        <span>⏱ 10 minutos</span><span>🎯 4 atividades práticas</span><span>📝 Quiz no final</span>
+      </div>
+      <button class="btn btn-pri" onclick="ir(1)">Começar módulo →</button>
+    </div>
+    <svg viewBox="0 0 400 320" aria-hidden="true">
+      <defs>
+        <linearGradient id="agua" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a6fa8" stop-opacity=".55"/><stop offset="1" stop-color="#0f1f3d" stop-opacity=".2"/></linearGradient>
+      </defs>
+      <g class="balanco">
+        <line x1="200" y1="0" x2="200" y2="150" stroke="#cfd8ea" stroke-width="2"/>
+        <path d="M200 150 v28 a16 16 0 1 1 -32 0" stroke="#cfd8ea" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M168 178 l-6 -10 l12 2z" fill="#cfd8ea"/>
+        <g transform="translate(128 182) rotate(-8)">
+          <rect width="120" height="80" rx="10" fill="#fff"/>
+          <path d="M0 10 L60 50 L120 10" stroke="#c9d3e6" stroke-width="4" fill="none"/>
+          <circle cx="112" cy="6" r="16" fill="#ef5b4c" class="pisca"/>
+          <text x="112" y="12" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">!</text>
+          <text x="60" y="72" text-anchor="middle" font-size="11" font-weight="700" fill="#ef5b4c">URGENTE</text>
+        </g>
+      </g>
+      <g opacity=".9">
+        <rect x="0" y="250" width="400" height="70" fill="url(#agua)"/>
+        <path class="onda" d="M0 252 q20 -10 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0" stroke="#7ff0dd" stroke-width="2" fill="none" opacity=".6"/>
+      </g>
+      <circle class="bolha" cx="90" cy="310" r="5" fill="#7ff0dd" style="animation-delay:0s"/>
+      <circle class="bolha" cx="300" cy="310" r="4" fill="#7ff0dd" style="animation-delay:1.7s"/>
+      <circle class="bolha" cx="340" cy="310" r="6" fill="#7ff0dd" style="animation-delay:3.1s"/>
+      <circle class="bolha" cx="60" cy="310" r="3" fill="#7ff0dd" style="animation-delay:2.4s"/>
+    </svg>
+  </div>
+</section>
+
+<!-- 2. O QUE É -->
+<section class="step" data-titulo="O que é">
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <span class="eyebrow">O que é phishing</span>
+        <h2>Um golpe que pesca pessoas, não computadores</h2>
+        <p>O nome vem de <i>fishing</i> (pescar, em inglês). O golpista joga uma isca, normalmente um e-mail ou uma mensagem que parece vir de alguém confiável, e espera que você clique, baixe um arquivo ou digite sua senha.</p>
+        <p class="muted">Não importa quanto a empresa invista em firewall e antivírus: se alguém entregar a senha de boa vontade, o golpista entra pela porta da frente.</p>
+      </div>
+      <svg viewBox="0 0 360 260" aria-hidden="true">
+        <rect x="20" y="30" width="320" height="200" rx="18" fill="#eef3fb"/>
+        <!-- pessoa -->
+        <circle cx="110" cy="105" r="28" fill="#f2c7a5"/>
+        <path d="M82 98 q28 -40 56 0 q-4 -22 -28 -24 q-24 2 -28 24z" fill="#3b2a20"/>
+        <rect x="70" y="138" width="80" height="80" rx="30" fill="#13a89e"/>
+        <!-- notebook -->
+        <rect x="150" y="150" width="120" height="70" rx="6" fill="#0f1f3d"/>
+        <rect x="158" y="157" width="104" height="56" rx="3" fill="#fff"/>
+        <rect x="140" y="218" width="140" height="8" rx="4" fill="#1b3160"/>
+        <rect x="168" y="168" width="60" height="6" rx="3" fill="#c9d3e6"/>
+        <rect x="168" y="180" width="84" height="6" rx="3" fill="#c9d3e6"/>
+        <rect x="168" y="194" width="40" height="12" rx="4" fill="#ef5b4c"/>
+        <!-- anzol vindo da tela -->
+        <path d="M262 60 q40 10 30 70 t-60 70" stroke="#ef5b4c" stroke-width="2.5" stroke-dasharray="6 6" fill="none"/>
+        <circle cx="262" cy="60" r="20" fill="#0f1f3d"/>
+        <text x="262" y="66" text-anchor="middle" font-size="18">🎣</text>
+      </svg>
+    </div>
+    <div class="cards3">
+      <div class="mini"><div class="ico" style="background:var(--coral-soft)">🔑</div><h3>Roubar senhas</h3><p class="muted">Páginas falsas idênticas às verdadeiras para você digitar login e senha.</p></div>
+      <div class="mini"><div class="ico" style="background:var(--amber-soft)">💸</div><h3>Desviar dinheiro</h3><p class="muted">Pedidos de pagamento, boletos trocados e "o diretor precisa de um Pix urgente".</p></div>
+      <div class="mini"><div class="ico" style="background:var(--teal-soft)">🦠</div><h3>Instalar vírus</h3><p class="muted">Anexos e links que instalam programas espiões ou sequestram os arquivos da empresa.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. VÍDEO -->
+<section class="step" data-titulo="Vídeo">
+  <div class="card">
+    <span class="eyebrow">Vídeo · 30 segundos</span>
+    <h2>Como uma senha é roubada em menos de 1 minuto</h2>
+    <p class="muted">Assista à história da Ana. Ela não é descuidada, só estava com pressa.</p>
+    <div class="player">
+      <svg viewBox="0 0 640 330" id="filme">
+        <rect width="640" height="330" fill="#0b1730"/>
+        <!-- cena 1: e-mail chega -->
+        <g class="cena" data-cena="0">
+          <rect x="170" y="70" width="300" height="190" rx="10" fill="#1b3160"/>
+          <rect x="182" y="82" width="276" height="160" rx="4" fill="#f4f6fb"/>
+          <rect x="150" y="258" width="340" height="12" rx="6" fill="#26406f"/>
+          <g transform="translate(250 110)">
+            <rect width="190" height="64" rx="10" fill="#fff" stroke="#ef5b4c" stroke-width="2"/>
+            <circle cx="28" cy="32" r="16" fill="#ef5b4c"/><text x="28" y="38" text-anchor="middle" fill="#fff" font-weight="800" font-size="16">!</text>
+            <text x="54" y="28" font-size="12" font-weight="700" fill="#1d2433">Conta será bloqueada</text>
+            <text x="54" y="46" font-size="11" fill="#5b6478">Suporte de E-mail · agora</text>
+          </g>
+          <text x="40" y="60" fill="#7ff0dd" font-size="15" font-weight="700">SEG · 8h42</text>
+        </g>
+        <!-- cena 2: clique -->
+        <g class="cena" data-cena="1">
+          <rect x="170" y="50" width="300" height="230" rx="10" fill="#fff"/>
+          <text x="190" y="85" font-size="16" font-weight="800" fill="#ef5b4c">URGENTE: ação necessária</text>
+          <rect x="190" y="100" width="250" height="8" rx="4" fill="#dfe5ef"/>
+          <rect x="190" y="116" width="220" height="8" rx="4" fill="#dfe5ef"/>
+          <rect x="190" y="132" width="240" height="8" rx="4" fill="#dfe5ef"/>
+          <rect x="230" y="170" width="180" height="44" rx="8" fill="#1a73e8"/>
+          <text x="320" y="198" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Verificar minha conta</text>
+          <g data-anima="cursor-clica"><path d="M330 200 l0 26 l7 -7 l6 13 l5 -2 l-6 -13 l10 0z" fill="#0b1730" stroke="#fff" stroke-width="1.5"/></g>
+        </g>
+        <!-- cena 3: senha digitada -->
+        <g class="cena" data-cena="2">
+          <rect x="190" y="45" width="260" height="240" rx="12" fill="#fff"/>
+          <circle cx="320" cy="90" r="20" fill="#e2f6f4"/><text x="320" y="97" text-anchor="middle" font-size="18">🔒</text>
+          <text x="320" y="132" text-anchor="middle" font-size="15" font-weight="700" fill="#1d2433">Entre na sua conta</text>
+          <rect x="215" y="148" width="210" height="34" rx="6" fill="#f4f6fb" stroke="#dfe5ef"/>
+          <text x="225" y="170" font-size="13" fill="#1d2433">ana@empresa.com.br</text>
+          <rect x="215" y="192" width="210" height="34" rx="6" fill="#f4f6fb" stroke="#13a89e" stroke-width="2"/>
+          <text x="225" y="215" font-size="18" fill="#1d2433" data-anima="digita">● ● ● ● ● ● ● ●</text>
+          <rect x="215" y="238" width="210" height="32" rx="6" fill="#1a73e8"/>
+          <text x="320" y="259" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Entrar</text>
+          <text x="320" y="306" text-anchor="middle" font-size="11" fill="#7f8aa3">empresa-webmail-verificacao.xyz/login</text>
+        </g>
+        <!-- cena 4: golpista recebe -->
+        <g class="cena" data-cena="3">
+          <rect x="0" y="0" width="640" height="330" fill="#120a1e"/>
+          <circle cx="210" cy="150" r="42" fill="#2a1e3d"/>
+          <path d="M160 160 q50 -100 100 0 v80 h-100z" fill="#2a1e3d"/>
+          <rect x="190" y="138" width="40" height="10" rx="5" fill="#ef5b4c" opacity=".8"/>
+          <rect x="300" y="90" width="260" height="150" rx="10" fill="#0e1a12" stroke="#22a06b"/>
+          <text x="316" y="120" font-family="Consolas,monospace" font-size="13" fill="#22a06b">&gt; nova vítima</text>
+          <text x="316" y="146" font-family="Consolas,monospace" font-size="13" fill="#7ff0dd">ana@empresa.com.br</text>
+          <text x="316" y="172" font-family="Consolas,monospace" font-size="13" fill="#ffd166" data-anima="digita">senha: Primavera@26</text>
+          <text x="316" y="210" font-family="Consolas,monospace" font-size="13" fill="#22a06b" class="pisca">_</text>
+        </g>
+        <!-- cena 5: espalha -->
+        <g class="cena" data-cena="4">
+          <circle cx="320" cy="165" r="34" fill="#ef5b4c"/>
+          <text x="320" y="172" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">Ana</text>
+          <g font-size="22">
+            <text x="320" y="170" class="voa" style="--d:translate(-190px,-90px)">✉️</text>
+            <text x="320" y="170" class="voa" style="--d:translate(190px,-90px);animation-delay:.4s">✉️</text>
+            <text x="320" y="170" class="voa" style="--d:translate(-210px,80px);animation-delay:.8s">✉️</text>
+            <text x="320" y="170" class="voa" style="--d:translate(210px,80px);animation-delay:1.2s">✉️</text>
+            <text x="320" y="170" class="voa" style="--d:translate(0,-130px);animation-delay:1.6s">✉️</text>
+          </g>
+          <g fill="#1b3160" stroke="#7ff0dd" stroke-width="1.5">
+            <circle cx="110" cy="70" r="22"/><circle cx="530" cy="70" r="22"/><circle cx="100" cy="250" r="22"/><circle cx="540" cy="250" r="22"/><circle cx="320" cy="34" r="22"/>
+          </g>
+          <g font-size="11" fill="#cfd8ea" text-anchor="middle" font-weight="600">
+            <text x="110" y="74">Financeiro</text><text x="530" y="74">Cliente</text><text x="100" y="254">RH</text><text x="540" y="254">Fornecedor</text><text x="320" y="38">Diretor</text>
+          </g>
+        </g>
+        <!-- cena 6: escudo -->
+        <g class="cena" data-cena="5">
+          <path d="M320 60 l-80 32 v56 c0 50 34 90 80 104 c46 -14 80 -54 80 -104 v-56z" fill="#13a89e"/>
+          <path d="m285 160 25 25 48 -52" stroke="#fff" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="320" y="292" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">5 segundos de atenção</text>
+        </g>
+      </svg>
+      <button class="play-grande" id="playGrande" aria-label="Assistir"><span><svg width="34" height="34" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></span></button>
+      <div class="legenda" id="legenda">Clique para assistir</div>
+      <div class="controles">
+        <button id="playBtn">▶ Assistir</button>
+        <div class="barra"><div id="filmeBarra"></div></div>
+        <button id="somBtn">🔊 Som ligado</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. COMO ACONTECE -->
+<section class="step" data-titulo="Como acontece">
+  <div class="card">
+    <span class="eyebrow">Anatomia do golpe</span>
+    <h2>Todo phishing segue o mesmo roteiro</h2>
+    <p class="muted">Se você quebrar qualquer elo dessa corrente, o golpe falha.</p>
+    <div class="linha" id="linha">
+      <div class="etapa"><div class="num">1</div><h3>A isca</h3><p class="muted">Uma mensagem que imita banco, fornecedor, chefe ou o próprio setor de TI.</p></div>
+      <div class="etapa"><div class="num">2</div><h3>A pressão</h3><p class="muted">Urgência, medo ou recompensa para você agir antes de pensar.</p></div>
+      <div class="etapa"><div class="num">3</div><h3>A armadilha</h3><p class="muted">Um link para página falsa, um anexo infectado ou um pedido de pagamento.</p></div>
+      <div class="etapa"><div class="num">4</div><h3>O prejuízo</h3><p class="muted">Senha roubada, dinheiro desviado ou arquivos sequestrados.</p></div>
+    </div>
+    <div class="alerta"><b>💡 O elo mais fácil de quebrar é o 2.</b> Sempre que uma mensagem te deixar com pressa ou com medo, desconfie. É exatamente essa a intenção.</div>
+  </div>
+</section>
+
+<!-- 5. SINAIS -->
+<section class="step" data-titulo="Sinais de alerta" data-trava="sinais">
+  <div class="card">
+    <span class="eyebrow">Os 6 sinais de alerta</span>
+    <h2>Toque em cada cartão para descobrir o sinal</h2>
+    <p class="muted" id="sinaisInfo">0 de 6 cartões abertos</p>
+    <div class="sinais">
+      <button class="sinal"><div class="sinal-in"><div class="face frente"><div class="ico">📧</div><h3>Remetente estranho</h3><small>Toque para ver →</small></div><div class="face verso"><p>O nome parece certo, mas o <b>endereço</b> não: <b>suporte@micr0soft-login.com</b>, um Gmail se passando pelo diretor, uma letra trocada.</p></div></div></button>
+      <button class="sinal"><div class="sinal-in"><div class="face frente"><div class="ico">⏰</div><h3>Urgência ou ameaça</h3><small>Toque para ver →</small></div><div class="face verso"><p>"Sua conta será <b>bloqueada em 24h</b>", "último aviso", "pagamento atrasado". A pressa é proposital para você não pensar.</p></div></div></button>
+      <button class="sinal"><div class="sinal-in"><div class="face frente"><div class="ico">🔗</div><h3>Link que não bate</h3><small>Toque para ver →</small></div><div class="face verso"><p>O texto do link diz uma coisa e o endereço real é outro. <b>Passe o mouse</b> (ou segure o dedo) antes de clicar.</p></div></div></button>
+      <button class="sinal"><div class="sinal-in"><div class="face frente"><div class="ico">🔑</div><h3>Pede senha ou dados</h3><small>Toque para ver →</small></div><div class="face verso"><p>Nenhum banco, nenhuma TI séria pede <b>senha, código de verificação ou dados de cartão</b> por e-mail ou mensagem.</p></div></div></button>
+      <button class="sinal"><div class="sinal-in"><div class="face frente"><div class="ico">📎</div><h3>Anexo inesperado</h3><small>Toque para ver →</small></div><div class="face verso"><p>Arquivos que você não esperava, principalmente <b>.zip, .html, .exe</b> ou documentos que pedem para "habilitar conteúdo".</p></div></div></button>
+      <button class="sinal"><div class="sinal-in"><div class="face frente"><div class="ico">✍️</div><h3>Tom genérico e erros</h3><small>Toque para ver →</small></div><div class="face verso"><p>"Prezado cliente", "caro usuário", erros de português, logotipo meio torto. Quem te conhece te chama <b>pelo nome</b>.</p></div></div></button>
+    </div>
+  </div>
+</section>
+
+<!-- 6. ACHE OS SINAIS -->
+<section class="step" data-titulo="Ache os sinais" data-trava="email" data-tag="prática">
+  <div class="card">
+    <span class="eyebrow">Atividade 1 · Investigue</span>
+    <h2>Este e-mail é falso. Encontre os 6 sinais.</h2>
+    <p class="muted">Clique nas partes do e-mail que denunciam o golpe.</p>
+    <div class="grid-email">
+      <div class="email" id="emailFalso">
+        <div class="email-top">
+          <div class="assunto"><span class="flag" data-f="1">⚠️ URGENTE: sua conta será bloqueada em 24 horas</span></div>
+          <div><b>Suporte de E-mail</b> <span class="flag" data-f="0">&lt;suporte@empresa-webmail-seguranca.com&gt;</span></div>
+          <div class="muted">para mim · 08:42</div>
+        </div>
+        <div class="email-body">
+          <p><span class="flag" data-f="2">Prezado usuário,</span></p>
+          <p>Detectamos atividades incomuns em sua caixa postal. Para evitar o bloqueio definitivo, é necessário validar seus dados imediatamente.</p>
+          <p><span class="flag" data-f="3">Clique no botão abaixo e informe sua senha atual para confirmar</span> que você é o titular da conta.</p>
+          <span class="flag botao-falso" data-f="4" title="http://empresa-webmail-verificacao.xyz/login">Verificar minha conta</span>
+          <p>Caso não seja feito a <span class="flag" data-f="5">atualizaçao</span>, sua conta e todos os arquivos serão excluidos.</p>
+          <p class="muted" style="font-size:13px">Atenciosamente,<br>Equipe de Suporte</p>
+          <div class="anexo">📎 <span class="flag" data-f="6">Formulario_Validacao.html</span> <span class="muted">12 KB</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="placar"><span id="achadosN">0</span> / 6 <span class="muted" style="font-size:14px;font-weight:500">(+1 bônus)</span></div>
+        <p class="muted" style="margin-top:-4px">sinais encontrados</p>
+        <ul class="achados" id="achadosLista"></ul>
+        <button class="btn btn-sec" id="revelar" style="margin-top:14px;display:none">Mostrar o que faltou</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. LINKS -->
+<section class="step" data-titulo="Leia o link" data-trava="links" data-tag="prática">
+  <div class="card">
+    <span class="eyebrow">Atividade 2 · Leia o link</span>
+    <h2>O truque que desmonta metade dos golpes</h2>
+    <p>O que importa num endereço é o <b>domínio</b>: as palavras que vêm <b>logo antes da primeira barra "/"</b>. Tudo que vem antes dele pode ser enfeite para te enganar.</p>
+    <div class="url-box">https://bancohorizonte.com.br.<span class="dom">acesso-seguro.net</span>/login</div>
+    <p class="muted" style="margin-top:-4px">Parece o Banco Horizonte, mas o site de verdade é <b>acesso-seguro.net</b>.</p>
+    <h3 style="margin-top:24px">Sua vez: qual destes links leva de verdade ao site do Banco Horizonte?</h3>
+    <div class="opcoes" id="opcoesLink">
+      <button class="opcao" data-c="0">https://bancohorizonte.com.br.atendimento-online.net/entrar</button>
+      <button class="opcao" data-c="0">https://bancohorizonte-com-br.online/login</button>
+      <button class="opcao" data-c="1">https://www.bancohorizonte.com.br/conta/login</button>
+      <button class="opcao" data-c="0">https://www.bancohorlzonte.com.br/login</button>
+    </div>
+    <div class="feedback" id="fbLink"></div>
+  </div>
+</section>
+
+<!-- 8. CAIXA DE ENTRADA -->
+<section class="step" data-titulo="Caixa de entrada" data-trava="inbox" data-tag="prática">
+  <div class="card">
+    <span class="eyebrow">Atividade 3 · Simulação</span>
+    <h2>Segunda de manhã: limpe sua caixa de entrada</h2>
+    <p class="muted">Abra cada e-mail e decida: é golpe ou é legítimo?</p>
+    <div class="inbox">
+      <div class="lista">
+        <div class="lista-top"><span>Caixa de entrada</span><span id="inboxPlacar" class="muted">0 / 6</span></div>
+        <div id="inboxLista"></div>
+      </div>
+      <div class="leitura" id="leitura"><div class="vazio">📬<br>Selecione um e-mail para ler</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. OUTRAS ISCAS -->
+<section class="step" data-titulo="Outras iscas">
+  <div class="card">
+    <span class="eyebrow">Não é só e-mail</span>
+    <h2>A mesma isca chega por SMS, WhatsApp e telefone</h2>
+    <p class="muted">Os sinais de alerta são os mesmos. Só muda o canal.</p>
+    <div class="celulares">
+      <div>
+        <div class="cel"><div class="tela">
+          <div class="tela-top"><div class="av">📦</div>+55 11 9xxxx-4021</div>
+          <div class="msgs">
+            <div class="msg">TransLog: sua encomenda está retida por falta de pagamento da taxa de R$ 4,90.</div>
+            <div class="msg">Regularize em até 2h para evitar devolução: <a>translog-entregas.top/taxa</a></div>
+          </div>
+        </div></div>
+        <div class="cel-legenda"><b>SMS falso</b><span>Taxa pequena, prazo curto e link estranho.</span></div>
+      </div>
+      <div>
+        <div class="cel"><div class="tela">
+          <div class="tela-top"><div class="av">CM</div>Carlos Mendes (Diretor)</div>
+          <div class="msgs">
+            <div class="msg">Oi, troquei de número. Salva esse aqui.</div>
+            <div class="msg">Estou numa reunião e não consigo falar. Preciso que você faça um Pix urgente para um fornecedor, depois te explico.</div>
+            <div class="msg eu">Claro, qual valor?</div>
+            <div class="msg">R$ 8.700. É sigiloso, não comente com ninguém por enquanto.</div>
+          </div>
+        </div></div>
+        <div class="cel-legenda"><b>Golpe do "chefe com número novo"</b><span>Confirme sempre por outro canal: ligue para o número antigo.</span></div>
+      </div>
+      <div>
+        <div class="cel"><div class="tela" style="background:#0f1f3d">
+          <div class="tela-top" style="background:#0b1730"><div class="av">📞</div>Chamada recebida</div>
+          <div class="msgs" style="justify-content:center;align-items:center;text-align:center;color:#fff">
+            <div style="font-size:50px">☎️</div>
+            <div style="font-weight:700;font-size:16px">"Aqui é do suporte de TI"</div>
+            <div class="msg" style="color:var(--ink)">Vamos atualizar seu computador. Vou te mandar um código no celular, é só me dizer qual chegou.</div>
+          </div>
+        </div></div>
+        <div class="cel-legenda"><b>Ligação falsa</b><span>Nunca passe código de verificação para ninguém. Nem para a TI.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. CAÍ NO GOLPE -->
+<section class="step" data-titulo="Caí no golpe">
+  <div class="card">
+    <div class="grid2" style="align-items:start">
+      <div>
+        <span class="eyebrow">Plano de ação</span>
+        <h2>Cliquei. E agora?</h2>
+        <p>Acontece com qualquer pessoa. O que faz diferença é a <b>velocidade</b>: avisar em 5 minutos pode evitar um prejuízo enorme. Ninguém vai ser punido por avisar.</p>
+        <ol class="reacao">
+          <li><div><b>Avise a TI imediatamente</b><br><span class="muted">Conte exatamente o que clicou, digitou ou baixou.</span></div></li>
+          <li><div><b>Troque a senha</b><br><span class="muted">Se digitou a senha em algum lugar, troque já, em todos os sistemas onde ela é repetida.</span></div></li>
+          <li><div><b>Desconecte da rede se baixou algo</b><br><span class="muted">Tire o cabo ou desligue o Wi-Fi e espere a orientação da TI.</span></div></li>
+          <li><div><b>Guarde a mensagem</b><br><span class="muted">Ela ajuda a TI a bloquear o golpe para todos os colegas.</span></div></li>
+        </ol>
+      </div>
+      <div>
+        <h3 style="margin-top:8px">O que <span style="color:var(--coral)">não</span> fazer</h3>
+        <ol class="reacao nao">
+          <li><div><b>Não apague e finja que nada aconteceu</b><br><span class="muted">O golpista continua com o acesso enquanto ninguém sabe.</span></div></li>
+          <li><div><b>Não responda ao golpista</b><br><span class="muted">Isso confirma que seu endereço está ativo.</span></div></li>
+          <li><div><b>Não encaminhe para colegas "para ver se é golpe"</b><br><span class="muted">Mande só para a TI.</span></div></li>
+        </ol>
+        <div class="alerta">📞 <b>Contato da TI:</b> {{CONTATO_TI}}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11. QUIZ -->
+<section class="step" data-titulo="Quiz" data-trava="quiz" data-tag="quiz">
+  <div class="card" id="quiz"></div>
+</section>
+
+<!-- 12. FIM -->
+<section class="step" data-titulo="Conclusão">
+  <div class="fim" id="fim"></div>
+</section>
+
+</main>
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <button class="btn btn-sec" id="ant">← Voltar</button>
+    <span class="dica" id="dica"></span>
+    <button class="btn btn-pri" id="prox">Próximo →</button>
+  </div>
+</nav>
+
+<script src="curso.js"></script>
+<script>
+criaFilme([
+  'Segunda-feira, 8h42. Ana chega ao trabalho e vê um e-mail urgente.',
+  'O e-mail diz que a conta dela será bloqueada. Com pressa, ela clica no botão.',
+  'A página é idêntica à de sempre. Ana digita a senha… mas repare no endereço.',
+  'Do outro lado, o golpista recebe a senha na mesma hora.',
+  'Com o e-mail da Ana, ele engana colegas, clientes e fornecedores. Agora a mensagem vem de alguém confiável.',
+  'Tudo isso poderia ter sido evitado com 5 segundos de atenção. É o que você vai aprender agora.'
+], 'audio/ana');
+
+/* ---------- Linha do tempo ---------- */
+function animaLinha(){
+  const e = [...document.querySelectorAll('#linha .etapa')];
+  e.forEach(x=>x.classList.remove('on'));
+  e.forEach((x,i)=>setTimeout(()=>x.classList.add('on'), 400+i*700));
+}
+
+/* ---------- Cartões de sinais ---------- */
+const cartoes = [...document.querySelectorAll('.sinal')];
+cartoes.forEach(c=>c.onclick=()=>{
+  c.classList.toggle('virado'); c.dataset.visto='1';
+  const n = cartoes.filter(x=>x.dataset.visto).length;
+  document.getElementById('sinaisInfo').textContent = `${n} de 6 cartões abertos`;
+  if (n===6) libera('sinais');
+});
+
+/* ---------- E-mail com sinais ---------- */
+const explic = {
+  0:['Endereço do remetente','O nome diz "Suporte", mas o domínio é empresa-webmail-seguranca.com, que não é o da empresa.'],
+  1:['Urgência e ameaça','"Bloqueada em 24 horas" serve para você agir sem pensar.'],
+  2:['Saudação genérica','Seu suporte de TI sabe o seu nome.'],
+  3:['Pede a senha','Nenhuma equipe de TI pede sua senha. Nunca.'],
+  4:['Link escondido','Passe o mouse no botão: ele leva para empresa-webmail-verificacao.xyz.'],
+  5:['Erros de português','"atualizaçao" sem til e "excluidos" sem acento. Comunicação oficial costuma ser revisada.'],
+  6:['Anexo perigoso','Arquivo .html anexado costuma abrir uma página falsa de login.']
+};
+// o enunciado fala em 6 sinais; o 7º (anexo) conta como bônus para quem achar
+const META=6; const achados=new Set(); let errosClique=0;
+function desenhaAchados(){
+  const ul=document.getElementById('achadosLista'); ul.innerHTML='';
+  Object.keys(explic).forEach(k=>{
+    const ok=achados.has(+k), li=document.createElement('li');
+    if (ok) li.className='ok';
+    li.innerHTML = `<span class="bola">${ok?'!':'?'}</span><span>${ok?`<b>${explic[k][0]}</b><br>${explic[k][1]}`:'Sinal escondido'}</span>`;
+    ul.appendChild(li);
+  });
+  document.getElementById('achadosN').textContent=Math.min(achados.size,7);
+  if (achados.size>=META) libera('email');
+}
+document.querySelectorAll('#emailFalso .flag').forEach(f=>f.onclick=e=>{
+  e.stopPropagation(); f.classList.add('achou'); achados.add(+f.dataset.f); desenhaAchados();
+});
+document.getElementById('emailFalso').onclick=()=>{
+  const el=document.getElementById('emailFalso'); el.classList.remove('erro-clique'); void el.offsetWidth; el.classList.add('erro-clique');
+  if (++errosClique>=3) document.getElementById('revelar').style.display='inline-block';
+};
+document.getElementById('revelar').onclick=()=>{
+  document.querySelectorAll('#emailFalso .flag').forEach(f=>{f.classList.add('achou'); achados.add(+f.dataset.f);});
+  desenhaAchados();
+};
+desenhaAchados();
+setTimeout(()=>{ if(!feitos.has('email')) document.getElementById('revelar').style.display='inline-block'; }, 90000);
+
+/* ---------- Links ---------- */
+document.querySelectorAll('#opcoesLink .opcao').forEach(o=>o.onclick=()=>{
+  const fb=document.getElementById('fbLink');
+  if (o.dataset.c==='1'){
+    o.classList.add('certa'); fb.className='feedback show bom';
+    fb.innerHTML='<b>Isso!</b> O domínio é <b>bancohorizonte.com.br</b>, logo antes da primeira barra. As outras opções: um site "atendimento-online.net" disfarçado, um domínio .online com hifens e um "horlzonte" com L no lugar do I.';
+    libera('links');
+  } else {
+    o.classList.add('errada'); fb.className='feedback show ruim';
+    fb.innerHTML='<b>Cuidado:</b> leia o que vem imediatamente antes da primeira barra "/". Esse não é o domínio do banco. Tente de novo.';
+  }
+});
+
+/* ---------- Caixa de entrada ---------- */
+const emails = [
+  {de:'TransLog Entregas', end:'rastreio@translog-entregas.top', hora:'07:58', as:'Sua encomenda está retida: pague a taxa de R$ 4,90',
+   corpo:'<p>Olá,</p><p>Sua encomenda <b>BR8834192</b> não pôde ser entregue por falta de pagamento da taxa de importação.</p><p>Regularize em até <b>2 horas</b> para evitar a devolução ao remetente:</p><p><a href="#" onclick="return false" title="http://translog-entregas.top/pagar">Pagar taxa agora</a></p>',
+   golpe:true, porque:'Domínio .top estranho, prazo de 2 horas e cobrança de uma encomenda que você não lembra de ter pedido.'},
+  {de:'RH', end:'rh@empresa.com.br', hora:'08:10', as:'Calendário de férias 2027 disponível na intranet',
+   corpo:'<p>Bom dia, pessoal!</p><p>O calendário de férias de 2027 já está publicado na intranet, em <b>RH › Férias</b>. Combinem os períodos com seus gestores até 30/11.</p><p>Qualquer dúvida, falem com a gente no ramal 2040.</p><p>Equipe de RH</p>',
+   golpe:false, porque:'Remetente com o domínio da empresa, nenhum link, nenhum pedido de dados e orientação para acessar pela intranet, que você já conhece.'},
+  {de:'Carlos Mendes', end:'carlos.mendes.diretoria@gmail.com', hora:'08:21', as:'Preciso de um favor urgente e sigiloso',
+   corpo:'<p>Oi, tudo bem?</p><p>Estou em reunião com um cliente e preciso que você compre <b>5 cartões-presente de R$ 500</b> para fecharmos um acordo hoje. Te reembolso amanhã.</p><p>Por favor, não comente com ninguém por enquanto. Me mande os códigos por aqui assim que comprar.</p><p>Carlos<br><span style="color:#5b6478;font-size:13px">Enviado do meu celular</span></p>',
+   golpe:true, porque:'Diretor usando Gmail pessoal, pedido de cartões-presente, urgência e sigilo. É o clássico "golpe do CEO". Confirme por telefone.'},
+  {de:'Banco Horizonte', end:'avisos@bancohorizonte.com.br', hora:'08:35', as:'Sua fatura de outubro está disponível',
+   corpo:'<p>Olá, Ana.</p><p>A fatura do seu cartão final <b>4417</b> com vencimento em 10/11 já está disponível.</p><p>Para consultar, acesse o <b>aplicativo do Banco Horizonte</b> ou digite bancohorizonte.com.br no navegador.</p><p style="color:#5b6478;font-size:13px">O Banco Horizonte nunca pede senhas ou códigos por e-mail.</p>',
+   golpe:false, porque:'Domínio correto, chama pelo nome, mostra só o final do cartão e manda você acessar pelo app, sem link para clicar.'},
+  {de:'Assinatura Digital', end:'docs@docsign-online.top', hora:'09:02', as:'Você tem 1 documento aguardando assinatura',
+   corpo:'<p>Um documento foi compartilhado com você para assinatura eletrônica:</p><p>📄 <b>Contrato_Revisado_Final.pdf</b></p><p><a href="#" onclick="return false" title="http://docsign-online.top/view?id=8812">Revisar e assinar documento</a></p><p style="color:#5b6478;font-size:13px">Este link expira em 12 horas.</p>',
+   golpe:true, porque:'Você não esperava nenhum contrato, não diz quem enviou, domínio .top e prazo para expirar. Golpe muito comum para roubar senha.'},
+  {de:'Suporte TI', end:'suporte.ti@empresa.com.br', hora:'09:15', as:'Manutenção programada no sábado, 22h',
+   corpo:'<p>Olá,</p><p>No sábado, das <b>22h às 2h</b>, faremos manutenção no servidor de arquivos. Nesse período as pastas da rede ficarão indisponíveis.</p><p>Nenhuma ação é necessária da sua parte.</p><p>Equipe de Suporte</p>',
+   golpe:false, porque:'Remetente conhecido, informativo, sem links, sem anexos e sem pedir nenhuma ação.'}
+];
+const resp = {};
+function desenhaLista(sel){
+  const box=document.getElementById('inboxLista'); box.innerHTML='';
+  emails.forEach((m,i)=>{
+    const b=document.createElement('button'); b.className='item'+(i===sel?' sel':'');
+    let st='';
+    if (i in resp) st = resp[i] ? '<span class="st" style="color:var(--green)">✔ acertou</span>' : '<span class="st" style="color:var(--coral)">✘ errou</span>';
+    b.innerHTML=`<div class="de"><span>${m.de}</span>${st||`<span class="muted" style="font-weight:400;font-size:12px">${m.hora}</span>`}</div><div class="as">${m.as}</div>`;
+    b.onclick=()=>abre(i); box.appendChild(b);
+  });
+  const n=Object.keys(resp).length, ac=Object.values(resp).filter(Boolean).length;
+  document.getElementById('inboxPlacar').textContent = n<6 ? `${n} / 6` : `${ac} de 6 certas`;
+  if (n===6) libera('inbox');
+}
+function abre(i){
+  const m=emails[i]; desenhaLista(i);
+  const l=document.getElementById('leitura');
+  let fim='';
+  if (i in resp){
+    fim=`<div class="feedback show ${resp[i]?'bom':'ruim'}"><b>${m.golpe?'É golpe.':'É legítimo.'}</b> ${m.porque}</div>`;
+  } else {
+    fim=`<div class="acoes"><button class="btn btn-golpe" onclick="classifica(${i},true)">🚩 É golpe</button><button class="btn btn-legit" onclick="classifica(${i},false)">✔ É legítimo</button></div>`;
+  }
+  l.innerHTML=`<h3>${m.as}</h3><div class="remet"><b>${m.de}</b> &lt;${m.end}&gt; · ${m.hora}</div><div>${m.corpo}</div>${fim}`;
+  if (window.innerWidth<820) l.scrollIntoView({behavior:'smooth'});
+}
+function classifica(i,g){ resp[i] = (g===emails[i].golpe); abre(i); }
+desenhaLista(-1);
+
+/* ---------- Celulares ---------- */
+function animaCelulares(){
+  document.querySelectorAll('.cel').forEach(c=>{
+    const ms=[...c.querySelectorAll('.msg')]; ms.forEach(m=>m.classList.remove('on'));
+    ms.forEach((m,i)=>setTimeout(()=>m.classList.add('on'), 500+i*1100));
+  });
+}
+
+/* ---------- Quiz ---------- */
+criaQuiz({id:'phishing', proximo:{titulo:'Senhas e verificação em duas etapas', url:'modulo-3-senhas.html'}});
+
+iniciaCurso({
+  dicas:{
+    sinais:'Abra os 6 cartões para continuar',
+    email:'Encontre os 6 sinais (ou peça para revelar)',
+    links:'Escolha a resposta certa para continuar',
+    inbox:'Classifique os 6 e-mails para continuar',
+    quiz:'Responda o quiz para concluir'
+  },
+  aoEntrar:{'Como acontece':animaLinha, 'Outras iscas':animaCelulares, 'Conclusão':mostraFim}
+});
+</script>
+</body>
+</html>

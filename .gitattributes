@@ -1,0 +1,5 @@
+# Scripts executados no servidor Linux precisam de fim de linha LF,
+# mesmo quando editados no Windows.
+*.sh text eol=lf
+Dockerfile text eol=lf
+docker-compose*.yml text eol=lf

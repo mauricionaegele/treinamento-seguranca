@@ -1,0 +1,190 @@
+"use server";
+
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
+import { z } from "zod";
+import { prisma } from "@/lib/prisma";
+import { exigirAdmin, podeVerCliente } from "@/lib/sessao";
+import { normalizaEmail } from "@/lib/seguranca";
+import { lerPlanilha, lerTextoColado } from "@/lib/importacao";
+import { enviarLembrete } from "@/lib/email";
+
+async function exigirBroadcast() {
+  const s = await exigirAdmin();
+  if (s.admin.papel !== "ADMIN") redirect("/admin");
+  return s;
+}
+
+function texto(form: FormData, campo: string) {
+  return String(form.get(campo) ?? "").trim();
+}
+
+const DadosCliente = z.object({
+  nome: z.string().min(2, "Informe o nome do cliente"),
+  contatoTi: z.string().max(300),
+  cicloAtual: z.coerce.number().int().min(2020).max(2100),
+  prazo: z.string(),
+  notaMinima: z.coerce.number().int().min(0).max(100),
+  maxTentativas: z.coerce.number().int().min(1).max(20),
+  validadeMeses: z.coerce.number().int().min(1).max(60),
+});
+
+export async function salvarCliente(form: FormData) {
+  await exigirBroadcast();
+  const id = texto(form, "id");
+  const d = DadosCliente.safeParse(Object.fromEntries(form));
+  if (!d.success) redirect(`${id ? `/admin/clientes/${id}/editar` : "/admin/clientes/novo"}?erro=${encodeURIComponent(d.error.issues[0].message)}`);
+  const dados = {
+    nome: d.data.nome,
+    contatoTi: d.data.contatoTi,
+    cicloAtual: d.data.cicloAtual,
+    prazo: d.data.prazo ? new Date(`${d.data.prazo}T12:00:00Z`) : null,
+    notaMinima: d.data.notaMinima,
+    maxTentativas: d.data.maxTentativas,
+    validadeMeses: d.data.validadeMeses,
+    exigeProvaFinal: form.get("exigeProvaFinal") === "on",
+  };
+  const cliente = id
+    ? await prisma.cliente.update({ where: { id }, data: dados })
+    : await prisma.cliente.create({ data: dados });
+  redirect(`/admin/clientes/${cliente.id}?msg=${encodeURIComponent("Dados do cliente salvos.")}`);
+}
+
+export async function importarColaboradores(form: FormData) {
+  await exigirBroadcast();
+  const clienteId = texto(form, "clienteId");
+  const arquivo = form.get("arquivo");
+  const colado = texto(form, "colado");
+
+  let resultado: Awaited<ReturnType<typeof lerPlanilha>>;
+  if (arquivo instanceof File && arquivo.size > 0) {
+    if (arquivo.size > 5 * 1024 * 1024) redirect(`/admin/clientes/${clienteId}/importar?erro=${encodeURIComponent("Arquivo maior que 5 MB.")}`);
+    resultado = await lerPlanilha(arquivo.name, await arquivo.arrayBuffer());
+  } else if (colado) {
+    resultado = lerTextoColado(colado);
+  } else {
+    redirect(`/admin/clientes/${clienteId}/importar?erro=${encodeURIComponent("Escolha um arquivo ou cole a lista.")}`);
+  }
+
+  let novos = 0, atualizados = 0;
+  const conflitos: string[] = [];
+  for (const r of resultado.registros) {
+    const existente = await prisma.colaborador.findUnique({ where: { email: r.email } });
+    if (existente && existente.clienteId !== clienteId) {
+      conflitos.push(`${r.email} já está cadastrado em outro cliente.`);
+      continue;
+    }
+    if (existente) {
+      await prisma.colaborador.update({ where: { id: existente.id }, data: { nome: r.nome, setor: r.setor, gerente: r.gerente, ativo: true } });
+      atualizados++;
+    } else {
+      await prisma.colaborador.create({ data: { clienteId, ...r } });
+      novos++;
+    }
+  }
+  const avisos = [...resultado.erros, ...conflitos];
+  const msg = `${novos} colaborador(es) novo(s), ${atualizados} atualizado(s).` + (avisos.length ? ` ${avisos.length} linha(s) ignorada(s).` : "");
+  const qs = new URLSearchParams({ msg });
+  if (avisos.length) qs.set("avisos", avisos.slice(0, 20).join("\n"));
+  redirect(`/admin/clientes/${clienteId}/importar?${qs}`);
+}
+
+export async function adicionarColaborador(form: FormData) {
+  await exigirBroadcast();
+  const clienteId = texto(form, "clienteId");
+  const email = normalizaEmail(texto(form, "email"));
+  const nome = texto(form, "nome");
+  if (!nome || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) redirect(`/admin/clientes/${clienteId}/importar?erro=${encodeURIComponent("Informe nome e e-mail válidos.")}`);
+  const existente = await prisma.colaborador.findUnique({ where: { email } });
+  if (existente && existente.clienteId !== clienteId) redirect(`/admin/clientes/${clienteId}/importar?erro=${encodeURIComponent("Este e-mail já está em outro cliente.")}`);
+  await prisma.colaborador.upsert({
+    where: { email },
+    create: { clienteId, nome, email, setor: texto(form, "setor"), gerente: texto(form, "gerente") },
+    update: { nome, setor: texto(form, "setor"), gerente: texto(form, "gerente"), ativo: true },
+  });
+  redirect(`/admin/clientes/${clienteId}/importar?msg=${encodeURIComponent(`${nome} adicionado(a).`)}`);
+}
+
+export async function desativarColaborador(form: FormData) {
+  await exigirBroadcast();
+  const id = texto(form, "id");
+  const c = await prisma.colaborador.update({ where: { id }, data: { ativo: false } });
+  await prisma.sessao.deleteMany({ where: { colaboradorId: id } });
+  revalidatePath(`/admin/clientes/${c.clienteId}`);
+}
+
+/** Libera mais uma tentativa da prova apagando a última tentativa reprovada. */
+export async function liberarTentativa(form: FormData) {
+  const { admin } = await exigirAdmin();
+  const id = texto(form, "id");
+  const c = await prisma.colaborador.findUniqueOrThrow({ where: { id }, include: { cliente: true } });
+  if (!podeVerCliente(admin, c.clienteId) || admin.papel !== "ADMIN") redirect("/admin");
+  const ultima = await prisma.tentativaProva.findFirst({
+    where: { colaboradorId: id, ciclo: c.cliente.cicloAtual, aprovado: false },
+    orderBy: { finalizadaEm: "desc" },
+  });
+  if (ultima) {
+    await prisma.tentativaProva.delete({ where: { id: ultima.id } });
+    await prisma.registroAcesso.create({ data: { colaboradorId: id, email: c.email, evento: "tentativa_liberada", detalhe: `por:${admin.email}` } });
+  }
+  revalidatePath(`/admin/clientes/${c.clienteId}`);
+}
+
+export async function enviarLembretes(form: FormData) {
+  const { admin } = await exigirAdmin();
+  const clienteId = texto(form, "clienteId");
+  if (!podeVerCliente(admin, clienteId)) redirect("/admin");
+  const cliente = await prisma.cliente.findUniqueOrThrow({ where: { id: clienteId } });
+  const pendentes = await prisma.colaborador.findMany({
+    where: { clienteId, ativo: true, certificados: { none: { ciclo: cliente.cicloAtual } } },
+  });
+  let enviados = 0;
+  for (const p of pendentes) {
+    try {
+      await enviarLembrete(p.email, p.nome, cliente.prazo);
+      await prisma.lembrete.create({ data: { colaboradorId: p.id } });
+      enviados++;
+    } catch (e) {
+      console.error("Falha ao enviar lembrete para", p.email, e);
+    }
+  }
+  redirect(`/admin/clientes/${clienteId}?msg=${encodeURIComponent(`Lembrete enviado para ${enviados} de ${pendentes.length} pendente(s).`)}`);
+}
+
+export async function iniciarNovoCiclo(form: FormData) {
+  await exigirBroadcast();
+  const clienteId = texto(form, "clienteId");
+  const confirmacao = texto(form, "confirmacao");
+  const cliente = await prisma.cliente.findUniqueOrThrow({ where: { id: clienteId } });
+  const novo = cliente.cicloAtual + 1;
+  if (confirmacao !== String(novo)) {
+    redirect(`/admin/clientes/${clienteId}/editar?erro=${encodeURIComponent(`Para confirmar, digite ${novo}.`)}`);
+  }
+  await prisma.cliente.update({ where: { id: clienteId }, data: { cicloAtual: novo, prazo: null } });
+  redirect(`/admin/clientes/${clienteId}?msg=${encodeURIComponent(`Ciclo ${novo} iniciado. O histórico de ${cliente.cicloAtual} continua guardado.`)}`);
+}
+
+export async function salvarUsuario(form: FormData) {
+  await exigirBroadcast();
+  const email = normalizaEmail(texto(form, "email"));
+  const nome = texto(form, "nome");
+  const papel = texto(form, "papel") === "GERENTE" ? "GERENTE" : "ADMIN";
+  const clienteId = papel === "GERENTE" ? texto(form, "clienteId") || null : null;
+  if (!nome || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) redirect(`/admin/usuarios?erro=${encodeURIComponent("Informe nome e e-mail válidos.")}`);
+  if (papel === "GERENTE" && !clienteId) redirect(`/admin/usuarios?erro=${encodeURIComponent("Escolha o cliente do gestor.")}`);
+  await prisma.usuarioAdmin.upsert({
+    where: { email },
+    create: { nome, email, papel, clienteId },
+    update: { nome, papel, clienteId, ativo: true },
+  });
+  redirect(`/admin/usuarios?msg=${encodeURIComponent(`${nome} pode acessar a área administrativa.`)}`);
+}
+
+export async function desativarUsuario(form: FormData) {
+  const { admin } = await exigirBroadcast();
+  const id = texto(form, "id");
+  if (id === admin.id) redirect(`/admin/usuarios?erro=${encodeURIComponent("Você não pode desativar o próprio acesso.")}`);
+  await prisma.usuarioAdmin.update({ where: { id }, data: { ativo: false } });
+  await prisma.sessao.deleteMany({ where: { adminId: id } });
+  revalidatePath("/admin/usuarios");
+}

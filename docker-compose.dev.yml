@@ -1,0 +1,17 @@
+# Banco de desenvolvimento (porta 5437 no computador local)
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: treinamento-postgres-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: treinamento
+      POSTGRES_PASSWORD: treinamento_dev
+      POSTGRES_DB: treinamento
+    ports:
+      - "5437:5432"
+    volumes:
+      - pgdata_dev:/var/lib/postgresql/data
+
+volumes:
+  pgdata_dev:

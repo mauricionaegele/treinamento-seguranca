@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Senhas e duas etapas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="curso.css">
+<style>
+/* Medidor de senha */
+.medidor{background:#0b1730;border-radius:16px;padding:22px;color:#cfd8ea;margin-top:16px}
+.campo{display:flex;gap:10px}
+.campo input{flex:1;min-width:0;font:inherit;font-size:20px;padding:14px 16px;border-radius:12px;border:2px solid #26406f;background:#132447;color:#fff;font-family:ui-monospace,Consolas,monospace}
+.campo input:focus{outline:none;border-color:var(--teal)}
+.campo button{background:#26406f;color:#fff;border:0;border-radius:12px;padding:0 16px}
+.forca{height:10px;border-radius:99px;background:#1b3160;margin:16px 0 10px;overflow:hidden}
+.forca div{height:100%;width:0;border-radius:99px;transition:width .4s, background .4s}
+.forca-txt{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:15px}
+.forca-txt b{font-size:18px}
+.tempo{font-size:clamp(22px,4vw,30px);font-weight:800;color:#fff;margin:6px 0}
+.dicas-senha{list-style:none;padding:0;margin:12px 0 0;font-size:14px}
+.dicas-senha li{padding:3px 0}
+.privado{font-size:12px;color:#7f8aa3;margin-top:10px}
+
+/* Gerador */
+.frase{font-family:ui-monospace,Consolas,monospace;font-size:clamp(20px,3.6vw,28px);font-weight:700;color:var(--navy);background:var(--teal-soft);border-radius:14px;padding:18px;text-align:center;margin:14px 0;word-break:break-all}
+
+/* Classificação de senhas */
+.senhas-lista{display:grid;gap:10px;margin-top:16px}
+.senha-item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+@media (max-width:600px){.senha-item{grid-template-columns:1fr}}
+.senha-item code{font-size:18px;font-weight:700;color:var(--navy)}
+.senha-item .bts{display:flex;gap:8px}
+.senha-item .bts button{border:2px solid var(--line);background:#fff;border-radius:10px;padding:8px 14px;font-weight:600}
+.senha-item .bts button:hover:not([disabled]){border-color:var(--teal)}
+.senha-item .feedback{grid-column:1/-1;margin-top:0}
+.senha-item.ok{border-color:var(--green)}
+.senha-item.nok{border-color:var(--coral)}
+
+/* Duas etapas */
+.fatores{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin:20px 0}
+@media (max-width:640px){.fatores{grid-template-columns:1fr}}
+.fator{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;text-align:center}
+.fator .ic{font-size:40px}
+.mais{font-size:32px;font-weight:800;color:var(--teal);text-align:center}
+.tipos2fa{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:720px){.tipos2fa{grid-template-columns:1fr}}
+.tipo{border:1px solid var(--line);border-radius:14px;padding:16px}
+.estrelas{color:var(--amber);letter-spacing:2px}
+
+/* Celular com notificação */
+.cel-push{max-width:280px;margin:0 auto}
+.push{background:#fff;border-radius:16px;padding:14px;margin:60px 12px 0;box-shadow:0 8px 24px rgba(0,0,0,.3);animation:desce .6s ease}
+@keyframes desce{from{transform:translateY(-30px);opacity:0}to{transform:none;opacity:1}}
+.push small{color:var(--muted)}
+.push .bts{display:flex;gap:8px;margin-top:10px}
+.push .bts span{flex:1;text-align:center;border-radius:8px;padding:8px;font-weight:700;font-size:13px}
+.cenario{display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:center;margin-top:16px}
+@media (max-width:760px){.cenario{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo" href="index.html">
+      <svg width="28" height="28" viewBox="0 0 28 28"><path d="M14 2 4 6v7c0 6.2 4.2 11.3 10 13 5.8-1.7 10-6.8 10-13V6L14 2z" fill="#13a89e"/><path d="m9.5 14 3.2 3.2 6-6.4" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Segurança em Dia
+    </a>
+    <button class="btn-menu" id="btnMenu">☰ Conteúdo</button>
+    <div class="mod-title">Módulo 3 · Senhas e verificação em duas etapas</div>
+    <div class="counter" id="contador"></div>
+  </div>
+  <div class="progress"><div id="barra"></div></div>
+</header>
+
+<div class="layout">
+<aside class="sumario" id="sumario">
+  <div class="sumario-top">
+    <b>Senhas e duas etapas</b>
+    <small id="sumPct">0% concluído</small>
+    <div class="sum-barra"><div id="sumBarra"></div></div>
+  </div>
+  <div id="sumLista"></div>
+</aside>
+<div class="veu" id="veu"></div>
+<main>
+
+<!-- 1. CAPA -->
+<section class="step" data-titulo="Capa">
+  <div class="capa grid2">
+    <div>
+      <span class="eyebrow">Módulo 3 de 7</span>
+      <h1>Senhas e<br>duas etapas</h1>
+      <p>Sua senha é a chave da sua conta e da empresa. Aprenda a criar senhas fortes que você consegue lembrar e a ligar a tranca extra que barra quase todas as invasões.</p>
+      <div class="meta"><span>⏱ 8 minutos</span><span>🎯 3 atividades práticas</span><span>📝 Quiz no final</span></div>
+      <button class="btn btn-pri" onclick="ir(1)">Começar módulo →</button>
+    </div>
+    <svg viewBox="0 0 400 320" aria-hidden="true">
+      <!-- cadeado grande -->
+      <g transform="translate(110 70)">
+        <path d="M40 90 v-34 a50 50 0 0 1 100 0 v34" stroke="#cfd8ea" stroke-width="18" fill="none"/>
+        <rect x="10" y="90" width="160" height="130" rx="22" fill="#13a89e"/>
+        <circle cx="90" cy="145" r="16" fill="#0f1f3d"/><rect x="84" y="150" width="12" height="34" rx="6" fill="#0f1f3d"/>
+      </g>
+      <!-- campo de senha -->
+      <g transform="translate(40 250)"><rect width="200" height="40" rx="10" fill="#fff"/>
+        <g fill="#0f1f3d"><circle cx="24" cy="20" r="6"/><circle cx="44" cy="20" r="6"/><circle cx="64" cy="20" r="6"/><circle cx="84" cy="20" r="6"/><circle cx="104" cy="20" r="6"/><circle cx="124" cy="20" r="6"/></g>
+        <rect x="140" y="10" width="2" height="20" fill="#13a89e" class="pisca"/></g>
+      <!-- celular com código -->
+      <g transform="translate(290 150)"><g class="flutua">
+        <rect width="80" height="140" rx="14" fill="#fff"/><rect x="8" y="16" width="64" height="108" rx="6" fill="#e2f6f4"/>
+        <text x="40" y="60" text-anchor="middle" font-size="11" font-weight="700" fill="#0f1f3d">Seu código</text>
+        <text x="40" y="84" text-anchor="middle" font-size="17" font-weight="800" fill="#13a89e" font-family="Consolas,monospace">482 913</text>
+      </g></g>
+    </svg>
+  </div>
+</section>
+
+<!-- 2. COMO DESCOBREM -->
+<section class="step" data-titulo="Como descobrem senhas">
+  <div class="card">
+    <span class="eyebrow">Do lado do criminoso</span>
+    <h2>Ninguém "adivinha" sua senha. Eles usam método.</h2>
+    <p class="muted">Conhecer os métodos mostra por que algumas regras existem.</p>
+    <div class="cards3" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+      <div class="mini"><div class="ico" style="background:var(--amber-soft)">🎂</div><h3>Dados pessoais</h3><p class="muted">Nome do filho, do pet, time, data de nascimento. Tudo isso está nas suas redes sociais.</p></div>
+      <div class="mini"><div class="ico" style="background:var(--coral-soft)">⚡</div><h3>Força bruta</h3><p class="muted">Computadores testam bilhões de combinações por segundo. Senha curta cai em minutos.</p></div>
+      <div class="mini"><div class="ico" style="background:#ede9fe">📂</div><h3>Vazamentos</h3><p class="muted">Sites são invadidos todo dia. Se você repete a senha, um vazamento abre todas as suas contas.</p></div>
+      <div class="mini"><div class="ico" style="background:var(--teal-soft)">🎣</div><h3>Phishing</h3><p class="muted">O jeito mais fácil: pedir. Páginas falsas fazem você digitar a senha de boa vontade.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. VÍDEO -->
+<section class="step" data-titulo="Vídeo">
+  <div class="card">
+    <span class="eyebrow">Vídeo · 40 segundos</span>
+    <h2>Uma senha repetida, todas as contas perdidas</h2>
+    <p class="muted">A história do Carlos e de um site de receitas.</p>
+    <div class="player">
+      <svg viewBox="0 0 640 330" id="filme">
+        <rect width="640" height="330" fill="#0b1730"/>
+        <!-- 1: mesma senha em tudo -->
+        <g class="cena">
+          <g transform="translate(320 70)"><circle r="30" fill="#f2c7a5"/><path d="M-30 -6 q30 -40 60 0 q-6 -24 -30 -26 q-24 2 -30 26z" fill="#3b2a20"/><rect x="-36" y="32" width="72" height="50" rx="24" fill="#13a89e"/></g>
+          <g font-size="13" font-weight="700" text-anchor="middle">
+            <g transform="translate(140 220)"><rect x="-80" y="-30" width="160" height="70" rx="12" fill="#1b3160"/><text y="-6" fill="#cfd8ea">📧 E-mail da empresa</text><text y="22" fill="#ffd166" font-family="Consolas,monospace">Carlos@1985</text></g>
+            <g transform="translate(320 220)"><rect x="-80" y="-30" width="160" height="70" rx="12" fill="#1b3160"/><text y="-6" fill="#cfd8ea">🏦 Banco</text><text y="22" fill="#ffd166" font-family="Consolas,monospace">Carlos@1985</text></g>
+            <g transform="translate(500 220)"><rect x="-80" y="-30" width="160" height="70" rx="12" fill="#1b3160"/><text y="-6" fill="#cfd8ea">🍰 Site de receitas</text><text y="22" fill="#ffd166" font-family="Consolas,monospace">Carlos@1985</text></g>
+          </g>
+        </g>
+        <!-- 2: site invadido -->
+        <g class="cena">
+          <rect x="190" y="50" width="260" height="200" rx="12" fill="#1b3160"/>
+          <text x="320" y="88" text-anchor="middle" font-size="16" font-weight="700" fill="#cfd8ea">🍰 receitasdavovo.net</text>
+          <text x="320" y="150" text-anchor="middle" font-size="44" data-anima="surge">💥</text>
+          <g font-family="Consolas,monospace" font-size="11" fill="#ffd166" data-anima="surge">
+            <text x="210" y="200">carlos@empresa.com.br : Carlos@1985</text>
+            <text x="210" y="218">maria.s@gmail.com : maria123</text>
+            <text x="210" y="236">joao.p@empresa.com.br : Flamengo10</text>
+          </g>
+          <text x="320" y="290" text-anchor="middle" font-size="13" fill="#ef5b4c" font-weight="700">2 milhões de senhas vazadas</text>
+        </g>
+        <!-- 3: teste automático -->
+        <g class="cena">
+          <rect x="60" y="80" width="200" height="150" rx="10" fill="#0e1a12" stroke="#22a06b"/>
+          <g font-family="Consolas,monospace" font-size="12" fill="#22a06b"><text x="76" y="110">&gt; testando...</text><text x="76" y="134">carlos@empresa.com.br</text><text x="76" y="158" fill="#ffd166">Carlos@1985</text><text x="76" y="190" class="pisca">█</text></g>
+          <g font-size="12" font-weight="700" text-anchor="middle" fill="#cfd8ea">
+            <g transform="translate(420 70)"><rect x="-70" y="-18" width="140" height="34" rx="8" fill="#1b3160"/><text y="4">Lojas online</text></g>
+            <g transform="translate(470 125)"><rect x="-70" y="-18" width="140" height="34" rx="8" fill="#1b3160"/><text y="4">Redes sociais</text></g>
+            <g transform="translate(420 180)"><rect x="-70" y="-18" width="140" height="34" rx="8" fill="#1b3160"/><text y="4">E-mail</text></g>
+            <g transform="translate(470 235)"><rect x="-70" y="-18" width="140" height="34" rx="8" fill="#1b3160"/><text y="4">Bancos</text></g>
+          </g>
+          <g stroke="#22a06b" stroke-width="2" stroke-dasharray="5 5"><line x1="260" y1="140" x2="350" y2="70"/><line x1="260" y1="150" x2="400" y2="125"/><line x1="260" y1="160" x2="350" y2="180"/><line x1="260" y1="170" x2="400" y2="235"/></g>
+        </g>
+        <!-- 4: entrou -->
+        <g class="cena">
+          <g font-size="16" font-weight="800" text-anchor="middle">
+            <g transform="translate(200 165)"><rect x="-120" y="-60" width="240" height="120" rx="14" fill="#7f1d1d"/><text y="-18" fill="#fecaca">📧 E-mail da empresa</text><text y="22" fill="#fff" font-size="24">ACESSO LIBERADO</text></g>
+            <g transform="translate(450 165)" data-anima="surge"><rect x="-120" y="-60" width="240" height="120" rx="14" fill="#7f1d1d"/><text y="-18" fill="#fecaca">🏦 Banco</text><text y="22" fill="#fff" font-size="24">ACESSO LIBERADO</text></g>
+          </g>
+        </g>
+        <!-- 5: duas etapas barrando -->
+        <g class="cena">
+          <rect x="70" y="90" width="230" height="150" rx="12" fill="#1b3160"/>
+          <text x="185" y="130" text-anchor="middle" font-size="13" fill="#cfd8ea">Senha: correta ✔</text>
+          <text x="185" y="165" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Digite o código enviado</text>
+          <text x="185" y="185" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">ao celular do Carlos</text>
+          <rect x="120" y="198" width="130" height="28" rx="6" fill="#0b1730"/><text x="185" y="218" text-anchor="middle" font-family="Consolas,monospace" fill="#7f8aa3">_ _ _ _ _ _</text>
+          <g transform="translate(470 165)" data-anima="surge">
+            <path d="M0 -90 l-76 30 v54 c0 48 32 86 76 100 c44 -14 76 -52 76 -100 v-54z" fill="#13a89e"/>
+            <path d="m-34 6 24 24 46 -50" stroke="#fff" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <text x="470" y="300" text-anchor="middle" font-size="16" font-weight="800" fill="#7ff0dd">BLOQUEADO</text>
+        </g>
+        <!-- 6: regra -->
+        <g class="cena">
+          <g font-size="17" font-weight="800" text-anchor="middle" fill="#fff">
+            <g transform="translate(190 160)"><circle r="70" fill="#1b3160"/><text y="-8" font-size="34">🔑🔑🔑</text><text y="30" font-size="14" fill="#7ff0dd">uma senha por lugar</text></g>
+            <text x="320" y="170" font-size="40" fill="#13a89e">+</text>
+            <g transform="translate(450 160)"><circle r="70" fill="#1b3160"/><text y="-4" font-size="40">📱</text><text y="30" font-size="14" fill="#7ff0dd">duas etapas ligadas</text></g>
+          </g>
+        </g>
+      </svg>
+      <button class="play-grande" id="playGrande" aria-label="Assistir"><span><svg width="34" height="34" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></span></button>
+      <div class="legenda" id="legenda"></div>
+      <div class="controles">
+        <button id="playBtn">▶ Assistir</button>
+        <div class="barra"><div id="filmeBarra"></div></div>
+        <button id="somBtn">🔊 Som ligado</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. MEDIDOR -->
+<section class="step" data-titulo="Teste uma senha" data-trava="medidor" data-tag="prática">
+  <div class="card">
+    <span class="eyebrow">Atividade 1 · Laboratório</span>
+    <h2>Quanto tempo um computador leva para quebrar?</h2>
+    <p>Digite senhas de exemplo e veja quanto tempo um ataque de força bruta levaria. Para continuar, chegue numa senha <b>forte</b>.</p>
+    <div class="medidor">
+      <div class="campo"><input id="senhaInput" type="text" placeholder="Digite uma senha de exemplo…" autocomplete="off" spellcheck="false"><button id="exemploBtn" title="Testar um exemplo">🎲 Exemplo</button></div>
+      <div class="forca"><div id="forcaBarra"></div></div>
+      <div class="forca-txt"><span>Força: <b id="forcaNivel">—</b></span><span id="forcaBits"></span></div>
+      <div style="margin-top:12px;font-size:14px">Tempo para quebrar:</div>
+      <div class="tempo" id="tempoQuebra">—</div>
+      <ul class="dicas-senha" id="dicasSenha"></ul>
+      <div class="privado">🔒 Nada do que você digita sai do seu navegador. Mesmo assim, não use uma senha real sua.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. FRASE-SENHA -->
+<section class="step" data-titulo="O truque da frase-senha">
+  <div class="card">
+    <div class="grid2" style="align-items:start">
+      <div>
+        <span class="eyebrow">Forte e fácil de lembrar</span>
+        <h2>Use uma frase, não uma palavra</h2>
+        <p>Senhas como <code>Tm#8kL!pQ2</code> são fortes, mas ninguém lembra. O truque é juntar <b>4 palavras aleatórias</b> que não tenham relação entre si. Cada palavra a mais multiplica o trabalho do criminoso.</p>
+        <p>Crie uma imagem mental absurda para memorizar: <i>uma girafa comendo pipoca em Marte debaixo de chuva</i> vira <b>Girafa-Pipoca-Marte-Chuva</b>.</p>
+        <div class="alerta"><b>Evite:</b> frases famosas, letras de música, nomes da família, time, datas e o nome da empresa. Isso tudo está nas listas que os criminosos testam primeiro.</div>
+      </div>
+      <div>
+        <h3>Gerador de ideias</h3>
+        <p class="muted">Clique para gerar exemplos. São só para inspirar: invente a sua.</p>
+        <div class="frase" id="frase">Girafa-Pipoca-Marte-Chuva</div>
+        <button class="btn btn-pri" id="gerarBtn">🎲 Gerar outra</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. FORTE OU FRACA -->
+<section class="step" data-titulo="Forte ou fraca?" data-trava="classifica" data-tag="prática">
+  <div class="card">
+    <span class="eyebrow">Atividade 2 · Avalie</span>
+    <h2>Essas senhas são fortes ou fracas?</h2>
+    <p class="muted">Pense como um criminoso: ela estaria numa lista ou cairia rápido num ataque?</p>
+    <div class="senhas-lista" id="senhasLista"></div>
+  </div>
+</section>
+
+<!-- 7. GERENCIADOR -->
+<section class="step" data-titulo="Gerenciador de senhas">
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <span class="eyebrow">Um cofre para todas</span>
+        <h2>Você não precisa decorar 50 senhas</h2>
+        <p>Um <b>gerenciador de senhas</b> é um cofre digital: guarda todas as suas senhas protegidas por uma única senha mestra (use uma frase-senha!). Ele também cria senhas fortes e preenche os campos para você.</p>
+        <p>Bônus: ele só preenche a senha no site verdadeiro. Se você cair numa página falsa, ele não reconhece o endereço e não preenche. É uma proteção extra contra phishing.</p>
+        <div class="alerta"><b>Na empresa:</b> use o gerenciador aprovado pela TI. Nunca guarde senhas em planilha, bloco de notas, post-it no monitor ou embaixo do teclado.</div>
+      </div>
+      <svg viewBox="0 0 320 280" aria-hidden="true">
+        <rect x="40" y="40" width="240" height="200" rx="24" fill="#0f1f3d"/>
+        <rect x="56" y="56" width="208" height="168" rx="16" fill="#1b3160"/>
+        <circle cx="160" cy="140" r="52" fill="none" stroke="#13a89e" stroke-width="8"/>
+        <g stroke="#13a89e" stroke-width="6" stroke-linecap="round"><line x1="160" y1="96" x2="160" y2="110"/><line x1="160" y1="170" x2="160" y2="184"/><line x1="116" y1="140" x2="130" y2="140"/><line x1="190" y1="140" x2="204" y2="140"/></g>
+        <circle cx="160" cy="140" r="18" fill="#13a89e"><animateTransform attributeName="transform" type="rotate" from="0 160 140" to="360 160 140" dur="8s" repeatCount="indefinite"/></circle>
+        <rect x="157" y="124" width="6" height="16" fill="#0f1f3d"><animateTransform attributeName="transform" type="rotate" from="0 160 140" to="360 160 140" dur="8s" repeatCount="indefinite"/></rect>
+        <rect x="270" y="100" width="16" height="30" rx="4" fill="#26406f"/><rect x="270" y="150" width="16" height="30" rx="4" fill="#26406f"/>
+        <g font-size="22"><text x="10" y="40" class="flutua">🔑</text><text x="282" y="260" class="flutua">🔑</text><text x="6" y="250" class="flutua">🔑</text></g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- 8. DUAS ETAPAS -->
+<section class="step" data-titulo="Verificação em duas etapas">
+  <div class="card">
+    <span class="eyebrow">A tranca extra</span>
+    <h2>Verificação em duas etapas</h2>
+    <p>Além da senha, o sistema pede uma segunda prova de que é você, normalmente algo que está com você, como o celular. Mesmo que roubem sua senha, sem a segunda etapa o criminoso não entra.</p>
+    <div class="fatores">
+      <div class="fator"><div class="ic">🧠</div><h3>Algo que você sabe</h3><p class="muted">Sua senha</p></div>
+      <div class="mais">+</div>
+      <div class="fator"><div class="ic">📱</div><h3>Algo que você tem</h3><p class="muted">Seu celular ou uma chave de segurança</p></div>
+    </div>
+    <h3>Os tipos, do mais seguro ao menos seguro</h3>
+    <div class="tipos2fa">
+      <div class="tipo"><span class="estrelas">★★★</span><h3>Chave física</h3><p class="muted">Um dispositivo USB ou por aproximação. Praticamente impossível de enganar.</p></div>
+      <div class="tipo"><span class="estrelas">★★☆</span><h3>App autenticador</h3><p class="muted">Microsoft Authenticator, Google Authenticator e similares. Gera códigos ou pede aprovação no celular.</p></div>
+      <div class="tipo"><span class="estrelas">★☆☆</span><h3>Código por SMS</h3><p class="muted">Melhor do que nada, mas o chip pode ser clonado. Prefira o app quando der.</p></div>
+    </div>
+    <div class="alerta"><b>Ligue em tudo que oferecer:</b> e-mail, banco, redes sociais, WhatsApp (verificação em duas etapas nas configurações). No trabalho, a TI já configura para você.</div>
+  </div>
+</section>
+
+<!-- 9. CENÁRIOS 2FA -->
+<section class="step" data-titulo="Pedido de aprovação" data-trava="cenarios" data-tag="prática">
+  <div class="card">
+    <span class="eyebrow">Atividade 3 · Situações reais</span>
+    <h2>O criminoso tem sua senha. Agora ele precisa de você.</h2>
+    <p class="muted">Quando a senha já vazou, o golpe tenta fazer você entregar a segunda etapa.</p>
+
+    <div class="cenario">
+      <div class="cel cel-push"><div class="tela" style="background:linear-gradient(160deg,#1f4f7a,#0f1f3d);height:330px">
+        <div style="color:#fff;text-align:center;font-size:44px;font-weight:300;margin-top:22px">03:12</div>
+        <div class="push" style="margin-top:20px">
+          <small>Authenticator · agora</small>
+          <div style="font-weight:700;margin-top:4px">Aprovar entrada?</div>
+          <div style="font-size:13px">carlos@empresa.com.br<br><span class="muted">Local: São Paulo, SP</span></div>
+          <div class="bts"><span style="background:#fde9e7;color:#8c2b21">Negar</span><span style="background:#e3f5ec;color:#155c3f">Aprovar</span></div>
+        </div>
+      </div></div>
+      <div>
+        <h3>São 3h da manhã. Seu celular vibra pela quinta vez com este pedido. Você não está tentando entrar em nada.</h3>
+        <div class="opcoes" id="cen1">
+          <button class="opcao" style="font-family:inherit" data-c="0">Aprovo, para o celular parar de vibrar</button>
+          <button class="opcao" style="font-family:inherit" data-c="0">Ignoro e volto a dormir</button>
+          <button class="opcao" style="font-family:inherit" data-c="1">Nego, troco a senha e aviso a TI logo cedo</button>
+        </div>
+        <div class="feedback" id="fbCen1"></div>
+      </div>
+    </div>
+
+    <div class="cenario" id="cen2box" style="display:none">
+      <div class="cel cel-push"><div class="tela" style="background:#0f1f3d;height:330px">
+        <div class="tela-top" style="background:#0b1730"><div class="av">📞</div>Chamada · (11) 4002-xxxx</div>
+        <div class="msgs" style="justify-content:center;text-align:center;color:#fff">
+          <div style="font-size:46px">☎️</div>
+          <div class="msg on" style="color:var(--ink);align-self:center">"Olá, aqui é do suporte de TI. Detectamos um problema na sua conta. Vou te enviar um código por SMS para confirmar sua identidade, é só me dizer os números."</div>
+        </div>
+      </div></div>
+      <div>
+        <h3>A pessoa sabe seu nome, seu cargo e é muito educada. O código chega no seu celular. O que você faz?</h3>
+        <div class="opcoes" id="cen2">
+          <button class="opcao" style="font-family:inherit" data-c="0">Passo o código, ela sabia meus dados</button>
+          <button class="opcao" style="font-family:inherit" data-c="1">Não passo. Desligo e ligo para a TI pelo número oficial</button>
+          <button class="opcao" style="font-family:inherit" data-c="0">Passo só os 3 primeiros números para testar</button>
+        </div>
+        <div class="feedback" id="fbCen2"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. REGRAS DE OURO -->
+<section class="step" data-titulo="Regras de ouro" data-trava="habitos">
+  <div class="card">
+    <span class="eyebrow">Resumo</span>
+    <h2>6 regras de ouro das senhas</h2>
+    <p class="muted">Marque cada regra como lida.</p>
+    <div class="habitos" id="habitos">
+      <button class="habito"><span class="box">✓</span><span><b>Uma senha diferente para cada lugar</b><br><span class="muted">Principalmente: senha da empresa nunca é usada em site pessoal.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Frase-senha com 4 palavras ou mais</b><br><span class="muted">Longa vence complicada.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Duas etapas ligadas em tudo</b><br><span class="muted">E-mail, banco, redes sociais e WhatsApp.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Código de verificação não se passa</b><br><span class="muted">Para ninguém: nem TI, nem banco, nem chefe.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Pedido de aprovação que você não fez? Negue</b><br><span class="muted">E troque a senha, porque ela vazou.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Nada de post-it ou planilha</b><br><span class="muted">Use o gerenciador de senhas aprovado pela TI.</span></span></button>
+    </div>
+  </div>
+</section>
+
+<!-- 11. QUIZ -->
+<section class="step" data-titulo="Quiz" data-trava="quiz" data-tag="quiz">
+  <div class="card" id="quiz"></div>
+</section>
+
+<!-- 12. FIM -->
+<section class="step" data-titulo="Conclusão">
+  <div class="fim" id="fim"></div>
+</section>
+
+</main>
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <button class="btn btn-sec" id="ant">← Voltar</button>
+    <span class="dica" id="dica"></span>
+    <button class="btn btn-pri" id="prox">Próximo →</button>
+  </div>
+</nav>
+
+<script src="curso.js"></script>
+<script>
+criaFilme([
+  'Carlos usa a mesma senha para tudo: o e-mail da empresa, o banco e um site de receitas.',
+  'Um dia, o site de receitas é invadido. A lista com os e-mails e senhas de todos os usuários vai parar na internet.',
+  'Criminosos pegam essa lista e testam cada senha, automaticamente, em milhares de outros sites.',
+  'E-mail da empresa: entrou. Banco: entrou. Em poucos minutos, Carlos perdeu tudo.',
+  'Se a verificação em duas etapas estivesse ligada, o golpista teria parado aqui. Sem o celular do Carlos, a senha sozinha não serve para nada.',
+  'Uma senha diferente para cada lugar e duas etapas sempre ligadas. Simples assim.'
+], 'audio/senha');
+
+/* ---------- Medidor ----------
+   Estimativa simples e didática: tamanho do alfabeto usado × comprimento,
+   com descontos para palavras comuns, anos, sequências e repetições.
+   Considera um atacante testando 10 bilhões de senhas por segundo. */
+const COMUNS=['senha','password','123456','12345','qwerty','abc','admin','empresa','brasil','flamengo','corinthians','palmeiras','vasco','amor','deus','jesus','teste','mudar','bemvindo','welcome','iloveyou','letmein'];
+function avalia(s){
+  const dicas=[]; if(!s) return null;
+  let pool=0;
+  if(/[a-z]/.test(s)) pool+=26; if(/[A-Z]/.test(s)) pool+=26; if(/[0-9]/.test(s)) pool+=10; if(/[^A-Za-z0-9]/.test(s)) pool+=33;
+  let bits=s.length*Math.log2(Math.max(pool,2));
+  const low=s.toLowerCase();
+  const comum=COMUNS.find(w=>low.includes(w));
+  if(comum){ bits-=Math.min(bits*0.5, comum.length*4); dicas.push(`⚠️ Contém "${comum}", que está em todas as listas de senhas comuns.`); }
+  if(/(19|20)\d{2}/.test(s)){ bits-=10; dicas.push('⚠️ Contém um ano. Datas são das primeiras coisas testadas.'); }
+  if(/(012|123|234|345|456|567|678|789|abc|bcd|qwe|asd)/i.test(s)){ bits-=8; dicas.push('⚠️ Tem sequência de teclado ou de números.'); }
+  if(/(.)\1\1/.test(s)){ bits-=6; dicas.push('⚠️ Tem caracteres repetidos em sequência.'); }
+  if(/^[A-Z][a-z]+[0-9!@#$%]{1,6}$/.test(s)){ bits-=10; dicas.push('⚠️ Segue o padrão "Palavra + números/símbolo no fim", o mais previsível que existe.'); }
+  if(s.length<12) dicas.push('💡 Use pelo menos 12 caracteres. Tamanho é o que mais pesa.');
+  const palavras=s.split(/[-_ .]+/).filter(p=>p.length>=3);
+  if(palavras.length>=4 && s.length>=18){ bits=Math.max(bits,70); dicas.unshift('✅ Frase-senha com 4 palavras ou mais: ótimo!'); }
+  bits=Math.max(bits,1);
+  return {bits, dicas};
+}
+function tempoTexto(bits){
+  const seg=Math.pow(2,bits)/2/1e10;
+  if(seg<1) return 'Instantâneo';
+  const U=[['segundos',60],['minutos',60],['horas',24],['dias',365],['anos',1000],['mil anos',1000],['milhões de anos',1000]];
+  let v=seg, i=0;
+  while(i<U.length-1 && v>=U[i][1]){ v/=U[i][1]; i++; }
+  if(i===U.length-1 && v>=1000) return 'Mais que a idade do universo';
+  return `${v<10?v.toFixed(1).replace('.',','):Math.round(v)} ${U[i][0]}`;
+}
+const NIVEIS=[[28,'Muito fraca','#ef5b4c',15],[36,'Fraca','#f97316',35],[60,'Razoável','#f5a524',60],[80,'Forte','#22a06b',85],[999,'Muito forte','#13a89e',100]];
+function atualizaMedidor(){
+  const s=document.getElementById('senhaInput').value, r=avalia(s);
+  const bar=document.getElementById('forcaBarra');
+  if(!r){ bar.style.width='0'; ['forcaNivel','tempoQuebra'].forEach(id=>document.getElementById(id).textContent='—'); document.getElementById('dicasSenha').innerHTML=''; document.getElementById('forcaBits').textContent=''; return; }
+  const n=NIVEIS.find(x=>r.bits<x[0]);
+  bar.style.width=n[3]+'%'; bar.style.background=n[2];
+  document.getElementById('forcaNivel').textContent=n[1]; document.getElementById('forcaNivel').style.color=n[2];
+  document.getElementById('tempoQuebra').textContent=tempoTexto(r.bits);
+  document.getElementById('forcaBits').textContent=s.length+' caracteres';
+  document.getElementById('dicasSenha').innerHTML=r.dicas.map(d=>`<li>${d}</li>`).join('');
+  if(r.bits>=60) libera('medidor');
+}
+document.getElementById('senhaInput').oninput=atualizaMedidor;
+const EXEMPLOS=['123456','Empresa@2026','Flamengo10','joao1985','Tm#8kL!pQ2zR','Girafa-Pipoca-Marte-Chuva','Senha123!','cavalo azul pipoca trem'];
+let ex=0;
+document.getElementById('exemploBtn').onclick=()=>{ document.getElementById('senhaInput').value=EXEMPLOS[ex++%EXEMPLOS.length]; atualizaMedidor(); };
+
+/* ---------- Gerador de frase ---------- */
+const PALAVRAS=['Girafa','Pipoca','Marte','Chuva','Cavalo','Azul','Trem','Abacaxi','Violino','Neve','Tomate','Foguete','Coruja','Sabonete','Piano','Tatu','Guarda-chuva','Melancia','Vulcão','Bicicleta','Pinguim','Canela','Farol','Jacaré','Biscoito','Tambor','Lanterna','Cacto','Polvo','Baleia','Moinho','Sorvete','Trovão','Camelo','Pirata','Laranja','Tijolo','Esquilo','Gaveta','Planeta','Cometa','Sapato','Panqueca','Dragão','Ventilador','Morango','Iglu','Tucano','Bambu','Ostra'];
+document.getElementById('gerarBtn').onclick=()=>{
+  const sel=[]; while(sel.length<4){ const p=PALAVRAS[Math.floor(Math.random()*PALAVRAS.length)]; if(!sel.includes(p)) sel.push(p); }
+  const f=document.getElementById('frase'); f.textContent=sel.join('-'); f.animate([{transform:'scale(.95)',opacity:.4},{transform:'none',opacity:1}],{duration:300});
+};
+
+/* ---------- Forte ou fraca ---------- */
+const AVALIAR=[
+  {s:'Empresa@2026', forte:false, e:'Nome da empresa + ano + símbolo: é a primeira coisa que um criminoso testa. Parece complexa, mas é previsível.'},
+  {s:'Girafa-Trovão-Biscoito-Farol', forte:true, e:'Quatro palavras sem relação: longa, forte e fácil de lembrar.'},
+  {s:'joao1985', forte:false, e:'Nome + ano de nascimento. Quebra em segundos, e os dados estão nas redes sociais.'},
+  {s:'Qwerty123!', forte:false, e:'Sequência de teclado + números em ordem. Está em todas as listas de senhas vazadas.'},
+  {s:'r7#Vq!2mZp$9Lx', forte:true, e:'Forte, sim. Mas é difícil de lembrar: ótima para guardar num gerenciador de senhas.'},
+  {s:'Mudar@123', forte:false, e:'Senha "provisória" que ninguém troca. Os criminosos sabem disso e testam esse padrão.'}
+];
+const avResp={};
+function desenhaAvaliar(){
+  const box=document.getElementById('senhasLista'); box.innerHTML='';
+  AVALIAR.forEach((a,i)=>{
+    const r=avResp[i], d=document.createElement('div');
+    d.className='senha-item'+(r===undefined?'':(r===a.forte?' ok':' nok'));
+    d.innerHTML=`<code>${a.s}</code><div class="bts"><button data-v="0" ${r!==undefined?'disabled':''}>👎 Fraca</button><button data-v="1" ${r!==undefined?'disabled':''}>💪 Forte</button></div>
+      ${r!==undefined?`<div class="feedback show ${r===a.forte?'bom':'ruim'}"><b>${a.forte?'Forte.':'Fraca.'}</b> ${a.e}</div>`:''}`;
+    d.querySelectorAll('button').forEach(b=>b.onclick=()=>{ avResp[i]=b.dataset.v==='1'; desenhaAvaliar(); });
+    box.appendChild(d);
+  });
+  if(Object.keys(avResp).length===AVALIAR.length) libera('classifica');
+}
+desenhaAvaliar();
+
+/* ---------- Cenários de duas etapas ---------- */
+function cenario(id, fbId, okTxt, nokTxt, aoAcertar){
+  document.querySelectorAll(`#${id} .opcao`).forEach(o=>o.onclick=()=>{
+    const ok=o.dataset.c==='1', fb=document.getElementById(fbId);
+    o.classList.add(ok?'certa':'errada'); fb.className='feedback show '+(ok?'bom':'ruim'); fb.innerHTML=ok?okTxt:nokTxt;
+    if(ok){ document.querySelectorAll(`#${id} .opcao`).forEach(x=>x.disabled=true); aoAcertar(); }
+  });
+}
+cenario('cen1','fbCen1',
+  '<b>Isso!</b> Se chegou pedido de aprovação, é porque alguém <b>já tem sua senha</b>. O criminoso manda vários pedidos de madrugada torcendo para você aprovar por cansaço. Negue, troque a senha e avise a TI.',
+  '<b>Perigoso!</b> Esse pedido significa que alguém já digitou sua senha correta. Aprovar entrega a conta; ignorar deixa o criminoso tentando com a senha que ele já tem. Tente de novo.',
+  ()=>{ const b=document.getElementById('cen2box'); b.style.display='grid'; setTimeout(()=>b.scrollIntoView({behavior:'smooth',block:'center'}),200); });
+cenario('cen2','fbCen2',
+  '<b>Correto!</b> O código serve justamente para provar que é você. Quem pede o código está tentando entrar na sua conta. A TI de verdade nunca pede código de verificação.',
+  '<b>Não!</b> Nenhum código, nem parte dele. Saber seu nome e cargo é fácil (está no LinkedIn). Tente de novo.',
+  ()=>libera('cenarios'));
+
+/* ---------- Regras de ouro ---------- */
+const habitos=[...document.querySelectorAll('.habito')];
+habitos.forEach(h=>h.onclick=()=>{ h.classList.add('on'); if (habitos.every(x=>x.classList.contains('on'))) libera('habitos'); });
+
+/* ---------- Quiz ---------- */
+criaQuiz({id:'senhas', proximo:{titulo:'Engenharia social', url:'modulo-4-engenharia.html'}});
+
+iniciaCurso({
+  dicas:{
+    medidor:'Chegue numa senha "Forte" para continuar',
+    classifica:'Avalie as 6 senhas para continuar',
+    cenarios:'Resolva as duas situações para continuar',
+    habitos:'Marque as 6 regras para continuar',
+    quiz:'Responda o quiz para concluir'
+  },
+  aoEntrar:{'Conclusão':mostraFim}
+});
+</script>
+</body>
+</html>

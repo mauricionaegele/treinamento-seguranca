@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>LGPD no dia a dia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="curso.css">
+<style>
+.tipos-dado{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+@media (max-width:720px){.tipos-dado{grid-template-columns:1fr}}
+.tipo-dado{border-radius:16px;padding:20px}
+.tipo-dado.pessoal{background:var(--teal-soft)}
+.tipo-dado.sensivel{background:var(--coral-soft)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.tags span{background:#fff;border-radius:99px;padding:5px 11px;font-size:13px;font-weight:600}
+.classif{display:grid;gap:10px;margin-top:16px}
+.classif-item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px}
+@media (max-width:640px){.classif-item{grid-template-columns:1fr}}
+.classif-item b{color:var(--navy)}
+.classif-item .chips{justify-content:flex-end}
+.classif-item .feedback{grid-column:1/-1;margin-top:0}
+.numeros{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
+@media (max-width:720px){.numeros{grid-template-columns:1fr}}
+.numero{background:var(--navy);color:#cfd8ea;border-radius:16px;padding:20px}
+.numero b{display:block;font-size:30px;color:#7ff0dd;line-height:1.1;margin-bottom:6px}
+.sn{display:flex;gap:8px}
+.sn button{border:2px solid var(--line);background:#fff;border-radius:10px;padding:8px 16px;font-weight:700}
+.sn button:hover:not([disabled]){border-color:var(--teal)}
+.envio .email-top div{margin-bottom:4px}
+.para-lista{font-size:13px;color:var(--muted);max-height:52px;overflow:hidden}
+.link-share{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:14px;margin-top:6px}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo" href="index.html">
+      <svg width="28" height="28" viewBox="0 0 28 28"><path d="M14 2 4 6v7c0 6.2 4.2 11.3 10 13 5.8-1.7 10-6.8 10-13V6L14 2z" fill="#13a89e"/><path d="m9.5 14 3.2 3.2 6-6.4" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Segurança em Dia
+    </a>
+    <button class="btn-menu" id="btnMenu">☰ Conteúdo</button>
+    <div class="mod-title">Módulo 5 · LGPD no dia a dia</div>
+    <div class="counter" id="contador"></div>
+  </div>
+  <div class="progress"><div id="barra"></div></div>
+</header>
+
+<div class="layout">
+<aside class="sumario" id="sumario">
+  <div class="sumario-top">
+    <b>LGPD no dia a dia</b>
+    <small id="sumPct">0% concluído</small>
+    <div class="sum-barra"><div id="sumBarra"></div></div>
+  </div>
+  <div id="sumLista"></div>
+</aside>
+<div class="veu" id="veu"></div>
+<main>
+
+<!-- 1. CAPA -->
+<section class="step" data-titulo="Capa">
+  <div class="capa grid2">
+    <div>
+      <span class="eyebrow">Módulo 5 de 7</span>
+      <h1>LGPD no<br>dia a dia</h1>
+      <p>Todo dia você mexe com dados de clientes, colegas e fornecedores. Entenda o que a Lei Geral de Proteção de Dados pede de você, na prática, sem juridiquês.</p>
+      <div class="meta"><span>⏱ 8 minutos</span><span>🎯 3 atividades práticas</span><span>📝 Quiz no final</span></div>
+      <button class="btn btn-pri" onclick="ir(1)">Começar módulo →</button>
+    </div>
+    <svg viewBox="0 0 400 320" aria-hidden="true">
+      <!-- pasta com dados e escudo -->
+      <g transform="translate(90 70)">
+        <path d="M0 30 h80 l20 20 h120 v150 h-220z" fill="#f5a524"/>
+        <rect x="16" y="66" width="190" height="120" rx="8" fill="#fff"/>
+        <g fill="#c9d3e6"><rect x="34" y="84" width="90" height="10" rx="5"/><rect x="34" y="104" width="140" height="10" rx="5"/><rect x="34" y="124" width="120" height="10" rx="5"/><rect x="34" y="144" width="70" height="10" rx="5"/></g>
+        <circle cx="150" cy="90" r="14" fill="#e2f6f4"/><circle cx="150" cy="86" r="5" fill="#13a89e"/><path d="M141 98 q9 -8 18 0" fill="#13a89e"/>
+      </g>
+      <g transform="translate(280 190)"><g class="flutua">
+        <path d="M0 -60 l-50 20 v36 c0 32 21 57 50 66 c29 -9 50 -34 50 -66 v-36z" fill="#13a89e"/>
+        <path d="m-22 2 15 15 30 -32" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </g></g>
+      <text x="60" y="290" font-size="13" font-weight="700" fill="#7ff0dd">Lei nº 13.709/2018</text>
+    </svg>
+  </div>
+</section>
+
+<!-- 2. O QUE É DADO PESSOAL -->
+<section class="step" data-titulo="O que é dado pessoal">
+  <div class="card">
+    <span class="eyebrow">O básico</span>
+    <h2>Dado pessoal é tudo que identifica uma pessoa</h2>
+    <p>A <b>LGPD</b> (Lei Geral de Proteção de Dados) protege informações de <b>pessoas</b>: clientes, colegas, candidatos, fornecedores pessoa física. Qualquer informação que identifique alguém, sozinha ou combinada com outras, é dado pessoal.</p>
+    <div class="tipos-dado">
+      <div class="tipo-dado pessoal"><h3>🧾 Dado pessoal</h3><p class="muted" style="margin:0">Identifica a pessoa.</p>
+        <div class="tags"><span>Nome</span><span>CPF e RG</span><span>E-mail</span><span>Telefone</span><span>Endereço</span><span>Foto</span><span>Placa do carro</span><span>Salário</span><span>Localização</span></div></div>
+      <div class="tipo-dado sensivel"><h3>⚠️ Dado pessoal sensível</h3><p class="muted" style="margin:0">Pode gerar discriminação. Exige cuidado redobrado.</p>
+        <div class="tags"><span>Saúde e atestados</span><span>Biometria</span><span>Religião</span><span>Origem racial ou étnica</span><span>Opinião política</span><span>Filiação sindical</span><span>Vida sexual</span><span>Dado genético</span></div></div>
+    </div>
+    <div class="alerta"><b>Regra prática:</b> trate todo dado de pessoa como se fosse o seu. Você gostaria que seu CPF, seu salário ou seu atestado médico circulassem pelo WhatsApp?</div>
+  </div>
+</section>
+
+<!-- 3. VÍDEO -->
+<section class="step" data-titulo="Vídeo">
+  <div class="card">
+    <span class="eyebrow">Vídeo · 35 segundos</span>
+    <h2>O e-mail que completou sozinho</h2>
+    <p class="muted">Um vazamento sem hacker nenhum.</p>
+    <div class="player">
+      <svg viewBox="0 0 640 330" id="filme">
+        <rect width="640" height="330" fill="#0b1730"/>
+        <!-- 1 -->
+        <g class="cena">
+          <text x="40" y="56" fill="#7ff0dd" font-size="15" font-weight="700">SEX · 17h48</text>
+          <g transform="translate(200 170)"><circle cy="-40" r="28" fill="#c68b5e"/><path d="M-30 -48 q30 -36 60 0 l0 30 q-8 -30 -30 -30 q-22 0 -30 30z" fill="#2b1a10"/><rect x="-34" y="-10" width="68" height="90" rx="26" fill="#a78bfa"/></g>
+          <g transform="translate(410 160)"><rect x="-80" y="-60" width="160" height="110" rx="8" fill="#fff"/><rect x="-80" y="-60" width="160" height="22" rx="8" fill="#22a06b"/><text y="-44" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">clientes_2026.xlsx</text>
+            <g fill="#c9d3e6"><rect x="-68" y="-28" width="40" height="8"/><rect x="-22" y="-28" width="40" height="8"/><rect x="24" y="-28" width="44" height="8"/><rect x="-68" y="-12" width="40" height="8"/><rect x="-22" y="-12" width="40" height="8"/><rect x="24" y="-12" width="44" height="8"/><rect x="-68" y="4" width="40" height="8"/><rect x="-22" y="4" width="40" height="8"/><rect x="24" y="4" width="44" height="8"/><rect x="-68" y="20" width="40" height="8"/><rect x="-22" y="20" width="40" height="8"/><rect x="24" y="20" width="44" height="8"/></g></g>
+        </g>
+        <!-- 2 -->
+        <g class="cena">
+          <rect x="120" y="70" width="400" height="190" rx="10" fill="#fff"/>
+          <text x="140" y="104" font-size="14" fill="#5b6478">Para:</text>
+          <rect x="185" y="88" width="310" height="26" rx="4" fill="#f4f6fb"/>
+          <text x="195" y="106" font-size="14" fill="#1d2433" data-anima="digita">rob</text>
+          <g transform="translate(185 118)"><rect width="310" height="70" rx="6" fill="#fff" stroke="#dfe5ef"/>
+            <rect width="310" height="35" rx="6" fill="#e2f6f4"/><text x="12" y="22" font-size="13" fill="#1d2433"><tspan font-weight="700">Roberto Lima</tspan> · roberto@fornecedor-antigo.com</text>
+            <text x="12" y="57" font-size="13" fill="#5b6478">Roberta Contabilidade · roberta@contabil.com.br</text></g>
+        </g>
+        <!-- 3 -->
+        <g class="cena">
+          <rect x="120" y="70" width="400" height="190" rx="10" fill="#fff"/>
+          <text x="140" y="104" font-size="14" fill="#5b6478">Para:</text><text x="190" y="104" font-size="14" font-weight="700" fill="#ef5b4c">roberto@fornecedor-antigo.com</text>
+          <text x="140" y="134" font-size="13" fill="#1d2433">📎 clientes_2026.xlsx</text>
+          <g transform="translate(320 200)" data-anima="surge"><rect x="-70" y="-22" width="140" height="44" rx="8" fill="#1a73e8"/><text y="6" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">Enviado ✓</text></g>
+          <text x="320" y="300" text-anchor="middle" font-size="16" font-weight="800" fill="#ef5b4c">Destinatário errado!</text>
+        </g>
+        <!-- 4 -->
+        <g class="cena">
+          <g transform="translate(320 160)">
+            <rect x="-220" y="-90" width="440" height="180" rx="10" fill="#fff"/>
+            <g font-size="12" font-weight="700" fill="#5b6478"><text x="-200" y="-62">NOME</text><text x="-90" y="-62">CPF</text><text x="20" y="-62">ENDEREÇO</text><text x="130" y="-62">TELEFONE</text></g>
+            <g font-size="12" fill="#1d2433" font-family="Consolas,monospace">
+              <text x="-200" y="-36">Ana P.</text><text x="-90" y="-36">123.456.***</text><text x="20" y="-36">R. das Flores</text><text x="130" y="-36">(21) 9****</text>
+              <text x="-200" y="-12">Bruno S.</text><text x="-90" y="-12">987.654.***</text><text x="20" y="-12">Av. Brasil</text><text x="130" y="-12">(21) 9****</text>
+              <text x="-200" y="12">Carla M.</text><text x="-90" y="12">456.789.***</text><text x="20" y="12">R. do Sol</text><text x="130" y="12">(21) 9****</text>
+            </g>
+            <text y="62" text-anchor="middle" font-size="22" font-weight="800" fill="#ef5b4c">× 2.000 clientes</text>
+          </g>
+        </g>
+        <!-- 5 -->
+        <g class="cena">
+          <g transform="translate(200 165)"><circle r="70" fill="#1b3160"/><text y="-6" text-anchor="middle" font-size="44">⚖️</text><text y="36" text-anchor="middle" font-size="13" font-weight="700" fill="#cfd8ea">Comunicar à ANPD</text></g>
+          <g transform="translate(440 165)"><circle r="70" fill="#1b3160"/><text y="-6" text-anchor="middle" font-size="44">📨</text><text y="36" text-anchor="middle" font-size="13" font-weight="700" fill="#cfd8ea">Avisar os clientes</text></g>
+          <text x="320" y="300" text-anchor="middle" font-size="16" font-weight="800" fill="#fca5a5">Multa e reputação em risco</text>
+        </g>
+        <!-- 6 -->
+        <g class="cena">
+          <g transform="translate(320 140)"><circle r="70" fill="#13a89e"/><text y="20" text-anchor="middle" font-size="56">👀</text></g>
+          <text x="320" y="265" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">Confira o destinatário antes de enviar</text>
+        </g>
+      </svg>
+      <button class="play-grande" id="playGrande" aria-label="Assistir"><span><svg width="34" height="34" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></span></button>
+      <div class="legenda" id="legenda"></div>
+      <div class="controles">
+        <button id="playBtn">▶ Assistir</button>
+        <div class="barra"><div id="filmeBarra"></div></div>
+        <button id="somBtn">🔊 Som ligado</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. CLASSIFICAR DADOS -->
+<section class="step" data-titulo="Classifique os dados" data-trava="dados" data-tag="prática">
+  <div class="card">
+    <span class="eyebrow">Atividade 1 · Classifique</span>
+    <h2>Pessoal, sensível ou não é dado pessoal?</h2>
+    <p class="muted">Para cada informação, escolha a categoria.</p>
+    <div class="classif" id="classif"></div>
+  </div>
+</section>
+
+<!-- 5. POR QUE IMPORTA -->
+<section class="step" data-titulo="Por que importa">
+  <div class="card">
+    <span class="eyebrow">A lei e você</span>
+    <h2>A responsabilidade é da empresa. E de cada um que mexe nos dados.</h2>
+    <p>A LGPD está em vigor desde 2020 e é fiscalizada pela <b>ANPD</b> (Autoridade Nacional de Proteção de Dados). Quando um dado vaza por descuido, quem responde é a empresa, mas o descuido quase sempre começa num gesto simples do dia a dia.</p>
+    <div class="numeros">
+      <div class="numero"><b>2%</b>do faturamento da empresa, limitado a R$ 50 milhões por infração: é a multa máxima prevista na lei.</div>
+      <div class="numero"><b>Poucos dias</b>é o prazo para a empresa comunicar um incidente grave à ANPD e às pessoas afetadas. Por isso, avisar rápido é essencial.</div>
+      <div class="numero"><b>Direitos</b>Toda pessoa pode perguntar quais dados a empresa tem dela, pedir correção e, em vários casos, pedir que sejam apagados.</div>
+    </div>
+    <h3 style="margin-top:24px">Os princípios que mais aparecem no seu dia a dia</h3>
+    <div class="cards3">
+      <div class="mini"><div class="ico" style="background:var(--teal-soft)">🎯</div><h3>Finalidade</h3><p class="muted">Use o dado só para o motivo pelo qual ele foi coletado. Telefone do cadastro não é para mandar promoção pessoal.</p></div>
+      <div class="mini"><div class="ico" style="background:var(--amber-soft)">✂️</div><h3>Necessidade</h3><p class="muted">Colete e compartilhe só o mínimo. Precisa do nome? Não mande a planilha com CPF e endereço.</p></div>
+      <div class="mini"><div class="ico" style="background:var(--coral-soft)">🔐</div><h3>Segurança</h3><p class="muted">Proteja os dados de acesso indevido, perda e vazamento. É aqui que entram todos os outros módulos do curso.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. PODE OU NÃO PODE -->
+<section class="step" data-titulo="Pode ou não pode?" data-trava="podenao" data-tag="prática">
+  <div class="card">
+    <span class="eyebrow">Atividade 2 · Decida</span>
+    <h2>Pode ou não pode?</h2>
+    <p class="muted">Situações comuns no escritório. Responda cada uma.</p>
+    <div class="classif" id="podenao"></div>
+  </div>
+</section>
+
+<!-- 7. E-MAIL ANTES DE ENVIAR -->
+<section class="step" data-titulo="Antes de enviar" data-trava="envio" data-tag="prática">
+  <div class="card">
+    <span class="eyebrow">Atividade 3 · Revise</span>
+    <h2>Pare! Este e-mail tem 4 problemas</h2>
+    <p class="muted">Você precisa enviar aos clientes o convite para um evento. Clique no que está errado antes de apertar "Enviar".</p>
+    <div class="grid-email">
+      <div class="email envio" id="emailEnvio">
+        <div class="email-top">
+          <div class="assunto">Convite: café da manhã com clientes</div>
+          <div><b>Para:</b> <span class="flag para-lista" data-f="0">ana.paula@gmail.com; bruno.souza@hotmail.com; carla.m@empresa-cliente.com.br; diego.f@outlook.com; elaine.r@gmail.com; +37 destinatários</span></div>
+          <div><b>Cc:</b> <span class="flag" data-f="1">marketing@agencia-eventos-promo.com</span></div>
+        </div>
+        <div class="email-body">
+          <p>Olá!</p>
+          <p>Temos o prazer de convidar você para nosso café da manhã de fim de ano, dia 12/12, às 8h30.</p>
+          <p>Para agilizar o credenciamento, segue a lista de confirmados:</p>
+          <div class="anexo">📎 <span class="flag" data-f="2">lista_clientes_completa_CPF_endereco.xlsx</span> <span class="muted">2,1 MB</span></div>
+          <p style="margin-top:12px">Fotos do último evento:</p>
+          <div class="link-share">🔗 <span class="flag" data-f="3">Pasta "Clientes e Eventos" · Qualquer pessoa com o link pode editar</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="placar"><span id="envioN">0</span> / 4</div>
+        <p class="muted" style="margin-top:-4px">problemas encontrados</p>
+        <ul class="achados" id="envioLista"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. BOAS PRÁTICAS -->
+<section class="step" data-titulo="Boas práticas" data-trava="habitos">
+  <div class="card">
+    <span class="eyebrow">Resumo</span>
+    <h2>7 hábitos de quem cuida bem dos dados</h2>
+    <p class="muted">Marque cada hábito como lido.</p>
+    <div class="habitos" id="habitos">
+      <button class="habito"><span class="box">✓</span><span><b>Confira o destinatário</b><br><span class="muted">Principalmente quando o e-mail completa o endereço sozinho.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>E-mail para muitos? Use Cco</b><br><span class="muted">Cópia oculta: ninguém vê o endereço de ninguém.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Mande só o necessário</b><br><span class="muted">Apague colunas que a pessoa não precisa antes de enviar.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Compartilhe com pessoas, não com "qualquer um com o link"</b><br><span class="muted">E remova o acesso quando não for mais necessário.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Dados da empresa ficam na empresa</b><br><span class="muted">Nada de e-mail pessoal, pendrive próprio ou WhatsApp pessoal para arquivos de trabalho.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Papel com dados vai para a fragmentadora</b><br><span class="muted">E retire suas impressões da impressora na hora.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Errou? Avise na hora</b><br><span class="muted">Enviou para a pessoa errada, perdeu um documento, notebook roubado: avise o gestor e a TI imediatamente. O prazo da empresa é curto.</span></span></button>
+    </div>
+  </div>
+</section>
+
+<!-- 9. QUIZ -->
+<section class="step" data-titulo="Quiz" data-trava="quiz" data-tag="quiz">
+  <div class="card" id="quiz"></div>
+</section>
+
+<!-- 10. FIM -->
+<section class="step" data-titulo="Conclusão">
+  <div class="fim" id="fim"></div>
+</section>
+
+</main>
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <button class="btn btn-sec" id="ant">← Voltar</button>
+    <span class="dica" id="dica"></span>
+    <button class="btn btn-pri" id="prox">Próximo →</button>
+  </div>
+</nav>
+
+<script src="curso.js"></script>
+<script>
+criaFilme([
+  'Sexta-feira, fim do expediente. Paula precisa mandar a planilha de clientes para o contador.',
+  'Ela digita as primeiras letras do nome, e o e-mail completa o endereço sozinho.',
+  'Enviar. Mas não era o contador. Era um antigo fornecedor, com o nome parecido.',
+  'A planilha tinha nome, CPF, endereço e telefone de 2 mil clientes.',
+  'Agora a empresa precisa comunicar o incidente à autoridade e aos clientes, e pode ser multada.',
+  'Antes de enviar, confira o destinatário. E mande só os dados que a pessoa realmente precisa.'
+], 'audio/lgpd');
+
+/* ---------- Classificar dados ---------- */
+const CATS=['Pessoal','Sensível','Não é dado pessoal'];
+const DADOS=[
+  {t:'CPF de um cliente', c:'Pessoal', e:'Identifica diretamente a pessoa.'},
+  {t:'Atestado médico de um colega', c:'Sensível', e:'Dado de saúde é sensível: acesso só para quem realmente precisa (RH).'},
+  {t:'Faturamento anual da empresa', c:'Não é dado pessoal', e:'É dado da empresa (confidencial, sim), mas não identifica uma pessoa.'},
+  {t:'E-mail joao.silva@empresa.com.br', c:'Pessoal', e:'E-mail com nome identifica a pessoa, mesmo sendo corporativo.'},
+  {t:'Digital usada no ponto eletrônico', c:'Sensível', e:'Biometria é dado sensível.'},
+  {t:'Placa do carro no estacionamento', c:'Pessoal', e:'Combinada com outros dados, leva até o dono.'},
+  {t:'Religião informada num formulário', c:'Sensível', e:'Convicção religiosa é sensível.'}
+];
+const dadosResp={};
+function desenhaClassif(){
+  const box=document.getElementById('classif'); box.innerHTML='';
+  DADOS.forEach((d,i)=>{
+    const r=dadosResp[i], el=document.createElement('div'); el.className='classif-item';
+    el.innerHTML=`<b>${d.t}</b><div class="chips">${CATS.map(c=>{let cls=''; if(r){ if(c===d.c) cls='certa'; else if(c===r) cls='errada'; } return `<button class="chip ${cls}" ${r?'disabled':''} data-c="${c}">${c}</button>`;}).join('')}</div>
+      ${r?`<div class="feedback show ${r===d.c?'bom':'ruim'}"><b>${d.c}.</b> ${d.e}</div>`:''}`;
+    el.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{ dadosResp[i]=b.dataset.c; desenhaClassif(); });
+    box.appendChild(el);
+  });
+  if(Object.keys(dadosResp).length===DADOS.length) libera('dados');
+}
+desenhaClassif();
+
+/* ---------- Pode ou não pode ---------- */
+const PN=[
+  {t:'Mandar a planilha de clientes para o seu e-mail pessoal para terminar o trabalho em casa.', pode:false, e:'Dados da empresa não vão para contas pessoais. Use as ferramentas da empresa (VPN, nuvem corporativa).'},
+  {t:'Tirar print de uma tela com dados de um cliente e mandar no grupo de WhatsApp da equipe.', pode:false, e:'O print sai do controle da empresa e fica em vários celulares. Use os canais oficiais e só o necessário.'},
+  {t:'Compartilhar um arquivo da nuvem da empresa só com os colegas que trabalham no projeto.', pode:true, e:'Compartilhar com pessoas específicas, pelo sistema da empresa, é o jeito certo.'},
+  {t:'Consultar o cadastro de um cliente famoso no sistema, só por curiosidade.', pode:false, e:'Acesso a dados só com motivo de trabalho. Curiosidade não é finalidade, e os acessos ficam registrados.'},
+  {t:'Jogar no lixo comum uma pilha de fichas de cadastro antigas.', pode:false, e:'Papel com dados pessoais vai para a fragmentadora ou descarte seguro.'},
+  {t:'Avisar o gestor e a TI logo depois de perceber que mandou um arquivo para a pessoa errada.', pode:true, e:'Isso! Avisar rápido permite agir a tempo, inclusive pedir a exclusão e cumprir o prazo legal.'}
+];
+const pnResp={};
+function desenhaPN(){
+  const box=document.getElementById('podenao'); box.innerHTML='';
+  PN.forEach((p,i)=>{
+    const r=pnResp[i], el=document.createElement('div'); el.className='classif-item';
+    el.innerHTML=`<span>${p.t}</span><div class="sn"><button data-v="1" ${r!==undefined?'disabled':''}>👍 Pode</button><button data-v="0" ${r!==undefined?'disabled':''}>✋ Não pode</button></div>
+      ${r!==undefined?`<div class="feedback show ${r===p.pode?'bom':'ruim'}"><b>${p.pode?'Pode.':'Não pode.'}</b> ${p.e}</div>`:''}`;
+    el.querySelectorAll('button').forEach(b=>b.onclick=()=>{ pnResp[i]=b.dataset.v==='1'; desenhaPN(); });
+    box.appendChild(el);
+  });
+  if(Object.keys(pnResp).length===PN.length) libera('podenao');
+}
+desenhaPN();
+
+/* ---------- E-mail antes de enviar ---------- */
+const ENVIO={
+  0:['Todos no campo "Para"','42 clientes vão ver o e-mail uns dos outros. Para envio em massa, use Cco (cópia oculta).'],
+  1:['Cópia para empresa externa','Uma agência de marketing recebendo a lista de clientes sem necessidade nem autorização.'],
+  2:['Anexo com dados demais','Para um convite não é preciso mandar CPF e endereço de ninguém. Princípio da necessidade.'],
+  3:['Link aberto para qualquer um','"Qualquer pessoa com o link pode editar": se o e-mail for encaminhado, a pasta fica exposta. Compartilhe só com pessoas específicas.']
+};
+const envAchados=new Set();
+function desenhaEnvio(){
+  const ul=document.getElementById('envioLista'); ul.innerHTML='';
+  Object.keys(ENVIO).forEach(k=>{
+    const ok=envAchados.has(+k), li=document.createElement('li'); if(ok) li.className='ok';
+    li.innerHTML=`<span class="bola">${ok?'!':'?'}</span><span>${ok?`<b>${ENVIO[k][0]}</b><br>${ENVIO[k][1]}`:'Problema escondido'}</span>`;
+    ul.appendChild(li);
+  });
+  document.getElementById('envioN').textContent=envAchados.size;
+  if(envAchados.size===4) libera('envio');
+}
+document.querySelectorAll('#emailEnvio .flag').forEach(f=>f.onclick=()=>{ f.classList.add('achou'); envAchados.add(+f.dataset.f); desenhaEnvio(); });
+desenhaEnvio();
+
+/* ---------- Hábitos ---------- */
+const habitos=[...document.querySelectorAll('.habito')];
+habitos.forEach(h=>h.onclick=()=>{ h.classList.add('on'); if (habitos.every(x=>x.classList.contains('on'))) libera('habitos'); });
+
+/* ---------- Quiz ---------- */
+criaQuiz({id:'lgpd', proximo:{titulo:'Celular, notebook e trabalho remoto', url:'modulo-6-dispositivos.html'}});
+
+iniciaCurso({
+  dicas:{
+    dados:'Classifique as 7 informações para continuar',
+    podenao:'Responda as 6 situações para continuar',
+    envio:'Encontre os 4 problemas para continuar',
+    habitos:'Marque os 7 hábitos para continuar',
+    quiz:'Responda o quiz para concluir'
+  },
+  aoEntrar:{'Conclusão':mostraFim}
+});
+</script>
+</body>
+</html>

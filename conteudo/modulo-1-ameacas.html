@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Conhecendo as ameaças</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="curso.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo" href="index.html">
+      <svg width="28" height="28" viewBox="0 0 28 28"><path d="M14 2 4 6v7c0 6.2 4.2 11.3 10 13 5.8-1.7 10-6.8 10-13V6L14 2z" fill="#13a89e"/><path d="m9.5 14 3.2 3.2 6-6.4" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Segurança em Dia
+    </a>
+    <button class="btn-menu" id="btnMenu">☰ Conteúdo</button>
+    <div class="mod-title">Módulo 1 · Conhecendo as ameaças</div>
+    <div class="counter" id="contador"></div>
+  </div>
+  <div class="progress"><div id="barra"></div></div>
+</header>
+
+<div class="layout">
+<aside class="sumario" id="sumario">
+  <div class="sumario-top">
+    <b>Conhecendo as ameaças</b>
+    <small id="sumPct">0% concluído</small>
+    <div class="sum-barra"><div id="sumBarra"></div></div>
+  </div>
+  <div id="sumLista"></div>
+</aside>
+<div class="veu" id="veu"></div>
+<main>
+
+<!-- 1. CAPA -->
+<section class="step" data-titulo="Capa">
+  <div class="capa grid2">
+    <div>
+      <span class="eyebrow">Módulo 1 de 7</span>
+      <h1>Conhecendo<br>as ameaças</h1>
+      <p>Vírus, cavalo de Troia, ransomware… Conheça os programas que os criminosos usam para invadir computadores, como eles entram e como manter cada um do lado de fora.</p>
+      <div class="meta"><span>⏱ 10 minutos</span><span>🎯 3 atividades práticas</span><span>📝 Quiz no final</span></div>
+      <button class="btn btn-pri" onclick="ir(1)">Começar módulo →</button>
+    </div>
+    <svg viewBox="0 0 400 320" aria-hidden="true">
+      <circle cx="200" cy="160" r="120" fill="none" stroke="#7ff0dd" stroke-opacity=".25" stroke-dasharray="4 8"/>
+      <circle cx="200" cy="160" r="70" fill="none" stroke="#7ff0dd" stroke-opacity=".15"/>
+      <!-- computador protegido -->
+      <rect x="150" y="120" width="100" height="70" rx="8" fill="#fff"/>
+      <rect x="158" y="128" width="84" height="54" rx="3" fill="#1b3160"/>
+      <path d="M200 136 l-16 6 v10 c0 9 7 16 16 19 c9 -3 16 -10 16 -19 v-10z" fill="#13a89e"/>
+      <path d="m193 152 5 5 9 -10" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <rect x="185" y="190" width="30" height="10" fill="#cfd8ea"/><rect x="170" y="200" width="60" height="6" rx="3" fill="#cfd8ea"/>
+      <!-- ameaças orbitando -->
+      <g><animateTransform attributeName="transform" type="rotate" from="0 200 160" to="360 200 160" dur="24s" repeatCount="indefinite"/>
+        <g transform="translate(80 160)"><circle r="18" fill="#22a06b"/><g stroke="#22a06b" stroke-width="4" stroke-linecap="round"><line x1="0" y1="-26" x2="0" y2="-18"/><line x1="0" y1="26" x2="0" y2="18"/><line x1="-26" y1="0" x2="-18" y2="0"/><line x1="26" y1="0" x2="18" y2="0"/><line x1="-18" y1="-18" x2="-13" y2="-13"/><line x1="18" y1="18" x2="13" y2="13"/><line x1="18" y1="-18" x2="13" y2="-13"/><line x1="-18" y1="18" x2="-13" y2="13"/></g><circle cx="-6" cy="-3" r="3" fill="#fff"/><circle cx="6" cy="-3" r="3" fill="#fff"/></g>
+        <g transform="translate(320 160)"><rect x="-16" y="-8" width="32" height="26" rx="5" fill="#ef5b4c"/><path d="M-9 -8 v-6 a9 9 0 0 1 18 0 v6" stroke="#ef5b4c" stroke-width="5" fill="none"/><circle cy="4" r="4" fill="#fff"/></g>
+        <g transform="translate(200 40)"><circle r="18" fill="#f5a524"/><circle r="8" fill="#fff"/><circle r="4" fill="#0f1f3d"/></g>
+        <g transform="translate(200 280)"><path d="M-18 10 q0 -22 14 -24 l4 -8 l4 8 q14 4 14 24z" fill="#a78bfa"/><rect x="-14" y="10" width="4" height="8" fill="#a78bfa"/><rect x="10" y="10" width="4" height="8" fill="#a78bfa"/></g>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- 2. O QUE É MALWARE -->
+<section class="step" data-titulo="O que é malware">
+  <div class="card">
+    <span class="eyebrow">O básico</span>
+    <h2>Malware: o nome de todo programa do mal</h2>
+    <p><b>Malware</b> vem do inglês <i>malicious software</i>, "programa malicioso". É qualquer programa feito para prejudicar: roubar dados, espionar, destruir arquivos ou pedir resgate. Vírus, trojan e ransomware são <b>tipos</b> de malware, como carro, moto e caminhão são tipos de veículo.</p>
+    <p class="muted">Quase todo malware precisa de uma ajudinha para entrar: alguém que clica, baixa, instala ou conecta alguma coisa. É por isso que você faz parte da defesa.</p>
+    <h3 style="margin-top:22px">Por onde eles entram</h3>
+    <div class="cards3" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">
+      <div class="mini"><div class="ico" style="background:var(--coral-soft)">📎</div><h3>Anexos</h3><p class="muted">.zip, .exe, .js, .html e documentos que pedem "habilitar conteúdo".</p></div>
+      <div class="mini"><div class="ico" style="background:var(--amber-soft)">⬇️</div><h3>Downloads</h3><p class="muted">Programas "grátis", cracks, ativadores e sites de download lotados de anúncios.</p></div>
+      <div class="mini"><div class="ico" style="background:var(--teal-soft)">🔗</div><h3>Links</h3><p class="muted">Sites falsos ou invadidos que instalam algo só de abrir.</p></div>
+      <div class="mini"><div class="ico" style="background:#ede9fe">💾</div><h3>Pendrives</h3><p class="muted">Pendrive achado, recebido de brinde ou emprestado sem saber a origem.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. VÍDEO -->
+<section class="step" data-titulo="Vídeo">
+  <div class="card">
+    <span class="eyebrow">Vídeo · 40 segundos</span>
+    <h2>Um clique na sexta, empresa parada na segunda</h2>
+    <p class="muted">Como um ransomware derruba uma empresa inteira, passo a passo.</p>
+    <div class="player">
+      <svg viewBox="0 0 640 330" id="filme">
+        <rect width="640" height="330" fill="#0b1730"/>
+        <!-- 1: anexo aberto -->
+        <g class="cena">
+          <text x="40" y="56" fill="#7ff0dd" font-size="15" font-weight="700">SEX · 17h02</text>
+          <rect x="170" y="70" width="300" height="190" rx="10" fill="#1b3160"/><rect x="182" y="82" width="276" height="160" rx="4" fill="#f4f6fb"/>
+          <rect x="150" y="258" width="340" height="12" rx="6" fill="#26406f"/>
+          <text x="200" y="110" font-size="13" font-weight="700" fill="#1d2433">Re: Boleto em atraso</text>
+          <rect x="200" y="120" width="200" height="7" rx="3" fill="#dfe5ef"/><rect x="200" y="133" width="170" height="7" rx="3" fill="#dfe5ef"/>
+          <g transform="translate(200 160)"><rect width="190" height="50" rx="8" fill="#fff" stroke="#dfe5ef"/><rect x="10" y="10" width="30" height="30" rx="4" fill="#f5a524"/><text x="25" y="31" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">ZIP</text><text x="50" y="25" font-size="12" font-weight="700" fill="#1d2433">Boleto_Atrasado.zip</text><text x="50" y="40" font-size="11" fill="#5b6478">84 KB</text></g>
+          <g data-anima="cursor-clica"><path d="M330 190 l0 26 l7 -7 l6 13 l5 -2 l-6 -13 l10 0z" fill="#0b1730" stroke="#fff" stroke-width="1.5"/></g>
+        </g>
+        <!-- 2: instalado escondido -->
+        <g class="cena">
+          <rect x="170" y="70" width="300" height="190" rx="10" fill="#1b3160"/><rect x="182" y="82" width="276" height="160" rx="4" fill="#f4f6fb"/>
+          <rect x="150" y="258" width="340" height="12" rx="6" fill="#26406f"/>
+          <text x="320" y="165" text-anchor="middle" font-size="14" fill="#5b6478">Nada aconteceu…?</text>
+          <g transform="translate(430 225)" data-anima="surge"><circle r="13" fill="#ef5b4c"/><circle cx="-4" cy="-2" r="2.5" fill="#fff"/><circle cx="4" cy="-2" r="2.5" fill="#fff"/><g stroke="#ef5b4c" stroke-width="3" stroke-linecap="round"><line x1="-13" y1="-12" x2="-18" y2="-18"/><line x1="13" y1="-12" x2="18" y2="-18"/></g></g>
+        </g>
+        <!-- 3: espalha pela rede -->
+        <g class="cena">
+          <g stroke="#7ff0dd" stroke-opacity=".35" stroke-width="2">
+            <line x1="100" y1="90" x2="250" y2="165"/><line x1="100" y1="240" x2="250" y2="165"/><line x1="250" y1="165" x2="400" y2="90"/><line x1="250" y1="165" x2="400" y2="240"/><line x1="400" y1="90" x2="540" y2="165"/><line x1="400" y1="240" x2="540" y2="165"/>
+          </g>
+          <g>
+            <rect x="72" y="70" width="56" height="40" rx="6" fill="#ef5b4c"/>
+            <rect x="72" y="220" width="56" height="40" rx="6" fill="#1b3160" data-anima="contamina" class="atraso1"/>
+            <rect x="222" y="145" width="56" height="40" rx="6" fill="#1b3160" data-anima="contamina"/>
+            <rect x="372" y="70" width="56" height="40" rx="6" fill="#1b3160" data-anima="contamina" class="atraso2"/>
+            <rect x="372" y="220" width="56" height="40" rx="6" fill="#1b3160" data-anima="contamina" class="atraso3"/>
+            <rect x="505" y="135" width="70" height="60" rx="6" fill="#1b3160" data-anima="contamina" class="atraso5"/>
+          </g>
+          <text x="540" y="215" text-anchor="middle" font-size="12" fill="#cfd8ea" font-weight="700">SERVIDOR</text>
+          <text x="40" y="40" fill="#7ff0dd" font-size="15" font-weight="700">SÁB · DOM</text>
+        </g>
+        <!-- 4: arquivos trancados -->
+        <g class="cena">
+          <text x="40" y="56" fill="#7ff0dd" font-size="15" font-weight="700">SEG · 8h00</text>
+          <g font-size="11" fill="#cfd8ea" text-anchor="middle">
+            <g transform="translate(150 120)"><path d="M0 10 h28 l8 8 h44 v52 h-80z" fill="#f5a524"/><g transform="translate(40 48)"><rect x="-12" y="-6" width="24" height="20" rx="4" fill="#ef5b4c"/><path d="M-7 -6 v-5 a7 7 0 0 1 14 0 v5" stroke="#ef5b4c" stroke-width="4" fill="none"/></g><text x="40" y="92">Financeiro.locked</text></g>
+            <g transform="translate(280 120)"><path d="M0 10 h28 l8 8 h44 v52 h-80z" fill="#f5a524"/><g transform="translate(40 48)"><rect x="-12" y="-6" width="24" height="20" rx="4" fill="#ef5b4c"/><path d="M-7 -6 v-5 a7 7 0 0 1 14 0 v5" stroke="#ef5b4c" stroke-width="4" fill="none"/></g><text x="40" y="92">Clientes.locked</text></g>
+            <g transform="translate(410 120)"><path d="M0 10 h28 l8 8 h44 v52 h-80z" fill="#f5a524"/><g transform="translate(40 48)"><rect x="-12" y="-6" width="24" height="20" rx="4" fill="#ef5b4c"/><path d="M-7 -6 v-5 a7 7 0 0 1 14 0 v5" stroke="#ef5b4c" stroke-width="4" fill="none"/></g><text x="40" y="92">Contratos.locked</text></g>
+          </g>
+        </g>
+        <!-- 5: pedido de resgate -->
+        <g class="cena">
+          <rect x="130" y="40" width="380" height="250" rx="10" fill="#7f1d1d"/>
+          <text x="320" y="90" text-anchor="middle" font-size="22" font-weight="800" fill="#fff">SEUS ARQUIVOS FORAM</text>
+          <text x="320" y="118" text-anchor="middle" font-size="22" font-weight="800" fill="#fff">CRIPTOGRAFADOS</text>
+          <text x="320" y="152" text-anchor="middle" font-size="13" fill="#fecaca">Pague 3 BTC para recuperar seus dados.</text>
+          <rect x="230" y="172" width="180" height="56" rx="8" fill="#450a0a"/>
+          <text x="320" y="210" text-anchor="middle" font-family="Consolas,monospace" font-size="28" font-weight="700" fill="#fca5a5" class="pisca">71:59:58</text>
+          <text x="320" y="262" text-anchor="middle" font-size="12" fill="#fecaca">Depois disso, os arquivos serão apagados.</text>
+        </g>
+        <!-- 6: um clique -->
+        <g class="cena">
+          <circle cx="320" cy="140" r="70" fill="#1b3160"/>
+          <path d="M320 105 l0 46 l12 -12 l10 22 l9 -4 l-10 -22 l17 0z" fill="#fff"/>
+          <text x="320" y="260" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">Tudo começou com um clique.</text>
+        </g>
+      </svg>
+      <button class="play-grande" id="playGrande" aria-label="Assistir"><span><svg width="34" height="34" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg></span></button>
+      <div class="legenda" id="legenda"></div>
+      <div class="controles">
+        <button id="playBtn">▶ Assistir</button>
+        <div class="barra"><div id="filmeBarra"></div></div>
+        <button id="somBtn">🔊 Som ligado</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. GALERIA -->
+<section class="step" data-titulo="Galeria de ameaças" data-trava="galeria">
+  <div class="card">
+    <span class="eyebrow">Conheça os vilões</span>
+    <h2>Abra a ficha de cada ameaça</h2>
+    <p class="muted" id="galeriaInfo">0 de 6 fichas abertas</p>
+    <div class="galeria" id="galeria"></div>
+    <div class="ficha" id="ficha"></div>
+  </div>
+</section>
+
+<!-- 5. LENDA DO CAVALO DE TROIA -->
+<section class="step" data-titulo="O cavalo de Troia">
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <span class="eyebrow">Por que esse nome?</span>
+        <h2>Um presente que abriu os portões</h2>
+        <p>Na lenda grega, depois de anos tentando invadir a cidade de Troia, os gregos deixaram na porta um enorme cavalo de madeira, como se fosse um presente de rendição. Os troianos levaram o cavalo para dentro, comemorando.</p>
+        <p>À noite, soldados escondidos dentro dele saíram e abriram os portões para o exército.</p>
+        <div class="alerta" style="margin-top:6px"><b>O trojan de computador faz igual:</b> chega disfarçado de algo útil ou de graça (um programa, um "crack", um jogo, um leitor de PDF) e, depois que você mesmo coloca ele para dentro, abre a porta para o invasor.</div>
+      </div>
+      <div class="lenda">
+        <svg viewBox="0 0 360 300" aria-hidden="true">
+          <rect x="0" y="230" width="360" height="70" fill="#d9b77c"/>
+          <!-- muralha -->
+          <g fill="#c49a5a"><rect x="250" y="90" width="110" height="140"/><rect x="250" y="76" width="18" height="16"/><rect x="282" y="76" width="18" height="16"/><rect x="314" y="76" width="18" height="16"/><rect x="346" y="76" width="14" height="16"/></g>
+          <path d="M276 230 v-50 a22 22 0 0 1 44 0 v50z" fill="#6b4a22"/>
+          <!-- cavalo -->
+          <g class="anda">
+            <g transform="translate(40 70)">
+              <rect x="30" y="80" width="140" height="70" rx="14" fill="#9a6a34"/>
+              <path d="M150 90 l20 -60 l30 -10 l10 22 l-22 10 l-14 50z" fill="#9a6a34"/>
+              <circle cx="196" cy="34" r="3" fill="#3b2a14"/>
+              <path d="M178 26 l-6 -14 l12 6z" fill="#7a5226"/>
+              <path d="M160 40 q-20 10 -16 40" stroke="#5c3d1a" stroke-width="6" fill="none"/>
+              <g fill="#7a5226"><rect x="44" y="148" width="14" height="40"/><rect x="74" y="148" width="14" height="40"/><rect x="120" y="148" width="14" height="40"/><rect x="148" y="148" width="14" height="40"/></g>
+              <rect x="20" y="184" width="160" height="10" rx="5" fill="#5c3d1a"/>
+              <circle cx="40" cy="196" r="10" fill="#3b2a14"/><circle cx="160" cy="196" r="10" fill="#3b2a14"/>
+              <!-- soldado espiando -->
+              <g class="espia"><rect x="88" y="80" width="26" height="4" fill="#3b2a14"/><g transform="translate(101 80)"><circle r="9" fill="#f2c7a5"/><path d="M-10 -2 q10 -16 20 0z" fill="#b91c1c"/></g></g>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. QUAL É A AMEAÇA -->
+<section class="step" data-titulo="Qual é a ameaça?" data-trava="sintomas" data-tag="prática">
+  <div class="card">
+    <span class="eyebrow">Atividade 1 · Diagnóstico</span>
+    <h2>Pelo sintoma, descubra a ameaça</h2>
+    <p class="muted">Leia o que aconteceu com cada colega e escolha a ameaça mais provável.</p>
+    <div id="sintomas"></div>
+  </div>
+</section>
+
+<!-- 7. DOWNLOAD E ALERTA FALSO -->
+<section class="step" data-titulo="Baixar ou não baixar" data-trava="download" data-tag="prática">
+  <div class="card">
+    <span class="eyebrow">Atividade 2 · Simulação</span>
+    <h2>Você precisa de um programa. E agora?</h2>
+    <p>Um cliente mandou um arquivo num formato que seu computador não abre. Você pesquisa na internet e aparece isto. <b>O que você faz?</b></p>
+    <div class="browser">
+      <div class="browser-bar"><div class="dots"><i></i><i></i><i></i></div><div class="end">🔍 programa para abrir arquivo .dwg grátis</div></div>
+      <div class="resultados" id="resultados">
+        <button class="res" data-c="0" data-fb="Anúncios patrocinados podem ser comprados por qualquer um, inclusive golpistas. O primeiro resultado não é garantia de nada."><div class="url"><span class="pat">Patrocinado</span>www.dwg-viewer-free-download.com</div><div class="tit">Abra Arquivos DWG Grátis — Download Rápido 2026</div><div class="desc">Baixe já! 100% grátis, sem vírus, instalação em 1 clique.</div></button>
+        <button class="res" data-c="0" data-fb="Sites de download costumam empacotar o programa junto com adware, spyware ou trojans. E é cheio de botões 'Download' falsos."><div class="url">www.baixaki-softwares-total.net › dwg</div><div class="tit">Visualizador DWG Pro + Ativador — Baixar</div><div class="desc">Versão completa desbloqueada. Clique no botão verde para baixar.</div></button>
+        <button class="res" data-c="0" data-fb="Nunca instale 'crack' ou 'ativador'. É a forma mais comum de trojan, porque você mesmo desliga o antivírus para instalar."><div class="url">www.programas-crackeados.xyz</div><div class="tit">AutoDWG Crack + Keygen Funcionando</div><div class="desc">Desative o antivírus antes de instalar (falso positivo).</div></button>
+        <button class="res" data-c="1" data-fb="<b>Exatamente!</b> Instalar programa é com a TI: eles verificam se é seguro, se a empresa tem licença e instalam a versão oficial. Às vezes já existe uma ferramenta liberada que resolve."><div class="url">Portal de Chamados da TI</div><div class="tit">🛠 Abrir chamado: "Preciso abrir arquivos .dwg"</div><div class="desc">A TI indica ou instala um programa seguro e licenciado.</div></button>
+      </div>
+    </div>
+    <div class="feedback" id="fbDown"></div>
+
+    <div id="parte2" style="display:none;margin-top:30px">
+      <h3>Agora, enquanto você navega, aparece isto na tela:</h3>
+      <div class="popup">
+        <div style="font-size:34px">⚠️</div>
+        <h3>ALERTA DE SEGURANÇA DA MICROSOFT</h3>
+        <p style="margin:0 0 8px">Seu computador foi infectado com 5 vírus! Seus dados bancários estão em risco.<br>NÃO desligue o computador. Ligue imediatamente para o suporte:</p>
+        <div class="tel">0800 000 0000</div>
+      </div>
+      <div class="opcoes" id="popupOpcoes">
+        <button class="opcao" style="font-family:inherit" data-c="0">Ligo para o número para resolver logo</button>
+        <button class="opcao" style="font-family:inherit" data-c="0">Clico no botão "Remover vírus agora" da página</button>
+        <button class="opcao" style="font-family:inherit" data-c="1">Fecho o navegador (se travar, Ctrl+Alt+Del) e aviso a TI</button>
+        <button class="opcao" style="font-family:inherit" data-c="0">Desligo o antivírus porque ele não detectou nada</button>
+      </div>
+      <div class="feedback" id="fbPopup"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. COMO SE PROTEGER -->
+<section class="step" data-titulo="Como se proteger" data-trava="habitos">
+  <div class="card">
+    <span class="eyebrow">Seus hábitos de defesa</span>
+    <h2>6 hábitos que bloqueiam quase todo malware</h2>
+    <p class="muted">Marque cada hábito como lido. Na dúvida sobre qualquer um deles, pergunte à TI.</p>
+    <div class="habitos" id="habitos">
+      <button class="habito"><span class="box">✓</span><span><b>Aceite as atualizações</b><br><span class="muted">Elas fecham as portas que os criminosos usam. Não fique adiando o "reiniciar para atualizar".</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Nunca desligue o antivírus</b><br><span class="muted">Se um programa pede para desligar a proteção para instalar, é golpe.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Não instale nada por conta própria</b><br><span class="muted">Programas, extensões do navegador e "utilitários": tudo pela TI.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Desconfie de anexos compactados</b><br><span class="muted">.zip, .rar, .exe, .js, .html e documentos que pedem "Habilitar conteúdo" ou "Habilitar macros".</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Pendrive desconhecido? Não conecte</b><br><span class="muted">Achou um pendrive? Entregue para a TI. Curiosidade é exatamente o que o criminoso espera.</span></span></button>
+      <button class="habito"><span class="box">✓</span><span><b>Salve arquivos nas pastas da empresa</b><br><span class="muted">Na rede ou na nuvem da empresa existe backup. No seu computador, se o ransomware chegar, perdeu.</span></span></button>
+    </div>
+  </div>
+</section>
+
+<!-- 9. QUIZ -->
+<section class="step" data-titulo="Quiz" data-trava="quiz" data-tag="quiz">
+  <div class="card" id="quiz"></div>
+</section>
+
+<!-- 10. FIM -->
+<section class="step" data-titulo="Conclusão">
+  <div class="fim" id="fim"></div>
+</section>
+
+</main>
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <button class="btn btn-sec" id="ant">← Voltar</button>
+    <span class="dica" id="dica"></span>
+    <button class="btn btn-pri" id="prox">Próximo →</button>
+  </div>
+</nav>
+
+<script src="curso.js"></script>
+<script>
+/* ---------- Vídeo ---------- */
+criaFilme([
+  'Sexta-feira, 17h. Alguém do financeiro abre um anexo chamado "Boleto_Atrasado.zip".',
+  'Nada parece acontecer. Mas um programa escondido acabou de ser instalado.',
+  'Durante o fim de semana, ele se espalha pela rede, de computador em computador, até chegar aos servidores.',
+  'Segunda-feira de manhã: todos os arquivos da empresa estão trancados.',
+  'Na tela, um aviso: pague o resgate em criptomoeda em 72 horas ou perca tudo.',
+  'A empresa fica dias parada. E tudo começou com um único clique.'
+], 'audio/ransom');
+
+/* ---------- Galeria ---------- */
+const AMEACAS = [
+  {id:'virus', nome:'Vírus', apelido:'O contagioso', perigo:3,
+   svg:'<circle cx="60" cy="60" r="30" fill="#22a06b"/><g stroke="#22a06b" stroke-width="7" stroke-linecap="round"><line x1="60" y1="16" x2="60" y2="28"/><line x1="60" y1="104" x2="60" y2="92"/><line x1="16" y1="60" x2="28" y2="60"/><line x1="104" y1="60" x2="92" y2="60"/><line x1="29" y1="29" x2="37" y2="37"/><line x1="91" y1="91" x2="83" y2="83"/><line x1="91" y1="29" x2="83" y2="37"/><line x1="29" y1="91" x2="37" y2="83"/></g><circle cx="50" cy="55" r="6" fill="#fff"/><circle cx="70" cy="55" r="6" fill="#fff"/><circle cx="51" cy="56" r="3" fill="#0f1f3d"/><circle cx="71" cy="56" r="3" fill="#0f1f3d"/><path d="M48 72 q12 -8 24 0" stroke="#0f1f3d" stroke-width="3" fill="none"/>',
+   entra:'Gruda em arquivos e programas. Quando você abre o arquivo infectado, ele acorda.', faz:'Corrompe arquivos, deixa o computador instável e se copia para outros arquivos.', percebe:'Programas fechando sozinhos, arquivos que não abrem mais, lentidão repentina.'},
+  {id:'worm', nome:'Worm', apelido:'O que anda sozinho', perigo:4,
+   svg:'<g fill="#0ea5e9"><circle cx="28" cy="74" r="13"/><circle cx="48" cy="66" r="14"/><circle cx="68" cy="70" r="14"/><circle cx="88" cy="60" r="16"/></g><circle cx="84" cy="55" r="5" fill="#fff"/><circle cx="96" cy="55" r="5" fill="#fff"/><circle cx="85" cy="56" r="2.5" fill="#0f1f3d"/><circle cx="97" cy="56" r="2.5" fill="#0f1f3d"/><path d="M84 68 q6 4 12 0" stroke="#0f1f3d" stroke-width="2.5" fill="none"/>',
+   entra:'Aproveita falhas em computadores sem atualização. Não precisa que ninguém clique.', faz:'Pula de computador em computador pela rede, sozinho, em minutos.', percebe:'Rede muito lenta, vários computadores com problema ao mesmo tempo.'},
+  {id:'trojan', nome:'Trojan', apelido:'O cavalo de Troia', perigo:4,
+   svg:'<rect x="22" y="56" width="62" height="30" rx="8" fill="#9a6a34"/><path d="M76 62 l10 -32 l16 -4 l4 12 l-12 6 l-6 24z" fill="#9a6a34"/><circle cx="99" cy="34" r="2.5" fill="#3b2a14"/><g fill="#7a5226"><rect x="28" y="84" width="7" height="18"/><rect x="42" y="84" width="7" height="18"/><rect x="62" y="84" width="7" height="18"/><rect x="74" y="84" width="7" height="18"/></g><rect x="18" y="100" width="72" height="5" rx="2.5" fill="#5c3d1a"/><g transform="translate(52 56)"><circle r="7" fill="#ef5b4c"/><circle cx="-2.5" cy="-1" r="1.6" fill="#fff"/><circle cx="2.5" cy="-1" r="1.6" fill="#fff"/></g>',
+   entra:'Disfarçado de programa útil: crack, ativador, jogo, "leitor de PDF", extensão de navegador.', faz:'Abre uma porta escondida para o invasor controlar o computador e trazer outros malwares.', percebe:'Quase nunca dá sinal. Por isso a regra é: só instale o que a TI liberar.'},
+  {id:'ransomware', nome:'Ransomware', apelido:'O sequestrador', perigo:5,
+   svg:'<rect x="30" y="52" width="60" height="48" rx="10" fill="#ef5b4c"/><path d="M42 52 v-12 a18 18 0 0 1 36 0 v12" stroke="#ef5b4c" stroke-width="9" fill="none"/><circle cx="50" cy="72" r="5" fill="#fff"/><circle cx="70" cy="72" r="5" fill="#fff"/><path d="M48 88 l6 -4 l6 4 l6 -4 l6 4" stroke="#fff" stroke-width="3" fill="none"/>',
+   entra:'Anexos, links de phishing, trojans e acessos remotos com senha fraca.', faz:'Criptografa (tranca) todos os arquivos que alcança, inclusive na rede, e pede resgate. Muitas vezes também rouba os dados e ameaça publicar.', percebe:'Arquivos com extensão estranha (.locked, .crypt), bilhete de resgate na tela ou nas pastas.'},
+  {id:'spyware', nome:'Spyware e keylogger', apelido:'O espião', perigo:4,
+   svg:'<ellipse cx="60" cy="62" rx="44" ry="26" fill="#f5a524"/><circle cx="60" cy="62" r="18" fill="#fff"/><circle cx="60" cy="62" r="10" fill="#0f1f3d"/><circle cx="64" cy="58" r="3" fill="#fff"/><path d="M16 62 q44 -50 88 0" stroke="#b45309" stroke-width="4" fill="none"/>',
+   entra:'Junto com programas gratuitos, extensões de navegador e trojans.', faz:'Grava tudo o que você digita (senhas, cartões, mensagens), tira prints da tela e envia ao criminoso.', percebe:'Difícil de notar. Contas invadidas "do nada" são um sinal. Nunca use computadores públicos para acessar sistemas da empresa.'},
+  {id:'scareware', nome:'Adware e scareware', apelido:'O assustador', perigo:2,
+   svg:'<rect x="18" y="26" width="84" height="64" rx="8" fill="#a78bfa"/><rect x="18" y="26" width="84" height="14" rx="7" fill="#7c3aed"/><circle cx="28" cy="33" r="3" fill="#fff"/><text x="60" y="72" text-anchor="middle" font-size="30" font-weight="900" fill="#fff">!!!</text><path d="M48 98 l12 -10 l12 10z" fill="#a78bfa"/>',
+   entra:'Sites duvidosos, anúncios enganosos e programas "otimizadores" gratuitos.', faz:'Enche a tela de anúncios ou mostra alertas falsos ("seu PC está infectado!") para você ligar para um falso suporte ou pagar um falso antivírus.', percebe:'Janelas piscando, sons de alarme, números de telefone para "suporte". A Microsoft nunca mostra alerta com telefone.'}
+];
+const vistas=new Set();
+function desenhaGaleria(sel){
+  const g=document.getElementById('galeria'); g.innerHTML='';
+  AMEACAS.forEach(a=>{
+    const b=document.createElement('button');
+    b.className='ameaca'+(vistas.has(a.id)?' vista':'')+(a.id===sel?' sel':'');
+    b.innerHTML=`<svg viewBox="0 0 120 120" class="flutua">${a.svg}</svg><b>${a.nome}</b><small>${a.apelido}</small>`;
+    b.onclick=()=>abreFicha(a); g.appendChild(b);
+  });
+}
+function abreFicha(a){
+  vistas.add(a.id); desenhaGaleria(a.id);
+  const f=document.getElementById('ficha'); f.className='ficha show';
+  f.innerHTML=`<div class="retrato"><svg viewBox="0 0 120 120" class="flutua">${a.svg}</svg></div>
+    <div><h3>${a.nome}</h3><div class="apelido">${a.apelido}</div>
+    <dl><dt>Como entra</dt><dd>${a.entra}</dd><dt>O que faz</dt><dd>${a.faz}</dd><dt>Como perceber</dt><dd>${a.percebe}</dd>
+    <dt>Perigo</dt><dd><div class="perigo">${[1,2,3,4,5].map(n=>`<i class="${n<=a.perigo?'on':''}"></i>`).join('')}</div></dd></dl></div>`;
+  document.getElementById('galeriaInfo').textContent=`${vistas.size} de 6 fichas abertas`;
+  if (window.innerWidth<820) f.scrollIntoView({behavior:'smooth', block:'nearest'});
+  if (vistas.size===6) libera('galeria');
+}
+desenhaGaleria();
+
+/* ---------- Sintomas ---------- */
+const NOMES=['Vírus','Worm','Trojan','Ransomware','Spyware','Scareware'];
+const SINTOMAS=[
+  {txt:'A Júlia abriu a pasta do setor e todos os arquivos estão com o nome terminando em <b>.locked</b>. Dentro de cada pasta tem um arquivo <b>LEIA-ME.txt</b> pedindo pagamento em bitcoin.', c:'Ransomware', e:'Arquivos trancados e pedido de resgate: ransomware. Avise a TI imediatamente e desconecte da rede.'},
+  {txt:'O Pedro instalou um "ativador grátis" do Office que achou num fórum. Funcionou, mas na semana seguinte a TI viu o computador dele mandando dados para um servidor desconhecido na madrugada.', c:'Trojan', e:'Um programa "útil" que abre a porta escondida: trojan, o cavalo de Troia.'},
+  {txt:'A senha do banco da Marta foi usada por outra pessoa, mesmo ela nunca tendo passado para ninguém. Ela tinha instalado uma extensão de "cupons de desconto" no navegador.', c:'Spyware', e:'A extensão gravava o que ela digitava: spyware com keylogger.'},
+  {txt:'Enquanto lia uma notícia, apareceu uma tela vermelha com sirene dizendo que o computador do Lucas tinha 5 vírus e um telefone de "suporte técnico" para ligar.', c:'Scareware', e:'Alerta falso para assustar: scareware. Feche o navegador e não ligue para o número.'},
+  {txt:'Numa manhã, 30 computadores da empresa ficaram lentos ao mesmo tempo, inclusive alguns que estavam desligados até a véspera e sem atualização. Ninguém clicou em nada.', c:'Worm', e:'Se espalhou sozinho pela rede, aproveitando computadores desatualizados: worm.'}
+];
+const sintResp={};
+function desenhaSintomas(){
+  const box=document.getElementById('sintomas'); box.innerHTML='';
+  SINTOMAS.forEach((s,i)=>{
+    const d=document.createElement('div'); d.className='sintoma';
+    const r=sintResp[i];
+    d.innerHTML=`<div class="tela-sint">${s.txt}</div><div class="chips">${NOMES.map(n=>{
+      let cls=''; if(r){ if(n===s.c) cls='certa'; else if(n===r) cls='errada'; }
+      return `<button class="chip ${cls}" ${r?'disabled':''} data-n="${n}">${n}</button>`;}).join('')}</div>
+      ${r?`<div class="feedback show ${r===s.c?'bom':'ruim'}">${r===s.c?'<b>Isso!</b> ':'<b>Não foi dessa vez.</b> '}${s.e}</div>`:''}`;
+    d.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{ sintResp[i]=c.dataset.n; desenhaSintomas(); });
+    box.appendChild(d);
+  });
+  if (Object.keys(sintResp).length===SINTOMAS.length) libera('sintomas');
+}
+desenhaSintomas();
+
+/* ---------- Download e pop-up ---------- */
+let acertouDown=false;
+document.querySelectorAll('#resultados .res').forEach(r=>r.onclick=()=>{
+  const ok=r.dataset.c==='1', fb=document.getElementById('fbDown');
+  r.classList.add(ok?'certa':'errada');
+  fb.className='feedback show '+(ok?'bom':'ruim'); fb.innerHTML=(ok?'':'<b>Arriscado.</b> ')+r.dataset.fb+(ok?'':' Tente de novo.');
+  if (ok){ acertouDown=true; document.querySelectorAll('#resultados .res').forEach(x=>x.disabled=true); document.getElementById('parte2').style.display='block'; }
+});
+document.querySelectorAll('#popupOpcoes .opcao').forEach(o=>o.onclick=()=>{
+  const ok=o.dataset.c==='1', fb=document.getElementById('fbPopup');
+  o.classList.add(ok?'certa':'errada'); fb.className='feedback show '+(ok?'bom':'ruim');
+  fb.innerHTML= ok ? '<b>Certo!</b> É um scareware: a página só quer te assustar. Nenhuma empresa séria mostra alerta com telefone. Fechar o navegador resolve; avisar a TI ajuda a bloquear o site para todos.'
+                   : '<b>Não!</b> Do outro lado da linha está um golpista que vai pedir acesso remoto ao seu computador ou dinheiro. Tente de novo.';
+  if (ok) libera('download');
+});
+
+/* ---------- Hábitos ---------- */
+const habitos=[...document.querySelectorAll('.habito')];
+habitos.forEach(h=>h.onclick=()=>{ h.classList.add('on'); if (habitos.every(x=>x.classList.contains('on'))) libera('habitos'); });
+
+/* ---------- Quiz ---------- */
+
+criaQuiz({id:'ameacas', proximo:{titulo:'Phishing, a isca que traz quase todos eles', url:'modulo-2-phishing.html'},
+  revisar:'A nota mínima é 70%. Revise a galeria de ameaças e tente o quiz de novo.'});
+
+iniciaCurso({
+  dicas:{
+    galeria:'Abra as 6 fichas para continuar',
+    sintomas:'Responda os 5 casos para continuar',
+    download:'Conclua as duas situações para continuar',
+    habitos:'Marque os 6 hábitos para continuar',
+    quiz:'Responda o quiz para concluir'
+  },
+  aoEntrar:{'Conclusão':mostraFim}
+});
+</script>
+</body>
+</html>
