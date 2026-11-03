@@ -4,6 +4,7 @@
 import puppeteer from "puppeteer-core";
 import { readFileSync } from "node:fs";
 import { execSync } from "node:child_process";
+import { createHmac } from "node:crypto";
 
 const BASE = process.env.BASE ?? "http://localhost:3500";
 const LOG = process.env.LOG;
@@ -13,6 +14,33 @@ const ADMIN = process.env.ADMIN ?? "admin@demo.broadcastti.com.br";
 let falhas = 0;
 const ok = (cond, msg) => { console.log(`${cond ? "✓" : "✗"} ${msg}`); if (!cond) falhas++; };
 const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// código do Google Authenticator calculado aqui, como o celular faria
+function totp(segredo, passo = Math.floor(Date.now() / 30000)) {
+  const alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+  let bits = 0, v = 0; const bytes = [];
+  for (const c of segredo.replace(/\s/g, "")) { v = (v << 5) | alf.indexOf(c); bits += 5; if (bits >= 8) { bytes.push((v >>> (bits - 8)) & 255); bits -= 8; } }
+  const cont = Buffer.alloc(8); cont.writeBigUInt64BE(BigInt(passo));
+  const h = createHmac("sha1", Buffer.from(bytes)).update(cont).digest();
+  const o = h[h.length - 1] & 15;
+  return ((h.readUInt32BE(o) & 0x7fffffff) % 1e6).toString().padStart(6, "0");
+}
+const SENHA_ADMIN = "senha-de-teste-123";
+
+// sem LOG_CMD (desenvolvimento): zera o autenticador do admin de teste para o teste poder repetir
+if (!process.env.LOG_CMD) {
+  execSync(`docker exec treinamento-postgres-dev psql -U treinamento -d treinamento -c "UPDATE \\"UsuarioAdmin\\" SET \\"senhaHash\\"=NULL, \\"totpSegredo\\"=NULL, \\"totpAtivo\\"=false, \\"totpUltimoPasso\\"=NULL, \\"codigosEmergencia\\"=NULL WHERE email='${ADMIN}'"`, { stdio: "ignore" });
+}
+
+async function entrarComSenha(page, email, codigo) {
+  await page.goto(`${BASE}/entrar`, { waitUntil: "networkidle0" });
+  await page.type("input[name=email]", email);
+  await Promise.all([page.waitForNavigation({ waitUntil: "networkidle0" }), page.click("button.btn-pri")]);
+  await page.type("input[name=senha]", SENHA_ADMIN);
+  await page.type("input[name=codigo]", codigo);
+  await page.click("button.btn-pri");
+  await espera(1500);
+}
 
 // respostas certas (lidas do servidor só para o teste)
 const gabarito = JSON.parse(execSync("npx tsx scripts/gabarito.ts", { encoding: "utf8" }));
@@ -128,7 +156,43 @@ try {
   // ---------- Admin
   await page.goto(`${BASE}/sair`, { waitUntil: "networkidle0" });
   await entrar(page, ADMIN);
-  ok(page.url() === `${BASE}/admin`, "administrador cai na lista de clientes");
+  ok(page.url() === `${BASE}/entrar/configurar`, "primeiro acesso do administrador pede para configurar o autenticador");
+  await page.goto(`${BASE}/admin`, { waitUntil: "networkidle0" });
+  ok(page.url() === `${BASE}/entrar/configurar`, "sem configurar, não abre a área administrativa");
+  const segredo = await page.$eval(".chave-totp", (e) => e.textContent);
+  ok(!!(await page.$("img[alt^='QR code']")), "QR code aparece");
+  await page.type("input[name=senha]", SENHA_ADMIN);
+  await page.type("input[name=confirma]", SENHA_ADMIN);
+  await page.type("input[name=codigo]", "123456");
+  await page.click("form button.btn-pri");
+  await page.waitForSelector(".erro");
+  ok((await page.$eval(".erro", (e) => e.textContent)).includes("incorreto"), "código errado do aplicativo é recusado");
+  await page.$eval("input[name=codigo]", (e) => (e.value = ""));
+  await page.$eval("input[name=senha]", (e) => (e.value = ""));
+  await page.$eval("input[name=confirma]", (e) => (e.value = ""));
+  await page.type("input[name=senha]", SENHA_ADMIN);
+  await page.type("input[name=confirma]", SENHA_ADMIN);
+  await page.type("input[name=codigo]", totp(segredo));
+  await page.click("form button.btn-pri");
+  await page.waitForSelector(".codigos-emergencia code");
+  const emergencia = await page.$$eval(".codigos-emergencia code", (cs) => cs.map((c) => c.textContent));
+  ok(emergencia.length === 8, "8 códigos de emergência gerados");
+  await Promise.all([page.waitForNavigation({ waitUntil: "networkidle0" }), page.click("form button.btn-pri")]);
+  ok(page.url() === `${BASE}/admin`, "após configurar, administrador cai na lista de clientes");
+
+  // segundo login: senha + autenticador, sem código por e-mail
+  await page.goto(`${BASE}/sair`, { waitUntil: "networkidle0" });
+  await entrarComSenha(page, ADMIN, "000000");
+  ok(page.url().includes("etapa=senha") && (await page.content()).includes("incorreto"), "administrador entra por senha (sem código no e-mail) e código errado é recusado");
+  await entrarComSenha(page, ADMIN, emergencia[0].toLowerCase());
+  ok(page.url() === `${BASE}/admin`, "código de emergência funciona");
+  await page.goto(`${BASE}/sair`, { waitUntil: "networkidle0" });
+  await entrarComSenha(page, ADMIN, emergencia[0]);
+  ok(!page.url().endsWith("/admin"), "código de emergência não vale duas vezes");
+  // espera o próximo código do aplicativo (o usado na configuração não pode ser reaproveitado)
+  await espera((30 - (Math.floor(Date.now() / 1000) % 30)) * 1000 + 500);
+  await entrarComSenha(page, ADMIN, totp(segredo));
+  ok(page.url() === `${BASE}/admin`, "senha + código do aplicativo funciona");
   ok((await page.content()).includes("Cliente Demonstração"), "cliente de demonstração aparece");
   await page.click("a[href^='/admin/clientes/c']");
   await page.waitForSelector(".stats");
@@ -156,7 +220,8 @@ try {
   ok((await page.content()).includes("Lembrete enviado para 4 de 4"), "lembretes enviados aos pendentes");
 
   await page.goto(`${BASE}/admin/usuarios`, { waitUntil: "networkidle0" });
-  ok((await page.content()).includes("Dar acesso"), "tela de usuários abre");
+  const usuarios = await page.$eval("body", (b) => b.innerText);
+  ok(usuarios.includes("Dar acesso") && usuarios.includes("7 códigos de emergência"), "tela de usuários mostra o autenticador e os códigos restantes");
 } finally {
   await browser.close();
 }

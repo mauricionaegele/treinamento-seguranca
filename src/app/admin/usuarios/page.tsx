@@ -2,7 +2,9 @@ import { redirect } from "next/navigation";
 import { TopoAdmin, Mensagens } from "@/components/TopoAdmin";
 import { prisma } from "@/lib/prisma";
 import { exigirAdmin } from "@/lib/sessao";
-import { desativarUsuario, salvarUsuario } from "../acoes";
+import { desativarUsuario, salvarUsuario, zerarAcesso } from "../acoes";
+import { exigeMfa } from "@/lib/sessao";
+import { formataData } from "@/lib/status";
 
 export default async function Usuarios({ searchParams }: { searchParams: Promise<{ msg?: string; erro?: string }> }) {
   const { admin, colaborador } = await exigirAdmin();
@@ -20,12 +22,13 @@ export default async function Usuarios({ searchParams }: { searchParams: Promise
         <h1>Usuários da área administrativa</h1>
         <p className="muted">
           <b>Administrador</b>: equipe da Broadcast, vê e gerencia todos os clientes. <b>Gestor</b>: pessoa do cliente que só consulta o painel e o relatório do próprio cliente.
-          Todos entram com código enviado por e-mail.
+          Administradores entram com senha + Google Authenticator (configurados no primeiro acesso, que começa com um código no e-mail).
+          Gestores entram com código no e-mail, ou com autenticador se o cliente exigir.
         </p>
         <Mensagens msg={busca.msg} erro={busca.erro} />
         <div className="tabela-wrap" style={{ marginBottom: 20 }}>
           <table className="tabela">
-            <thead><tr><th>Nome</th><th>Papel</th><th>Cliente</th><th></th></tr></thead>
+            <thead><tr><th>Nome</th><th>Papel</th><th>Cliente</th><th>Login</th><th></th></tr></thead>
             <tbody>
               {usuarios.map((u) => (
                 <tr key={u.id}>
@@ -33,6 +36,17 @@ export default async function Usuarios({ searchParams }: { searchParams: Promise
                   <td>{u.papel === "ADMIN" ? "Administrador" : "Gestor"}</td>
                   <td>{u.cliente?.nome ?? "Todos"}</td>
                   <td>
+                    {!exigeMfa(u) ? <span className="muted">Código no e-mail</span>
+                      : u.totpAtivo ? <>Autenticador<span className="sub">desde {formataData(u.mfaConfiguradoEm)} · {((u.codigosEmergencia as string[] | null) ?? []).length} códigos de emergência</span></>
+                      : <span style={{ color: "#b26a00" }}>Falta o primeiro acesso</span>}
+                  </td>
+                  <td>
+                    {u.id !== admin.id && u.totpAtivo && (
+                      <form action={zerarAcesso}>
+                        <input type="hidden" name="id" value={u.id} />
+                        <button className="btn-link" style={{ color: "var(--muted)" }}>Zerar senha e autenticador</button>
+                      </form>
+                    )}
                     {u.id !== admin.id && (
                       <form action={desativarUsuario}>
                         <input type="hidden" name="id" value={u.id} />

@@ -1,6 +1,54 @@
 import "server-only";
-import { createHash, randomBytes, randomInt, timingSafeEqual } from "node:crypto";
+import { createCipheriv, createDecipheriv, createHash, randomBytes, randomInt, scryptSync, timingSafeEqual } from "node:crypto";
 import { headers } from "next/headers";
+
+/** Senha guardada com scrypt (lento de propósito, com sal próprio). */
+export function hashSenha(senha: string) {
+  const sal = randomBytes(16);
+  const h = scryptSync(senha, sal, 64);
+  return `scrypt$${sal.toString("base64")}$${h.toString("base64")}`;
+}
+
+export function confereSenha(senha: string, guardado: string | null) {
+  if (!guardado) return false;
+  const [tipo, sal, h] = guardado.split("$");
+  if (tipo !== "scrypt" || !sal || !h) return false;
+  const esperado = Buffer.from(h, "base64");
+  const calculado = scryptSync(senha, Buffer.from(sal, "base64"), esperado.length);
+  return timingSafeEqual(esperado, calculado);
+}
+
+/** Cifra (AES-256-GCM) para o segredo do autenticador, com chave derivada do AUTH_SECRET. */
+function chave() {
+  return createHash("sha256").update(`${process.env.AUTH_SECRET ?? ""}:totp`).digest();
+}
+
+export function cifrar(texto: string) {
+  const iv = randomBytes(12);
+  const c = createCipheriv("aes-256-gcm", chave(), iv);
+  const dados = Buffer.concat([c.update(texto, "utf8"), c.final()]);
+  return [iv, c.getAuthTag(), dados].map((b) => b.toString("base64")).join(".");
+}
+
+export function decifrar(cifrado: string) {
+  const [iv, tag, dados] = cifrado.split(".").map((p) => Buffer.from(p, "base64"));
+  const d = createDecipheriv("aes-256-gcm", chave(), iv);
+  d.setAuthTag(tag);
+  return Buffer.concat([d.update(dados), d.final()]).toString("utf8");
+}
+
+/** Códigos de emergência: 8 códigos ABCD-EFGH de uso único. */
+export function novosCodigosEmergencia() {
+  const letras = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  return Array.from({ length: 8 }, () => {
+    const s = Array.from({ length: 8 }, () => letras[randomInt(0, letras.length)]).join("");
+    return `${s.slice(0, 4)}-${s.slice(4)}`;
+  });
+}
+
+export function normalizaCodigoEmergencia(codigo: string) {
+  return codigo.toUpperCase().replace(/[^A-Z0-9]/g, "");
+}
 
 /** Hash com "sal" do servidor: o banco nunca guarda códigos ou tokens em texto. */
 export function hash(valor: string) {

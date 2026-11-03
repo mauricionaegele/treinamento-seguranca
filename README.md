@@ -5,6 +5,10 @@ conferidos no servidor, certificado com código de verificação e área adminis
 com painel, relatório e exportação para Excel.
 
 - **Login sem senha:** código de 6 dígitos por e-mail, só para quem está cadastrado.
+- **Administradores:** senha + Google Authenticator (TOTP) e 8 códigos de emergência.
+  O primeiro acesso entra pelo código do e-mail e cai em `/entrar/configurar`.
+  Gestores do cliente usam o mesmo esquema quando o cliente liga "gestorMfa".
+  Esqueceu a senha ou perdeu o celular: outro administrador usa "Zerar senha e autenticador".
 - **Ciclo anual:** progresso, provas e certificados ficam guardados por ano; "Iniciar novo ciclo" recomeça sem apagar o histórico.
 - **Conteúdo dos módulos:** `conteudo/` (HTML/CSS/JS/áudio), entregue só para quem está logado. Quizzes em `src/lib/quizzes.ts`, prova final em `src/lib/questoes.ts`.
 

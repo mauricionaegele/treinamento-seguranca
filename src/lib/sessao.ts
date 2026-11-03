@@ -10,6 +10,7 @@ const DURACAO_DIAS = 7;
 export async function criarSessao(dados: {
   colaboradorId?: string | null;
   adminId?: string | null;
+  adminPendente?: boolean;
   ip: string;
   userAgent: string;
 }) {
@@ -20,6 +21,7 @@ export async function criarSessao(dados: {
       tokenHash: hash(token),
       colaboradorId: dados.colaboradorId ?? null,
       adminId: dados.adminId ?? null,
+      adminPendente: dados.adminPendente ?? false,
       expiraEm,
       ip: dados.ip,
       userAgent: dados.userAgent,
@@ -49,9 +51,13 @@ export async function lerSessao() {
   if (!s || s.expiraEm < new Date()) return null;
   // conta desativada perde o acesso na hora
   const colaborador = s.colaborador?.ativo && s.colaborador.cliente.ativo ? s.colaborador : null;
-  const admin = s.admin?.ativo ? s.admin : null;
-  if (!colaborador && !admin) return null;
-  return { id: s.id, colaborador, admin };
+  const adminValido = s.admin?.ativo ? s.admin : null;
+  // admin que entrou só com o código do e-mail: ainda não pode usar a área
+  // administrativa, só a tela de configurar senha + autenticador
+  const admin = adminValido && !s.adminPendente ? adminValido : null;
+  const adminPendente = adminValido && s.adminPendente ? adminValido : null;
+  if (!colaborador && !admin && !adminPendente) return null;
+  return { id: s.id, colaborador, admin, adminPendente };
 }
 
 export async function encerrarSessao() {
@@ -73,8 +79,14 @@ export async function exigirColaborador() {
 export async function exigirAdmin() {
   const s = await lerSessao();
   if (!s) redirect("/entrar");
+  if (s.adminPendente) redirect("/entrar/configurar");
   if (!s.admin) redirect("/");
   return { ...s, admin: s.admin };
+}
+
+/** Administradores sempre usam senha + autenticador; gestores, se o cliente exigir. */
+export function exigeMfa(admin: { papel: string; cliente?: { gestorMfa: boolean } | null }) {
+  return admin.papel === "ADMIN" || !!admin.cliente?.gestorMfa;
 }
 
 export function podeVerCliente(admin: { papel: string; clienteId: string | null }, clienteId: string) {

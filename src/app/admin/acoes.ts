@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { exigirAdmin, podeVerCliente } from "@/lib/sessao";
 import { normalizaEmail } from "@/lib/seguranca";
@@ -43,6 +44,7 @@ export async function salvarCliente(form: FormData) {
     maxTentativas: d.data.maxTentativas,
     validadeMeses: d.data.validadeMeses,
     exigeProvaFinal: form.get("exigeProvaFinal") === "on",
+    gestorMfa: form.get("gestorMfa") === "on",
   };
   const cliente = id
     ? await prisma.cliente.update({ where: { id }, data: dados })
@@ -187,4 +189,19 @@ export async function desativarUsuario(form: FormData) {
   await prisma.usuarioAdmin.update({ where: { id }, data: { ativo: false } });
   await prisma.sessao.deleteMany({ where: { adminId: id } });
   revalidatePath("/admin/usuarios");
+}
+
+/** Esqueceu a senha ou perdeu o celular: apaga senha e autenticador. No próximo
+ *  acesso a pessoa entra pelo código do e-mail e configura tudo de novo. */
+export async function zerarAcesso(form: FormData) {
+  const { admin } = await exigirBroadcast();
+  const id = texto(form, "id");
+  if (id === admin.id) redirect(`/admin/usuarios?erro=${encodeURIComponent("Peça a outro administrador para zerar o seu acesso.")}`);
+  const u = await prisma.usuarioAdmin.update({
+    where: { id },
+    data: { senhaHash: null, totpSegredo: null, totpAtivo: false, totpUltimoPasso: null, codigosEmergencia: Prisma.DbNull, mfaConfiguradoEm: null },
+  });
+  await prisma.sessao.deleteMany({ where: { adminId: id } });
+  await prisma.registroAcesso.create({ data: { email: u.email, evento: "mfa_zerado", detalhe: `por:${admin.email}` } });
+  redirect(`/admin/usuarios?msg=${encodeURIComponent(`Acesso de ${u.nome} zerado. No próximo login, ${u.nome.split(" ")[0]} recebe o código por e-mail e cadastra senha e autenticador de novo.`)}`);
 }

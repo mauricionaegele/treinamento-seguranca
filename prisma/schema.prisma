@@ -29,6 +29,7 @@ model Cliente {
   maxTentativas  Int      @default(3)     // tentativas da prova final por ciclo
   validadeMeses  Int      @default(12)    // validade do certificado
   exigeProvaFinal Boolean @default(true)  // false: certificado sai ao concluir os módulos (nota = média dos quizzes)
+  gestorMfa      Boolean  @default(false) // gestores do cliente também entram com senha + Google Authenticator
   ativo          Boolean  @default(true)
   criadoEm       DateTime @default(now())
 
@@ -67,6 +68,15 @@ model UsuarioAdmin {
   ativo      Boolean  @default(true)
   criadoEm   DateTime @default(now())
 
+  // Login forte (senha + Google Authenticator). Administradores sempre;
+  // gestores quando o cliente liga "gestorMfa".
+  senhaHash          String?
+  totpSegredo        String?   // cifrado com AUTH_SECRET
+  totpAtivo          Boolean   @default(false)
+  totpUltimoPasso    Int?      // impede reutilizar o mesmo código
+  codigosEmergencia  Json?     // hashes dos códigos de uso único
+  mfaConfiguradoEm   DateTime?
+
   cliente    Cliente? @relation(fields: [clienteId], references: [id])
   sessoes    Sessao[]
 }
@@ -89,6 +99,7 @@ model Sessao {
   tokenHash      String        @unique
   colaboradorId  String?
   adminId        String?
+  adminPendente  Boolean       @default(false) // entrou pelo código do e-mail, falta configurar o autenticador
   expiraEm       DateTime
   ip             String        @default("")
   userAgent      String        @default("")

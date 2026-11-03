@@ -357,6 +357,15 @@ a{color:var(--teal)}
 .login-caixa .marca{display:flex;align-items:center;gap:10px;color:#fff;font-weight:800;font-size:20px;justify-content:center;margin-bottom:22px}
 .login-caixa .card h1{font-size:26px}
 
+/* primeiro acesso do administrador (autenticador) */
+.passo-config{font-size:17px;margin:22px 0 8px;color:var(--navy)}
+.qr-config{display:flex;gap:18px;align-items:center;background:#f7f9fc;border-radius:14px;padding:14px;margin-bottom:6px}
+.qr-config img{flex:none;border-radius:8px;background:#fff}
+.chave-totp{display:block;margin-top:8px;font-size:15px;font-weight:700;letter-spacing:1px;word-spacing:4px;color:var(--navy)}
+.codigos-emergencia{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0 22px}
+.codigos-emergencia code{background:#e2f6f4;border-radius:10px;padding:10px;text-align:center;font-size:17px;font-weight:700;letter-spacing:2px;color:var(--navy)}
+@media (max-width:520px){.qr-config{flex-direction:column;text-align:center}}
+
 /* painel do colaborador */
 .mods{display:grid;gap:14px;margin-top:26px}
 .mod{display:grid;grid-template-columns:64px 1fr auto;gap:18px;align-items:center;background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:18px 20px;text-decoration:none;color:inherit;border:2px solid transparent;transition:all .2s}

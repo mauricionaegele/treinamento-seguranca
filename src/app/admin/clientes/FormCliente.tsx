@@ -2,7 +2,7 @@ import { salvarCliente } from "../acoes";
 
 type Cliente = {
   id: string; nome: string; contatoTi: string; cicloAtual: number; prazo: Date | null;
-  notaMinima: number; maxTentativas: number; validadeMeses: number; exigeProvaFinal: boolean;
+  notaMinima: number; maxTentativas: number; validadeMeses: number; exigeProvaFinal: boolean; gestorMfa: boolean;
 };
 
 export function FormCliente({ cliente }: { cliente?: Cliente }) {
@@ -48,6 +48,15 @@ export function FormCliente({ cliente }: { cliente?: Cliente }) {
           <b>Exigir prova final</b>
           <br /><span className="muted" style={{ fontSize: 14 }}>
             Desmarcado: o certificado é emitido quando a pessoa conclui os 7 módulos, com a média dos quizzes como nota.
+          </span>
+        </span>
+      </label>
+      <label className="alt" style={{ marginBottom: 18 }}>
+        <input type="checkbox" name="gestorMfa" defaultChecked={cliente?.gestorMfa ?? false} />
+        <span>
+          <b>Gestores do cliente entram com senha + Google Authenticator</b>
+          <br /><span className="muted" style={{ fontSize: 14 }}>
+            Desmarcado: os gestores entram só com o código enviado por e-mail. Os administradores da Broadcast sempre usam o autenticador.
           </span>
         </span>
       </label>
