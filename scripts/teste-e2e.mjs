@@ -153,6 +153,11 @@ try {
   ok(p2.url().endsWith("/entrar"), "área administrativa exige login");
   await anon.close();
 
+  // Bruno abre um módulo e para (fica "em andamento")
+  await page.goto(`${BASE}/sair`, { waitUntil: "networkidle0" });
+  await entrar(page, "bruno@demo.broadcastti.com.br");
+  await page.goto(`${BASE}/curso/modulo-2-phishing.html`, { waitUntil: "networkidle0" });
+
   // ---------- Admin
   await page.goto(`${BASE}/sair`, { waitUntil: "networkidle0" });
   await entrar(page, ADMIN);
@@ -213,11 +218,20 @@ try {
   const imp = await page.content();
   ok(imp.includes("1 colaborador(es) novo(s)") && imp.includes("Linha 3"), "importação adiciona válidos e aponta linha com erro");
 
-  // lembretes
+  // e-mails: convite (não começou) e lembrete (parou no meio)
+  page.on("dialog", (d) => d.accept());
+  const logEmails = () => (process.env.LOG_CMD ? execSync(process.env.LOG_CMD, { encoding: "utf8" }) : readFileSync(LOG, "utf8"));
   await page.goto(`${BASE}/admin/clientes/${idCliente}`, { waitUntil: "networkidle0" });
-  const btnLembrete = await page.$("form button.btn-pri");
-  await Promise.all([page.waitForNavigation({ waitUntil: "networkidle0" }), btnLembrete.click()]);
-  ok((await page.content()).includes("Lembrete enviado para 4 de 4"), "lembretes enviados aos pendentes");
+  ok(!(await page.$("input[aria-label='Selecionar Ana Souza']")), "quem já concluiu não pode ser selecionado");
+  await page.click("input[aria-label='Selecionar Carla Dias']");
+  ok((await page.$eval("button[value=selecionados]", (b) => b.textContent)).includes("(1)"), "contador de selecionados atualiza");
+  await Promise.all([page.waitForNavigation({ waitUntil: "networkidle0" }), page.click("button[value=selecionados]")]);
+  ok((await page.$eval("body", (b) => b.innerText)).includes("Enviado: 1 convite(s)."), "envio só para o selecionado");
+  ok(logEmails().split("\n").filter((l) => l.includes("[EMAIL-TESTE]") && l.includes("Seu treinamento de segurança da informação")).every((l) => l.includes("carla@")), "convite foi só para a Carla");
+  await Promise.all([page.waitForNavigation({ waitUntil: "networkidle0" }), page.click("button[value=pendentes]")]);
+  ok((await page.$eval("body", (b) => b.innerText)).includes("Enviado: 3 convite(s) e 1 lembrete(s)."), "envio a todos os pendentes separa convite e lembrete");
+  ok(logEmails().split("\n").some((l) => l.includes("para=bruno@") && l.includes("Lembrete: conclua")), "Bruno (parou no meio) recebeu o lembrete");
+  ok((await page.$eval("body", (b) => b.innerText)).includes("convite em"), "painel mostra o último e-mail enviado");
 
   await page.goto(`${BASE}/admin/usuarios`, { waitUntil: "networkidle0" });
   const usuarios = await page.$eval("body", (b) => b.innerText);

@@ -53,7 +53,7 @@ export async function situacaoDoCliente(clienteId: string) {
       certificado: cert,
       situacao,
       ultimoAcesso: c.acessos[0]?.criadoEm ?? null,
-      ultimoLembrete: c.lembretes[0]?.enviadoEm ?? null,
+      ultimoEmail: c.lembretes[0] ? { em: c.lembretes[0].enviadoEm, tipo: c.lembretes[0].tipo } : null,
     };
   });
 

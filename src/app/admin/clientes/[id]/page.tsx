@@ -5,9 +5,10 @@ import { exigirAdmin, podeVerCliente } from "@/lib/sessao";
 import { situacaoDoCliente, formataData, ROTULO_SITUACAO, type Situacao } from "@/lib/status";
 import { prisma } from "@/lib/prisma";
 import { MODULOS } from "@/lib/modulos";
-import { desativarColaborador, enviarLembretes, liberarTentativa } from "../../acoes";
+import { desativarColaborador, liberarTentativa } from "../../acoes";
+import { BarraEnvio, MarcarTodos } from "./EnvioEmails";
 
-type Busca = { setor?: string; situacao?: string; q?: string; msg?: string };
+type Busca = { setor?: string; situacao?: string; q?: string; msg?: string; erro?: string };
 
 export default async function PainelCliente({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<Busca> }) {
   const { admin, colaborador } = await exigirAdmin();
@@ -57,7 +58,7 @@ export default async function PainelCliente({ params, searchParams }: { params: 
             {ehAdmin && <Link className="btn btn-sec" href={`/admin/clientes/${id}/editar`}>⚙ Configurar</Link>}
           </div>
         </div>
-        <div style={{ marginTop: 14 }}><Mensagens msg={busca.msg} /></div>
+        <div style={{ marginTop: 14 }}><Mensagens msg={busca.msg} erro={busca.erro} /></div>
 
         <div className="stats">
           <div className="stat"><b>{resumo.total}</b><span>colaboradores</span></div>
@@ -68,12 +69,8 @@ export default async function PainelCliente({ params, searchParams }: { params: 
           <div className="stat"><b>{resumo.vencendo}</b><span>certificados vencendo em 30 dias</span></div>
         </div>
 
-        {(resumo.andamento + resumo.naoIniciado > 0) && (
-          <form action={enviarLembretes} className="acoes-linha" style={{ marginBottom: 18 }}>
-            <input type="hidden" name="clienteId" value={id} />
-            <button className="btn btn-pri">✉ Enviar lembrete aos {resumo.andamento + resumo.naoIniciado} pendentes</button>
-            <span className="muted" style={{ fontSize: 13 }}>Um e-mail com o link do treinamento para quem ainda não concluiu.</span>
-          </form>
+        {resumo.total > resumo.concluido && (
+          <BarraEnvio clienteId={id} naoIniciados={resumo.naoIniciado} andamento={resumo.andamento} />
         )}
 
         {porSetor.length > 1 && (
@@ -113,12 +110,17 @@ export default async function PainelCliente({ params, searchParams }: { params: 
         <div className="tabela-wrap">
           <table className="tabela">
             <thead>
-              <tr><th>Colaborador</th><th>Setor / gestor</th><th>Módulos</th>{cliente.exigeProvaFinal && <th>Prova</th>}<th>Situação</th><th>Concluído em</th><th>Último acesso</th>{ehAdmin && <th></th>}</tr>
+              <tr><th className="col-marca"><MarcarTodos /></th><th>Colaborador</th><th>Setor / gestor</th><th>Módulos</th>{cliente.exigeProvaFinal && <th>Prova</th>}<th>Situação</th><th>Concluído em</th><th>Último acesso</th>{ehAdmin && <th></th>}</tr>
             </thead>
             <tbody>
-              {filtradas.length === 0 && <tr><td colSpan={8} className="muted">{linhas.length ? "Ninguém com esses filtros." : "Nenhum colaborador cadastrado. Importe a lista em \"Colaboradores\"."}</td></tr>}
+              {filtradas.length === 0 && <tr><td colSpan={9} className="muted">{linhas.length ? "Ninguém com esses filtros." : "Nenhum colaborador cadastrado. Importe a lista em \"Colaboradores\"."}</td></tr>}
               {filtradas.map((l) => (
                 <tr key={l.id}>
+                  <td className="col-marca">
+                    {l.situacao !== "concluido" && (
+                      <input type="checkbox" name="ids" value={l.id} form="form-emails" aria-label={`Selecionar ${l.nome}`} />
+                    )}
+                  </td>
                   <td><b>{l.nome}</b><span className="sub">{l.email}</span></td>
                   <td>{l.setor || "—"}<span className="sub">{l.gerente}</span></td>
                   <td>
@@ -142,7 +144,10 @@ export default async function PainelCliente({ params, searchParams }: { params: 
                       </>
                     ) : "—"}
                   </td>
-                  <td>{formataData(l.ultimoAcesso, true)}</td>
+                  <td>
+                    {formataData(l.ultimoAcesso, true)}
+                    {l.ultimoEmail && <span className="sub">{l.ultimoEmail.tipo === "convite" ? "convite" : "lembrete"} em {formataData(l.ultimoEmail.em)}</span>}
+                  </td>
                   {ehAdmin && (
                     <td style={{ whiteSpace: "nowrap" }}>
                       {cliente.exigeProvaFinal && !l.certificado && l.tentativasProva >= cliente.maxTentativas && (

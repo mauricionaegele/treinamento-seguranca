@@ -44,13 +44,39 @@ export async function enviarCodigo(para: string, codigo: string) {
   await enviar(para, `Seu código de acesso: ${codigo}`, html, `Seu código de acesso ao treinamento é ${codigo} (vale por 10 minutos).`);
 }
 
-export async function enviarLembrete(para: string, nome: string, prazo: Date | null) {
-  const quando = prazo ? ` até <b>${prazo.toLocaleDateString("pt-BR", { timeZone: "UTC" })}</b>` : "";
+function textoPrazo(prazo: Date | null) {
+  return prazo ? prazo.toLocaleDateString("pt-BR", { timeZone: "UTC" }) : null;
+}
+
+function botao(texto: string) {
+  return `<p style="text-align:center;margin:24px 0"><a href="${URL_BASE}/entrar" style="background:#13a89e;color:#fff;text-decoration:none;font-weight:700;padding:14px 26px;border-radius:12px;display:inline-block">${texto}</a></p>`;
+}
+
+const COMO_ENTRAR = `<p style="margin:0;color:#5b6478;font-size:13px">Para entrar, digite seu e-mail de trabalho e você recebe um código de acesso. Este e-mail nunca pede senha.</p>`;
+
+/** Primeiro e-mail, para quem ainda não começou. */
+export async function enviarConvite(para: string, nome: string, empresa: string, prazo: Date | null, minutos: number) {
+  const ate = textoPrazo(prazo);
+  const html = moldura(
+    `Olá, ${nome.split(" ")[0]}! Seu treinamento de segurança está disponível`,
+    `<p style="margin:0 0 14px">A ${empresa} preparou o <b>treinamento anual de segurança da informação</b>: 7 módulos curtos, com vídeos e atividades práticas sobre golpes, senhas, phishing e como proteger os dados da empresa.</p>
+     <p style="margin:0 0 14px">Leva cerca de <b>${minutos} minutos</b> no total, e você pode fazer aos poucos: o progresso fica salvo.${ate ? ` Conclua até <b>${ate}</b>.` : ""}</p>
+     ${botao("Começar o treinamento")}
+     ${COMO_ENTRAR}`,
+  );
+  await enviar(para, "Seu treinamento de segurança da informação", html,
+    `Olá, ${nome.split(" ")[0]}! A ${empresa} preparou o treinamento anual de segurança da informação (cerca de ${minutos} minutos).${ate ? ` Conclua até ${ate}.` : ""} Acesse ${URL_BASE}/entrar e entre com seu e-mail de trabalho.`);
+}
+
+/** Para quem começou e parou no meio. */
+export async function enviarLembrete(para: string, nome: string, prazo: Date | null, feitos?: number, total?: number) {
+  const ate = textoPrazo(prazo);
+  const progresso = feitos !== undefined && total ? ` Você já concluiu <b>${feitos} de ${total}</b> módulos.` : "";
   const html = moldura(
     `Olá, ${nome.split(" ")[0]}! Seu treinamento está esperando`,
-    `<p style="margin:0 0 18px">Falta pouco para você concluir o treinamento anual de segurança da informação. São módulos curtos, com vídeos e atividades práticas. Conclua${quando}.</p>
-     <p style="text-align:center;margin:24px 0"><a href="${URL_BASE}/entrar" style="background:#13a89e;color:#fff;text-decoration:none;font-weight:700;padding:14px 26px;border-radius:12px;display:inline-block">Continuar o treinamento</a></p>
-     <p style="margin:0;color:#5b6478;font-size:13px">Para entrar, digite seu e-mail e você recebe um código de acesso. Este e-mail nunca pede senha.</p>`,
+    `<p style="margin:0 0 18px">Falta pouco para você concluir o treinamento anual de segurança da informação.${progresso} Seu progresso está salvo: é só continuar de onde parou${ate ? `, até <b>${ate}</b>` : ""}.</p>
+     ${botao("Continuar o treinamento")}
+     ${COMO_ENTRAR}`,
   );
   await enviar(para, "Lembrete: conclua seu treinamento de segurança", html, `Conclua seu treinamento de segurança em ${URL_BASE}/entrar`);
 }

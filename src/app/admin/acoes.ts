@@ -8,7 +8,9 @@ import { prisma } from "@/lib/prisma";
 import { exigirAdmin, podeVerCliente } from "@/lib/sessao";
 import { normalizaEmail } from "@/lib/seguranca";
 import { lerPlanilha, lerTextoColado } from "@/lib/importacao";
-import { enviarLembrete } from "@/lib/email";
+import { enviarConvite, enviarLembrete } from "@/lib/email";
+import { situacaoDoCliente } from "@/lib/status";
+import { MODULOS } from "@/lib/modulos";
 
 async function exigirBroadcast() {
   const s = await exigirAdmin();
@@ -132,25 +134,46 @@ export async function liberarTentativa(form: FormData) {
   revalidatePath(`/admin/clientes/${c.clienteId}`);
 }
 
-export async function enviarLembretes(form: FormData) {
+/**
+ * Envia e-mail para os colaboradores escolhidos (modo "selecionados") ou para
+ * todos os pendentes. Quem não começou recebe o convite; quem parou no meio,
+ * o lembrete; quem já concluiu é ignorado.
+ */
+export async function enviarEmails(form: FormData) {
   const { admin } = await exigirAdmin();
   const clienteId = texto(form, "clienteId");
   if (!podeVerCliente(admin, clienteId)) redirect("/admin");
-  const cliente = await prisma.cliente.findUniqueOrThrow({ where: { id: clienteId } });
-  const pendentes = await prisma.colaborador.findMany({
-    where: { clienteId, ativo: true, certificados: { none: { ciclo: cliente.cicloAtual } } },
-  });
-  let enviados = 0;
-  for (const p of pendentes) {
+  const modo = texto(form, "modo");
+  const ids = new Set(form.getAll("ids").map(String));
+  if (modo === "selecionados" && ids.size === 0) {
+    redirect(`/admin/clientes/${clienteId}?erro=${encodeURIComponent("Marque pelo menos um colaborador.")}`);
+  }
+
+  const { cliente, linhas } = await situacaoDoCliente(clienteId);
+  const alvo = linhas.filter((l) => (modo === "selecionados" ? ids.has(l.id) : true));
+  const minutos = MODULOS.reduce((t, m) => t + m.minutos, 0);
+  let convites = 0, lembretes = 0, falhas = 0, concluidos = 0;
+  for (const l of alvo) {
+    if (l.situacao === "concluido") { concluidos++; continue; }
+    const tipo = l.situacao === "nao_iniciado" ? "convite" : "lembrete";
     try {
-      await enviarLembrete(p.email, p.nome, cliente.prazo);
-      await prisma.lembrete.create({ data: { colaboradorId: p.id } });
-      enviados++;
+      if (tipo === "convite") await enviarConvite(l.email, l.nome, cliente.nome, cliente.prazo, minutos);
+      else await enviarLembrete(l.email, l.nome, cliente.prazo, l.modulosConcluidos, MODULOS.length);
+      await prisma.lembrete.create({ data: { colaboradorId: l.id, tipo, enviadoPor: admin.email } });
+      if (tipo === "convite") convites++; else lembretes++;
     } catch (e) {
-      console.error("Falha ao enviar lembrete para", p.email, e);
+      falhas++;
+      console.error("Falha ao enviar e-mail para", l.email, e);
     }
   }
-  redirect(`/admin/clientes/${clienteId}?msg=${encodeURIComponent(`Lembrete enviado para ${enviados} de ${pendentes.length} pendente(s).`)}`);
+
+  const partes = [];
+  if (convites) partes.push(`${convites} convite(s)`);
+  if (lembretes) partes.push(`${lembretes} lembrete(s)`);
+  let msg = partes.length ? `Enviado: ${partes.join(" e ")}.` : "Nenhum e-mail enviado.";
+  if (concluidos) msg += ` ${concluidos} já concluído(s), não receberam.`;
+  if (falhas) msg += ` ${falhas} falha(s) no envio.`;
+  redirect(`/admin/clientes/${clienteId}?${falhas ? "erro" : "msg"}=${encodeURIComponent(msg)}`);
 }
 
 export async function iniciarNovoCiclo(form: FormData) {

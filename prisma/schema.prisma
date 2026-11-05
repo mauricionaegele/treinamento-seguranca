@@ -177,6 +177,8 @@ model RegistroAcesso {
 model Lembrete {
   id             String   @id @default(cuid())
   colaboradorId  String
+  tipo           String   @default("lembrete") // convite (ainda não começou) | lembrete (parou no meio)
+  enviadoPor     String   @default("")         // e-mail de quem disparou
   enviadoEm      DateTime @default(now())
 
   colaborador    Colaborador @relation(fields: [colaboradorId], references: [id])
