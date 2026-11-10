@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import QRCode from "qrcode";
-import { Escudo } from "@/components/Topo";
+import { LogoMarca } from "@/components/Topo";
 import { prisma } from "@/lib/prisma";
 import { lerSessao } from "@/lib/sessao";
 import { cifrar, decifrar } from "@/lib/seguranca";
@@ -32,8 +32,7 @@ export default async function Configurar() {
   return (
     <div className="login-fundo">
       <div className="login-caixa" style={{ maxWidth: 560 }}>
-        <div className="marca"><Escudo tamanho={36} /> Segurança em Dia</div>
-        <div className="card">{conteudo}</div>
+        <div className="card"><div className="logo-login"><LogoMarca /></div>{conteudo}</div>
       </div>
     </div>
   );

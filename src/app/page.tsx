@@ -33,7 +33,7 @@ export default async function Inicio() {
       <div className="wrap">
         <div className="hero">
           <div>
-            <span className="eyebrow" style={{ background: "rgba(255,255,255,.12)", color: "#7ff0dd" }}>
+            <span className="eyebrow" style={{ background: "rgba(255,255,255,.12)", color: "#5fe3a1" }}>
               Treinamento anual {ciclo} · {cliente.nome}
             </span>
             <h1>Olá, {primeiroNome}! Vamos proteger a empresa juntos?</h1>
@@ -45,7 +45,7 @@ export default async function Inicio() {
           <div className="anel">
             <svg width="150" height="150" viewBox="0 0 150 150">
               <circle cx="75" cy="75" r="64" fill="none" stroke="rgba(255,255,255,.12)" strokeWidth="12" />
-              <circle cx="75" cy="75" r="64" fill="none" stroke="#13a89e" strokeWidth="12" strokeLinecap="round" strokeDasharray="402" strokeDashoffset={402 - (402 * pct) / 100} />
+              <circle cx="75" cy="75" r="64" fill="none" stroke="#00a859" strokeWidth="12" strokeLinecap="round" strokeDasharray="402" strokeDashoffset={402 - (402 * pct) / 100} />
             </svg>
             <div><span><b>{pct}%</b>concluído</span></div>
           </div>

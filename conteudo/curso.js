@@ -124,7 +124,7 @@ function pausaFilme(){ if (filme && filme.tocando) filme.play(); }
 
 /* ---------- Confete ---------- */
 function confete(){
-  const cores=['#13a89e','#7ff0dd','#ef5b4c','#f5a524','#fff'];
+  const cores=['#00a859','#5fe3a1','#ef5b4c','#f5a524','#fff'];
   for(let i=0;i<70;i++){
     const c=document.createElement('div'); c.className='confete';
     c.style.left=Math.random()*100+'vw'; c.style.background=cores[i%cores.length];
@@ -189,7 +189,7 @@ function refazQuiz(){ ir(steps.length-2); iniciaQuiz(); }
 function mostraFim(){
   const P=quizPerguntas, pct=quizNota, aprovado=pct>=70, px=quizCfg.proximo;
   document.getElementById('fim').innerHTML=`
-    <svg class="medalha" width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="${aprovado?'#13a89e':'#f5a524'}"/><circle cx="60" cy="60" r="42" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="4 6"/><path d="${aprovado?'m40 62 13 13 28 -30':'M60 38v30M60 80v2'}" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg class="medalha" width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="${aprovado?'#00a859':'#f5a524'}"/><circle cx="60" cy="60" r="42" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="4 6"/><path d="${aprovado?'m40 62 13 13 28 -30':'M60 38v30M60 80v2'}" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <h1 style="margin-top:16px">${aprovado?'Módulo concluído!':'Quase lá!'}</h1>
     <div class="nota">${pct}%</div>
     <p>Você acertou ${acertos} de ${P.length} perguntas do quiz.</p>

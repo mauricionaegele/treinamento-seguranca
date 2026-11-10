@@ -20,8 +20,8 @@ function moldura(titulo: string, corpo: string) {
   return `<!doctype html><html><body style="margin:0;background:#f4f6fb;font-family:Segoe UI,Arial,sans-serif;color:#1d2433">
   <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:28px 12px">
   <table width="520" cellpadding="0" cellspacing="0" style="max-width:520px;background:#fff;border-radius:16px;overflow:hidden">
-    <tr><td style="background:#0f1f3d;color:#fff;padding:18px 24px;font-weight:700;font-size:16px">🛡️ Segurança em Dia</td></tr>
-    <tr><td style="padding:28px 24px"><h2 style="margin:0 0 14px;color:#0f1f3d;font-size:20px">${titulo}</h2>${corpo}</td></tr>
+    <tr><td style="background:#ffffff;padding:18px 24px 14px;border-bottom:4px solid #00a859"><img src="${URL_BASE}/logo-broadcast.png" width="180" alt="Broadcast Soluções em TI" style="display:block;border:0;height:auto"></td></tr>
+    <tr><td style="padding:28px 24px"><h2 style="margin:0 0 14px;color:#23255e;font-size:20px">${titulo}</h2>${corpo}</td></tr>
     <tr><td style="padding:14px 24px;background:#f7f9fc;color:#5b6478;font-size:12px">Treinamento de conscientização em segurança da informação. Se você não esperava este e-mail, pode ignorá-lo.</td></tr>
   </table></td></tr></table></body></html>`;
 }
@@ -38,7 +38,7 @@ export async function enviarCodigo(para: string, codigo: string) {
   const html = moldura(
     "Seu código de acesso",
     `<p style="margin:0 0 18px">Use o código abaixo para entrar no treinamento. Ele vale por <b>10 minutos</b>.</p>
-     <div style="font-size:34px;font-weight:800;letter-spacing:8px;text-align:center;background:#e2f6f4;color:#0f1f3d;border-radius:12px;padding:16px">${codigo}</div>
+     <div style="font-size:34px;font-weight:800;letter-spacing:8px;text-align:center;background:#e3f6ec;color:#23255e;border-radius:12px;padding:16px">${codigo}</div>
      <p style="margin:18px 0 0;color:#5b6478;font-size:13px">Nunca passe este código para ninguém, nem para a equipe de TI. Ele serve só para você entrar.</p>`,
   );
   await enviar(para, `Seu código de acesso: ${codigo}`, html, `Seu código de acesso ao treinamento é ${codigo} (vale por 10 minutos).`);
@@ -49,7 +49,7 @@ function textoPrazo(prazo: Date | null) {
 }
 
 function botao(texto: string) {
-  return `<p style="text-align:center;margin:24px 0"><a href="${URL_BASE}/entrar" style="background:#13a89e;color:#fff;text-decoration:none;font-weight:700;padding:14px 26px;border-radius:12px;display:inline-block">${texto}</a></p>`;
+  return `<p style="text-align:center;margin:24px 0"><a href="${URL_BASE}/entrar" style="background:#00a859;color:#fff;text-decoration:none;font-weight:700;padding:14px 26px;border-radius:12px;display:inline-block">${texto}</a></p>`;
 }
 
 const COMO_ENTRAR = `<p style="margin:0;color:#5b6478;font-size:13px">Para entrar, digite seu e-mail de trabalho e você recebe um código de acesso. Este e-mail nunca pede senha.</p>`;

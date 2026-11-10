@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { Escudo } from "@/components/Topo";
+import { LogoMarca } from "@/components/Topo";
 import { BotaoImprimir } from "@/components/BotaoImprimir";
 import { prisma } from "@/lib/prisma";
 import { exigirAdmin, podeVerCliente } from "@/lib/sessao";
@@ -32,7 +32,7 @@ export default async function Relatorio({ params }: { params: Promise<{ id: stri
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, borderBottom: "3px solid var(--teal)", paddingBottom: 14 }}>
         <div>
-          <div style={{ display: "flex", gap: 8, alignItems: "center", fontWeight: 800, color: "var(--navy)" }}><Escudo /> Segurança em Dia · Broadcast TI</div>
+          <LogoMarca largura={190} />
           <h1 style={{ margin: "10px 0 4px", fontSize: 26 }}>Relatório do treinamento de segurança da informação</h1>
           <div className="muted">{cliente.nome} · ciclo {cliente.cicloAtual}</div>
         </div>
