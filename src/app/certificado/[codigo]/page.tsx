@@ -21,7 +21,7 @@ export default async function Certificado({ params }: { params: Promise<{ codigo
   const horas = Math.round(MODULOS.reduce((t, m) => t + m.minutos, 0) / 60) || 1;
 
   return (
-    <div style={{ background: "#ecedf8", minHeight: "100vh", padding: "28px 16px" }}>
+    <div className="cert-fundo" style={{ background: "#ecedf8", minHeight: "100vh", padding: "28px 16px" }}>
       <style>{`
         .cert{max-width:960px;margin:0 auto;background:#fff;border-radius:10px;box-shadow:var(--shadow);position:relative;overflow:hidden;aspect-ratio:1.414/1;display:flex;flex-direction:column;align-items:center;padding:clamp(28px,5.5vw,58px) clamp(28px,7vw,80px);text-align:center}
         .cert::before{content:"";position:absolute;inset:18px 18px 18px 30px;border:3px solid var(--navy2);border-radius:4px;pointer-events:none}
@@ -37,7 +37,7 @@ export default async function Certificado({ params }: { params: Promise<{ codigo
         .cert .rodape b{color:var(--navy);display:block;font-size:13px}
         .cert .selo-ok{flex:none;width:clamp(64px,9vw,88px);height:clamp(64px,9vw,88px);border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-weight:800;font-size:clamp(10px,1.3vw,12px);line-height:1.25;text-align:center;box-shadow:0 0 0 6px var(--teal-soft)}
         @media (max-width:640px){.cert{aspect-ratio:auto}.cert .rodape{flex-wrap:wrap}}
-        @media print{@page{size:A4 landscape;margin:0}body{background:#fff}.cert{box-shadow:none;border-radius:0;max-width:none;width:100vw;height:100vh;aspect-ratio:auto}}
+        @media print{@page{size:A4 landscape;margin:0}html,body{margin:0;background:#fff}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}.cert-fundo{padding:0!important;min-height:0!important;background:#fff!important}.cert{box-shadow:none;border-radius:0;max-width:none;width:297mm;height:209mm;aspect-ratio:auto;padding:14mm 22mm 12mm;break-inside:avoid;page-break-after:avoid}.cert .logo-cert{width:62mm}.cert .tit{font-size:38px}.cert .nome{font-size:34px}.cert .selo-ok{width:24mm;height:24mm;font-size:11px}}
       `}</style>
       <div className="acoes-linha nao-imprimir" style={{ maxWidth: 960, margin: "0 auto 14px", justifyContent: "space-between" }}>
         <span className={vencido ? "st ruim-st" : "st feito"}>

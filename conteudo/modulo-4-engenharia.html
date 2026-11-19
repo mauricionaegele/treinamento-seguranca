@@ -19,7 +19,13 @@
 .post{border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px}
 .post small{color:var(--muted);display:block;margin-bottom:6px}
 .post .img{background:#eef3fb;border-radius:10px;height:110px;display:grid;place-items:center;font-size:44px;margin-top:8px;position:relative}
-.cracha-foto{position:absolute;bottom:10px;right:16px;background:#fff;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:700;color:var(--navy);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.post .img.foto-cracha{height:150px;display:flex;align-items:flex-end;justify-content:center;gap:34px;padding-bottom:12px;font-size:56px}
+.cracha-foto{position:relative;display:flex;flex-direction:column;align-items:center;width:92px;background:#fff;border-radius:8px;padding:0 0 7px;box-shadow:0 3px 10px rgba(0,0,0,.18);font-size:10px;line-height:1.25;color:var(--navy);margin-top:26px;overflow:visible}
+.cracha-foto::before{content:"";position:absolute;top:-28px;left:50%;width:38px;height:30px;border:4px solid var(--teal);border-bottom:none;border-radius:20px 20px 0 0;transform:translateX(-50%)}
+.cracha-foto .topo-c{width:100%;background:var(--navy2);color:#fff;font-weight:800;font-size:11px;letter-spacing:.08em;padding:4px 0;border-radius:8px 8px 0 0;text-align:center}
+.cracha-foto .rosto{width:30px;height:30px;border-radius:50%;background:#f2c7a5;margin:6px 0 4px;display:grid;place-items:center;font-size:20px;line-height:1}
+.cracha-foto b{font-size:10px}.cracha-foto small{color:#5b6478;font-size:9px}
+.cracha-foto.flag{padding:0 0 7px}
 /* Recepção */
 .recepcao{background:linear-gradient(180deg,#eef3fb,#dfe7f3);border-radius:16px;overflow:hidden}
 .recepcao svg{display:block;width:100%;height:auto}
@@ -249,7 +255,7 @@
         <div class="perfil-capa"></div>
         <div class="perfil-top"><div class="foto">👩</div><div style="padding-bottom:6px"><b>Juliana Ramos</b><div class="muted" style="font-size:13px"><span class="flag" data-f="0">Analista Financeira na Empresa XYZ</span> · Rio de Janeiro</div></div></div>
         <div class="posts">
-          <div class="post"><small>2 dias atrás</small>Primeiro dia no escritório novo! Amando 😍<div class="img">🏢<span class="cracha-foto flag" data-f="1">🪪 XYZ · Juliana R. · Mat. 20417</span></div></div>
+          <div class="post"><small>2 dias atrás</small>Primeiro dia no escritório novo! Amando 😍<div class="img foto-cracha"><span>🏢</span><span class="cracha-foto flag" data-f="1" title="Crachá"><span class="topo-c">XYZ</span><span class="rosto">👩</span><b>Juliana R.</b><small>Mat. 20417</small></span></div></div>
           <div class="post"><small>1 semana atrás</small>Feliz aniversário pra mim! <span class="flag" data-f="2">32 anos hoje, 14/03</span> 🎂</div>
           <div class="post"><small>2 semanas atrás</small>Saudade do meu companheiro de 4 patas, <span class="flag" data-f="3">o Thor</span> 🐶❤️</div>
           <div class="post"><small>3 semanas atrás</small><span class="flag" data-f="4">Contando os dias: de férias de 10 a 30 de julho</span>, Nordeste aí vou eu! ✈️ Meu chefe que se vire com o fechamento 😂</div>
