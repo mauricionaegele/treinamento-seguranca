@@ -27,7 +27,8 @@ export default async function Importar({ params, searchParams }: { params: Promi
           <h2 style={{ fontSize: 20 }}>Importar planilha</h2>
           <p className="muted" style={{ fontSize: 14 }}>
             Excel (.xlsx) ou CSV com uma linha de cabeçalho. Colunas: <b>nome</b>, <b>email</b> e, opcionalmente, <b>setor</b> e <b>gerente</b>.
-            Quem já existe é atualizado; ninguém é apagado.
+            Quem já existe é atualizado; ninguém é apagado.{" "}
+            <a href="/modelo-colaboradores.xlsx" download>Baixar modelo de planilha para enviar ao cliente</a>.
           </p>
           <label className="campo-form">
             <span>Arquivo</span>
